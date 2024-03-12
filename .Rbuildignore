@@ -1,3 +1,7 @@
 ^r-tree-sitter\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+.clang-format
+.cache
+.vscode
+compile_commands.json
