@@ -59,6 +59,71 @@ language_version <- function(x) {
   .Call(ffi_language_version, language_pointer(x))
 }
 
+#' Language IDs
+#'
+#' Get the integer language ID for a particular node kind. Can be useful
+#' for exploring the grammar.
+#'
+#' @inheritParams rlang::args_dots_empty
+#'
+#' @param x `[tree_sitter_language]`
+#'
+#'   A tree-sitter language object.
+#'
+#' @param kind `[character]`
+#'
+#'   The node kinds to look up the ID for.
+#'
+#' @param named `[logical]`
+#'
+#'   Should named or anonymous nodes be looked up? Recycled to the
+#'   size of `kind`.
+#'
+#' @returns
+#' An integer vector the same size as `kind` containing either:
+#' - The integer ID of the node kind, if known.
+#' - `NA` if the node kind was not known.
+#'
+#' @export
+#' @seealso [language_node_kind_for_id()]
+language_id_for_node_kind <- function(x, kind, ..., named = TRUE) {
+  check_dots_empty0(...)
+  check_language(x)
+
+  kind <- vec_cast(kind, character())
+  named <- vec_cast(named, logical())
+
+  size <- vec_size(kind)
+  named <- vec_recycle(named, size, x_arg = "named")
+
+  .Call(ffi_language_id_for_node_kind, language_pointer(x), kind, named)
+}
+
+#' Language node kinds
+#'
+#' Get the string node kind for a particular language ID. Can be useful for
+#' exploring a grammar.
+#'
+#' @param x `[tree_sitter_language]`
+#'
+#'   A tree-sitter language object.
+#'
+#' @param id `[positive integer]`
+#'
+#'   The language IDs to look up node kinds for.
+#'
+#' @export
+#' @seealso [language_id_for_node_kind()]
+#' @returns
+#' A character vector the same length as `id` containing:
+#' - The name of the node kind, if known.
+#' - `NA`, if the ID was not known.
+language_node_kind_for_id <- function(x, id) {
+  check_language(x)
+  id <- vec_cast(id, integer())
+  .Call(ffi_language_node_kind_for_id, language_pointer(x), id)
+}
+
 #' @export
 print.tree_sitter_language <- function(x, ...) {
   name <- language_name(x)

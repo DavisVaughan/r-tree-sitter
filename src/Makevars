@@ -16,7 +16,8 @@ tree-sitter-files = \
 lib-files = \
         init.o \
         language.o \
-        rlang.o
+        rlang.o \
+        utils.o
 
 OBJECTS = $(tree-sitter-files) $(lib-files)
 
