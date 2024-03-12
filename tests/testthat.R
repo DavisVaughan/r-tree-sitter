@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(squirrel)
+library(treesitter)
 
-test_check("squirrel")
+test_check("treesitter")

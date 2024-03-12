@@ -15,10 +15,14 @@ tree-sitter-files = \
 
 lib-files = \
         init.o \
+        language.o \
         rlang.o
 
 OBJECTS = $(tree-sitter-files) $(lib-files)
 
 all: $(SHLIB)
 
-.PHONY: all
+clean:
+	rm -rf $(SHLIB) $(OBJECTS)
+
+.PHONY: all clean

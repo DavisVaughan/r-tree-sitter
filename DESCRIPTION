@@ -7,7 +7,7 @@ Authors@R: c(
   )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
-Imports: 
+Imports:
     rlang
 Suggests:
     testthat (>= 3.0.0)

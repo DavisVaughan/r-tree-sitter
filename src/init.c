@@ -8,8 +8,11 @@
 // Defined below
 r_obj* ffi_initialize(r_obj* ns);
 
+extern r_obj* ffi_language_version(r_obj* x);
+
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
+    {"ffi_language_version", (DL_FUNC) &ffi_language_version, 1},
     {NULL, NULL, 0}};
 
 void R_init_treesitter(DllInfo* dll) {
