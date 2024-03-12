@@ -1,0 +1,3 @@
+- Update tree-sitter locally to latest version
+- Copy over `tree-sitter/lib/src/` and `tree-sitter/lib/include/`
+- Update `Makevars` with new `OBJECTS`
