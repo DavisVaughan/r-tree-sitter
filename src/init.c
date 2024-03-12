@@ -28,7 +28,10 @@ void R_init_treesitter(DllInfo* dll) {
   R_useDynamicSymbols(dll, FALSE);
 }
 
+extern void init_alloc(void);
+
 r_obj* ffi_initialize(r_obj* ns) {
   r_init_library(ns);
+  init_alloc();
   return r_null;
 }

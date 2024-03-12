@@ -764,7 +764,9 @@ void ts_stack_clear(Stack *self) {
 
 bool ts_stack_print_dot_graph(Stack *self, const TSLanguage *language, FILE *f) {
   array_reserve(&self->iterators, 32);
-  if (!f) f = stderr;
+  // --- r-tree-sitter begin ---
+  // if (!f) f = stderr;
+  // --- r-tree-sitter end ---
 
   fprintf(f, "digraph stack {\n");
   fprintf(f, "rankdir=\"RL\";\n");

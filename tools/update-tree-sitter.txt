@@ -1,3 +1,14 @@
 - Update tree-sitter locally to latest version
 - Copy over `tree-sitter/lib/src/` and `tree-sitter/lib/include/`
 - Update `Makevars` with new `OBJECTS`
+
+# Manual code tweaks
+
+Look for existing usage of `--- r-tree-sitter begin ---` and
+`--- r-tree-sitter end ---` and ensure those are retained between version
+bumps. In particular:
+
+- Comment out usage of `stderr` and `abort()` in `alloc.c`, we provide our own
+  allocators anyways.
+- Comment out usage of `stderr` in `stack.c` in `ts_stack_print_dot_graph()`.
+  We never expose a way to print the dot graph.

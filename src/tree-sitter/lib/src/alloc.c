@@ -4,8 +4,10 @@
 static void *ts_malloc_default(size_t size) {
   void *result = malloc(size);
   if (size > 0 && !result) {
-    fprintf(stderr, "tree-sitter failed to allocate %zu bytes", size);
-    abort();
+    // --- r-tree-sitter begin ---
+    // fprintf(stderr, "tree-sitter failed to allocate %zu bytes", size);
+    // abort();
+    // --- r-tree-sitter end ---
   }
   return result;
 }
@@ -13,8 +15,10 @@ static void *ts_malloc_default(size_t size) {
 static void *ts_calloc_default(size_t count, size_t size) {
   void *result = calloc(count, size);
   if (count > 0 && !result) {
-    fprintf(stderr, "tree-sitter failed to allocate %zu bytes", count * size);
-    abort();
+    // --- r-tree-sitter begin ---
+    // fprintf(stderr, "tree-sitter failed to allocate %zu bytes", count * size);
+    // abort();
+    // --- r-tree-sitter end ---
   }
   return result;
 }
@@ -22,8 +26,10 @@ static void *ts_calloc_default(size_t count, size_t size) {
 static void *ts_realloc_default(void *buffer, size_t size) {
   void *result = realloc(buffer, size);
   if (size > 0 && !result) {
-    fprintf(stderr, "tree-sitter failed to reallocate %zu bytes", size);
-    abort();
+    // --- r-tree-sitter begin ---
+    // fprintf(stderr, "tree-sitter failed to reallocate %zu bytes", size);
+    // abort();
+    // --- r-tree-sitter end ---
   }
   return result;
 }
