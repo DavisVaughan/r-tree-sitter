@@ -3,6 +3,7 @@ Tree <- R6::R6Class(
   cloneable = FALSE,
   private = list(
     .text = NULL,
+    .edited = FALSE,
     .language = NULL,
     .pointer = NULL
   ),
@@ -16,11 +17,36 @@ Tree <- R6::R6Class(
     text = function() {
       tree_text(self, private)
     },
-    set_text = function(text) {
-      tree_set_text(self, pointer, text)
-    },
     root_node = function() {
       tree_root_node(self, private)
+    },
+    edit = function(
+      start_byte,
+      start_row,
+      start_column,
+      old_end_byte,
+      old_end_row,
+      old_end_column,
+      new_end_byte,
+      new_end_row,
+      new_end_column
+    ) {
+      tree_edit(
+        self,
+        private,
+        start_byte,
+        start_row,
+        start_column,
+        old_end_byte,
+        old_end_row,
+        old_end_column,
+        new_end_byte,
+        new_end_row,
+        new_end_column
+      )
+    },
+    edited = function() {
+      tree_edited(self, private)
     }
   )
 )
@@ -40,16 +66,83 @@ tree_text <- function(self, private) {
   private$.text
 }
 
-tree_set_text <- function(self, pointer, text) {
-  check_string(text, allow_null = TRUE)
-  private$.text <- text
-  self
-}
-
 tree_root_node <- function(self, private) {
   pointer <- private$.pointer
   raw <- .Call(ffi_tree_root_node, pointer)
   new_node(raw, self)
+}
+
+tree_edit <- function(
+  self,
+  private,
+  start_byte,
+  start_row,
+  start_column,
+  old_end_byte,
+  old_end_row,
+  old_end_column,
+  new_end_byte,
+  new_end_row,
+  new_end_column
+) {
+  pointer <- private$.pointer
+
+  args <- vec_cast_common(
+    start_byte = start_byte,
+    start_row = start_row,
+    start_column = start_column,
+    old_end_byte = old_end_byte,
+    old_end_row = old_end_row,
+    old_end_column = old_end_column,
+    new_end_byte = new_end_byte,
+    new_end_row = new_end_row,
+    new_end_column = new_end_column,
+    .to = double()
+  )
+
+  start_byte <- args$start_byte
+  start_row <- args$start_row
+  start_column <- args$start_column
+  old_end_byte <- args$old_end_byte
+  old_end_row <- args$old_end_row
+  old_end_column <- args$old_end_column
+  new_end_byte <- args$new_end_byte
+  new_end_row <- args$new_end_row
+  new_end_column <- args$new_end_column
+
+  check_number_whole(start_byte, min = 0)
+  check_number_whole(start_row, min = 0)
+  check_number_whole(start_column, min = 0)
+  check_number_whole(old_end_byte, min = 0)
+  check_number_whole(old_end_row, min = 0)
+  check_number_whole(old_end_column, min = 0)
+  check_number_whole(new_end_byte, min = 0)
+  check_number_whole(new_end_row, min = 0)
+  check_number_whole(new_end_column, min = 0)
+
+  .Call(
+    ffi_tree_edit,
+    pointer,
+    start_byte,
+    start_row,
+    start_column,
+    old_end_byte,
+    old_end_row,
+    old_end_column,
+    new_end_byte,
+    new_end_row,
+    new_end_column
+  )
+
+  # Important! No longer valid to look at `text` after editing.
+  private$.text <- NULL
+  private$.edited <- TRUE
+
+  self
+}
+
+tree_edited <- function(self, private) {
+  private$.edited
 }
 
 check_tree <- function(

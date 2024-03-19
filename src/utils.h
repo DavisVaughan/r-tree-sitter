@@ -7,6 +7,7 @@
 r_obj* r_arg_as_string(r_obj* x, const char* arg);
 
 uint32_t r_ssize_as_uint32(r_ssize x);
+uint32_t r_dbl_as_uint32(double x, const char* arg);
 TSSymbol r_int_as_TSSymbol(int x, const char* arg);
 
 bool r_lgl_any_missing(r_obj* x);
