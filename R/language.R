@@ -2,11 +2,10 @@
 #'
 #' @description
 #' This function is a developer tool to wrap an external pointer to a
-#' C level tree-sitter `const TSLanguage*`.
-#'
-#' The `language()` function exported from your grammar specific R package
-#' should call this, providing the language name and an external pointer to
-#' the result of the C level `tree_sitter_{name}()` function.
+#' C level tree-sitter `const TSLanguage*`. It is not exported, but should
+#' be copied into grammar specific R packages and called by them, providing
+#' the language name and an external pointer to the result of their C level
+#' `tree_sitter_{name}()` function.
 #'
 #' @param name `[string]`
 #'
@@ -19,11 +18,11 @@
 #' @returns
 #' A `tree_sitter_language` object.
 #'
-#' @export
+#' @noRd
 new_language <- function(name, pointer) {
   # TODO: Remove `name` argument if name is accessible in language object
-  check_string(name)
-  check_language_pointer(pointer)
+  stopifnot(is.character(name), length(name) == 1L, !is.na(name))
+  stopifnot(typeof(pointer) == "externalptr")
 
   out <- list(name = name, pointer = pointer)
   class(out) <- "tree_sitter_language"
