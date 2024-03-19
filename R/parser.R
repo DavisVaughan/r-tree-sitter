@@ -1,5 +1,5 @@
 Parser <- R6::R6Class(
-  "Parser",
+  "tree_sitter_parser",
   cloneable = FALSE,
   private = list(
     .pointer = NULL,

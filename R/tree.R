@@ -1,5 +1,5 @@
 Tree <- R6::R6Class(
-  "Tree",
+  "tree_sitter_tree",
   cloneable = FALSE,
   private = list(
     .text = NULL,
@@ -77,5 +77,5 @@ check_tree <- function(
 }
 
 is_tree <- function(x) {
-  inherits(x, "Tree")
+  inherits(x, "tree_sitter_tree")
 }
