@@ -11,6 +11,8 @@ r_obj* ffi_initialize(r_obj* ns);
 extern r_obj* ffi_language_version(r_obj*);
 extern r_obj* ffi_language_id_for_node_kind(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_language_node_kind_for_id(r_obj*, r_obj*);
+extern r_obj* ffi_parser_initialize(void);
+extern r_obj* ffi_parser_set_language(r_obj*, r_obj*);
 
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
@@ -21,6 +23,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_language_node_kind_for_id",
      (DL_FUNC) &ffi_language_node_kind_for_id,
      2},
+    {"ffi_parser_initialize", (DL_FUNC) &ffi_parser_initialize, 0},
+    {"ffi_parser_set_language", (DL_FUNC) &ffi_parser_set_language, 2},
     {NULL, NULL, 0}};
 
 void R_init_treesitter(DllInfo* dll) {

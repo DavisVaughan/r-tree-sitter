@@ -15,9 +15,12 @@ tree-sitter-files = \
 
 lib-files = \
         alloc.o \
+        external-pointer.o \
         init.o \
         language.o \
+        parser.o \
         rlang.o \
+        tree.o \
         utils.o
 
 OBJECTS = $(tree-sitter-files) $(lib-files)
