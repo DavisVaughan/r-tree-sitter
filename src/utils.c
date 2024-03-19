@@ -30,6 +30,7 @@ TSSymbol r_int_as_TSSymbol(int x, const char* arg) {
         "Can't convert `%s` to `TSSymbol`. `%s` must be within the range of "
         "`[0, "
         "UINT16_MAX]`.",
+        arg,
         arg
     );
   }
