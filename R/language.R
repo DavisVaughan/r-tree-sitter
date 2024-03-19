@@ -21,6 +21,7 @@
 #'
 #' @export
 new_language <- function(name, pointer) {
+  # TODO: Remove `name` argument if name is accessible in language object
   check_string(name)
   check_language_pointer(pointer)
 
