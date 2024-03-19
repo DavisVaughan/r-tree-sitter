@@ -51,6 +51,10 @@ parser_parse <- function(self, private, text, tree) {
   pointer <- private$.pointer
   language <- private$.language
 
+  if (!is.null(tree)) {
+    tree <- tree$pointer()
+  }
+
   text <- enc2utf8(text)
 
   pointer <- .Call(ffi_parser_parse, pointer, text, tree)

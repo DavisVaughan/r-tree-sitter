@@ -14,6 +14,9 @@ Tree <- R6::R6Class(
     language = function() {
       tree_language(self, private)
     },
+    pointer = function() {
+      tree_pointer(self, private)
+    },
     text = function() {
       tree_text(self, private)
     },
@@ -60,6 +63,10 @@ tree_initialize <- function(self, private, text, language, pointer) {
 
 tree_language <- function(self, private) {
   private$.language
+}
+
+tree_pointer <- function(self, private) {
+  private$.pointer
 }
 
 tree_text <- function(self, private) {
