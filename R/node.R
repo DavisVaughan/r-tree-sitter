@@ -25,6 +25,18 @@ node_s_expression <- function(x) {
   .Call(ffi_node_s_expression, x)
 }
 
+node_text <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+
+  raw <- node_raw(x)
+
+  tree <- node_tree(x)
+  text <- tree$text()
+
+  .Call(ffi_node_text, raw, text)
+}
+
 node_child <- function(x, i) {
   check_node(x)
   check_tree_unedited(x)
@@ -54,8 +66,31 @@ print.tree_sitter_node <- function(x, ...) {
     return(invisible(x))
   }
 
-  cat_line(node_s_expression(x))
+  sexp <- node_s_expression(x)
+  sexp <- truncate(sexp)
+
+  text <- node_text(x)
+  text <- truncate(text)
+
+  cat_line()
+  cli::cat_rule("S-Expression")
+  cat_line(sexp)
+  cat_line()
+  cli::cat_rule("Text")
+  cat_line(text)
+
   invisible(x)
+}
+
+truncate <- function(x) {
+  n <- nchar(x)
+
+  if (n > 200L) {
+    x <- substr(x, 1L, 200L)
+    x <- paste0(x, "\n", cli::style_italic("<truncated>"))
+  }
+
+  x
 }
 
 check_node <- function(
