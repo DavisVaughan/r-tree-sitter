@@ -16,6 +16,7 @@ extern r_obj* ffi_parser_set_language(r_obj*, r_obj*);
 extern r_obj* ffi_parser_parse(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_root_node(r_obj*);
 extern r_obj* ffi_node_s_expression(r_obj*);
+extern r_obj* ffi_node_child(r_obj*, r_obj*);
 
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
@@ -31,6 +32,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_parser_parse", (DL_FUNC) &ffi_parser_parse, 3},
     {"ffi_tree_root_node", (DL_FUNC) &ffi_tree_root_node, 1},
     {"ffi_node_s_expression", (DL_FUNC) &ffi_node_s_expression, 1},
+    {"ffi_node_child", (DL_FUNC) &ffi_node_child, 2},
     {NULL, NULL, 0}};
 
 void R_init_treesitter(DllInfo* dll) {

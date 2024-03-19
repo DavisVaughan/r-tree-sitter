@@ -24,6 +24,25 @@ node_s_expression <- function(x) {
   .Call(ffi_node_s_expression, x)
 }
 
+node_child <- function(x, i) {
+  check_node(x)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  i <- vec_cast(i, integer())
+  vec_check_size(i, 1L)
+  check_positive(i)
+
+  out <- .Call(ffi_node_child, x, i)
+
+  if (is.null(out)) {
+    NULL
+  } else {
+    new_node(out, tree)
+  }
+}
+
 #' @export
 print.tree_sitter_node <- function(x, ...) {
   cat(node_s_expression(x))

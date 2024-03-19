@@ -13,6 +13,21 @@ r_obj* ffi_node_s_expression(r_obj* ffi_x) {
   return out;
 }
 
+r_obj* ffi_node_child(r_obj* ffi_x, r_obj* ffi_i) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+
+  // Validated on R side to be positive integer of length 1, 1-indexed
+  const uint32_t child_index = (uint32_t) r_int_get(ffi_i, 0) - 1;
+
+  TSNode out = ts_node_child(*x, child_index);
+
+  if (ts_node_is_null(out)) {
+    return r_null;
+  } else {
+    return ts_node_as_raw(out);
+  }
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.
