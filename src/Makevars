@@ -18,6 +18,7 @@ lib-files = \
         external-pointer.o \
         init.o \
         language.o \
+        node.o \
         parser.o \
         rlang.o \
         tree.o \

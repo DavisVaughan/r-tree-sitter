@@ -1,5 +1,6 @@
 #include "language.h"
 
+#include "external-pointer.h"
 #include "utils.h"
 
 r_obj* ffi_language_version(r_obj* ffi_x) {
@@ -93,15 +94,5 @@ r_obj* ffi_language_node_kind_for_id(r_obj* ffi_x, r_obj* id) {
 }
 
 const TSLanguage* ts_language_from_external_pointer(r_obj* x) {
-  if (r_typeof(x) != R_TYPE_pointer) {
-    r_abort("`x` must be an external pointer.");
-  }
-
-  const TSLanguage* out = (const TSLanguage*) R_ExternalPtrAddr(x);
-
-  if (out == NULL) {
-    r_abort("`x` must point to a `TSLanguage`.");
-  }
-
-  return out;
+  TS_OBJECT_FROM_EXTERNAL_POINTER(x, const TSLanguage*);
 }
