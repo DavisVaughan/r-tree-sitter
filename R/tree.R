@@ -70,6 +70,7 @@ check_tree <- function(
     x,
     "a tree",
     ...,
+    allow_null = allow_null,
     arg = arg,
     call = call
   )
