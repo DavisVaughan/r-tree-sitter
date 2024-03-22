@@ -1,75 +1,130 @@
-Parser <- R6::R6Class(
-  "tree_sitter_parser",
-  cloneable = FALSE,
-  private = list(
-    .pointer = NULL,
-    .language = NULL
-  ),
-  public = list(
-    initialize = function() {
-      parser_initialize(self, private)
-    },
-    set_language = function(language) {
-      parser_set_language(self, private, language)
-    },
-    parse = function(text, ..., tree = NULL) {
-      check_dots_empty0(...)
-      parser_parse(self, private, text, tree)
-    }
-  ),
-  active = list(
-    language = function(x) {
-      parser_language(self, private, x)
-    }
-  )
-)
-
-parser_initialize <- function(self, private) {
-  private$.pointer <- .Call(ffi_parser_initialize)
-  self
-}
-
-parser_set_language <- function(self, private, language) {
+parser <- function(language) {
   check_language(language)
-
-  private$.language <- language
-  language <- language_pointer(language)
-
-  pointer <- private$.pointer
-
-  .Call(ffi_parser_set_language, pointer, language)
-
-  self
+  new_parser(language)
 }
 
-parser_language <- function(self, private, x) {
-  if (missing(x)) {
-    # Getter
-    private$.language
-  } else {
-    # Setter
-    parser_set_language(self, private, x)
-  }
+parser_set_language <- function(x, language) {
+  check_parser(x)
+  check_language(x)
+
+  new_parser(
+    language = language,
+    timeout = x$timeout,
+    included_ranges = x$included_ranges
+  )
 }
 
-parser_parse <- function(self, private, text, tree) {
+parser_set_timeout <- function(x, timeout) {
+  check_parser(x)
+
+    # `max` is the largest representable whole double value that is below the
+  # max `uint64_t` value that can be parsed by the R parser
+  check_number_whole(
+    x = timeout,
+    min = 0,
+    max = 18446744073709547520
+  )
+  timeout <- vec_cast(timeout, double())
+
+  new_parser(
+    language = x$language,
+    timeout = timeout,
+    included_ranges = x$included_ranges
+  )
+}
+
+parser_set_included_ranges <- function(x, included_ranges) {
+  check_parser(x)
+  abort("Setting `included_ranges` is not yet supported.")
+}
+
+parser_parse <- function(
+  x,
+  text,
+  ...,
+  encoding = "UTF-8",
+  tree = NULL
+) {
+  check_dots_empty0(...)
+  check_parser(x)
   check_string(text)
   check_tree(tree, allow_null = TRUE)
 
-  pointer <- private$.pointer
-  language <- private$.language
-
-  if (is.null(language)) {
-    abort("`language` must be set with `$set_language()` before calling `$parse()`.")
-  }
+  encoding <- arg_match0(
+    arg = encoding,
+    values = c("UTF-8", "UTF-16"),
+    arg_nm = "encoding"
+  )
 
   if (!is.null(tree)) {
     tree <- tree$pointer
   }
 
-  text <- enc2utf8(text)
+  language <- parser_language(x)
+  pointer <- parser_pointer(x)
 
-  pointer <- .Call(ffi_parser_parse, pointer, text, tree)
+  pointer <- .Call(
+    ffi_parser_parse,
+    pointer,
+    text,
+    encoding,
+    tree
+  )
 
   Tree$new(text, language, pointer)
+}
+
+parser_language <- function(x) {
+  x$language
+}
+
+parser_pointer <- function(x) {
+  x$pointer
+}
+
+new_parser <- function(language, ..., timeout = NULL, included_ranges = NULL) {
+  check_dots_empty0(...)
+
+  pointer <- language$pointer
+
+  pointer <- .Call(
+    ffi_parser_new,
+    pointer,
+    timeout,
+    included_ranges
+  )
+
+  out <- list(
+    language = language,
+    timeout = timeout,
+    included_ranges = included_ranges,
+    pointer = pointer
+  )
+
+  class(out) <- "tree_sitter_parser"
+
+  out
+}
+
+check_parser <- function(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (is_parser(x)) {
+    return(invisible(NULL))
+  }
+
+  stop_input_type(
+    x,
+    "a <tree_sitter_parser>",
+    ...,
+    arg = arg,
+    call = call
+  )
+}
+
+is_parser <- function(x) {
+  inherits(x, "tree_sitter_parser")
 }
