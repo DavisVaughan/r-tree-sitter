@@ -2,6 +2,7 @@
 
 #include "external-pointer.h"
 #include "node.h"
+#include "utils.h"
 
 r_obj* ffi_tree_cursor_initialize(r_obj* ffi_node) {
   TSNode* node = ts_node_from_raw(ffi_node);
@@ -22,10 +23,71 @@ r_obj* ffi_tree_cursor_current_node(r_obj* ffi_x) {
   return ts_node_as_raw(node);
 }
 
+r_obj* ffi_tree_cursor_goto_parent(r_obj* ffi_x) {
+  TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
+  bool out = ts_tree_cursor_goto_parent(x);
+  return r_lgl(out);
+}
+
+r_obj* ffi_tree_cursor_goto_next_sibling(r_obj* ffi_x) {
+  TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
+  bool out = ts_tree_cursor_goto_next_sibling(x);
+  return r_lgl(out);
+}
+
+r_obj* ffi_tree_cursor_goto_previous_sibling(r_obj* ffi_x) {
+  TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
+  bool out = ts_tree_cursor_goto_previous_sibling(x);
+  return r_lgl(out);
+}
+
 r_obj* ffi_tree_cursor_goto_first_child(r_obj* ffi_x) {
   TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
   bool out = ts_tree_cursor_goto_first_child(x);
   return r_lgl(out);
+}
+
+r_obj* ffi_tree_cursor_goto_last_child(r_obj* ffi_x) {
+  TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
+  bool out = ts_tree_cursor_goto_last_child(x);
+  return r_lgl(out);
+}
+
+r_obj* ffi_tree_cursor_current_depth(r_obj* ffi_x) {
+  TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
+  uint32_t out = ts_tree_cursor_current_depth(x);
+  return r_dbl((double) out);
+}
+
+r_obj*
+ffi_tree_cursor_goto_first_child_for_byte(r_obj* ffi_x, r_obj* ffi_byte) {
+  TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
+  const uint32_t byte = r_dbl_as_uint32(r_dbl_get(ffi_byte, 0), "byte");
+
+  // Rather than dealing with converting `int64_t` to an R type, we just return
+  // `true` if found and `false` if not found, like the other goto functions.
+  const int64_t index = ts_tree_cursor_goto_first_child_for_byte(x, byte);
+
+  return r_lgl(index != -1);
+}
+
+r_obj* ffi_tree_cursor_goto_first_child_for_point(
+    r_obj* ffi_x,
+    r_obj* ffi_row,
+    r_obj* ffi_column
+) {
+  TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
+
+  const uint32_t row = r_dbl_as_uint32(r_dbl_get(ffi_row, 0), "row");
+  const uint32_t column = r_dbl_as_uint32(r_dbl_get(ffi_column, 0), "column");
+
+  const TSPoint point = {.row = row, .column = column};
+
+  // Rather than dealing with converting `int64_t` to an R type, we just return
+  // `true` if found and `false` if not found, like the other goto functions.
+  const int64_t index = ts_tree_cursor_goto_first_child_for_point(x, point);
+
+  return r_lgl(index != -1);
 }
 
 r_obj* ffi_tree_cursor_finalize(r_obj* ffi_x) {

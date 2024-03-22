@@ -32,7 +32,15 @@ extern r_obj* ffi_node_end_point(r_obj*);
 extern r_obj* ffi_tree_cursor_initialize(r_obj*);
 extern r_obj* ffi_tree_cursor_reset(r_obj*, r_obj*);
 extern r_obj* ffi_tree_cursor_current_node(r_obj*);
+extern r_obj* ffi_tree_cursor_goto_parent(r_obj*);
+extern r_obj* ffi_tree_cursor_goto_next_sibling(r_obj*);
+extern r_obj* ffi_tree_cursor_goto_previous_sibling(r_obj*);
 extern r_obj* ffi_tree_cursor_goto_first_child(r_obj*);
+extern r_obj* ffi_tree_cursor_goto_last_child(r_obj*);
+extern r_obj* ffi_tree_cursor_current_depth(r_obj*);
+extern r_obj* ffi_tree_cursor_goto_first_child_for_byte(r_obj*, r_obj*);
+extern r_obj*
+ffi_tree_cursor_goto_first_child_for_point(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_cursor_finalize(r_obj*);
 
 static const R_CallMethodDef CallEntries[] = {
@@ -66,9 +74,28 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_tree_cursor_current_node",
      (DL_FUNC) &ffi_tree_cursor_current_node,
      1},
+    {"ffi_tree_cursor_goto_parent", (DL_FUNC) &ffi_tree_cursor_goto_parent, 1},
+    {"ffi_tree_cursor_goto_next_sibling",
+     (DL_FUNC) &ffi_tree_cursor_goto_next_sibling,
+     1},
+    {"ffi_tree_cursor_goto_previous_sibling",
+     (DL_FUNC) &ffi_tree_cursor_goto_previous_sibling,
+     1},
     {"ffi_tree_cursor_goto_first_child",
      (DL_FUNC) &ffi_tree_cursor_goto_first_child,
      1},
+    {"ffi_tree_cursor_goto_last_child",
+     (DL_FUNC) &ffi_tree_cursor_goto_last_child,
+     1},
+    {"ffi_tree_cursor_current_depth",
+     (DL_FUNC) &ffi_tree_cursor_current_depth,
+     1},
+    {"ffi_tree_cursor_goto_first_child_for_byte",
+     (DL_FUNC) &ffi_tree_cursor_goto_first_child_for_byte,
+     2},
+    {"ffi_tree_cursor_goto_first_child_for_point",
+     (DL_FUNC) &ffi_tree_cursor_goto_first_child_for_point,
+     3},
     {"ffi_tree_cursor_finalize", (DL_FUNC) &ffi_tree_cursor_finalize, 1},
     {NULL, NULL, 0}};
 
