@@ -14,6 +14,9 @@ Tree <- R6::R6Class(
     root_node = function() {
       tree_root_node(self, private)
     },
+    walk = function() {
+      tree_walk(self, private)
+    },
     edit = function(
       start_byte,
       start_row,
@@ -79,6 +82,11 @@ tree_root_node <- function(self, private) {
   pointer <- private$.pointer
   raw <- .Call(ffi_tree_root_node, pointer)
   new_node(raw, self)
+}
+
+tree_walk <- function(self, private) {
+  node <- tree_root_node(self, private)
+  TreeCursor$new(node)
 }
 
 tree_edit <- function(
