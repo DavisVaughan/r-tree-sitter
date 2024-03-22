@@ -61,6 +61,18 @@ r_obj* ffi_node_child(r_obj* ffi_x, r_obj* ffi_i) {
   }
 }
 
+r_obj* ffi_node_child_count(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  uint32_t count = ts_node_child_count(*x);
+  return r_dbl((double) count);
+}
+
+r_obj* ffi_node_named_child_count(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  uint32_t count = ts_node_named_child_count(*x);
+  return r_dbl((double) count);
+}
+
 r_obj* ffi_node_children(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
   return node_children(*x, false);

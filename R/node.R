@@ -57,6 +57,20 @@ node_child <- function(x, i) {
   }
 }
 
+node_child_count <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+  x <- node_raw(x)
+  .Call(ffi_node_child_count, x)
+}
+
+node_named_child_count <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+  x <- node_raw(x)
+  .Call(ffi_node_named_child_count, x)
+}
+
 node_children <- function(x) {
   node_children_impl(x, ffi_node_children)
 }
