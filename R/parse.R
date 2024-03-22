@@ -1,4 +1,4 @@
-parse_text <- function(x, language) {
+text_parse <- function(x, language) {
   check_string(x)
   check_language(language)
 
