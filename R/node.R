@@ -57,6 +57,15 @@ node_child <- function(x, i) {
   }
 }
 
+node_is_named <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+
+  x <- node_raw(x)
+
+  .Call(ffi_node_is_named, x)
+}
+
 #' @export
 print.tree_sitter_node <- function(x, ...) {
   cat_line("<node>")

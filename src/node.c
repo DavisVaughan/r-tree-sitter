@@ -59,6 +59,12 @@ r_obj* ffi_node_child(r_obj* ffi_x, r_obj* ffi_i) {
   }
 }
 
+r_obj* ffi_node_is_named(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  bool out = ts_node_is_named(*x);
+  return r_lgl(out);
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.
