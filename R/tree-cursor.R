@@ -1,5 +1,6 @@
 TreeCursor <- R6::R6Class(
   "tree_sitter_tree_cursor",
+  cloneable = FALSE,
   private = list(
     .tree = NULL,
     .raw = NULL,
