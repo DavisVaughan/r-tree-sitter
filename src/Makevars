@@ -21,6 +21,7 @@ lib-files = \
         node.o \
         parser.o \
         rlang.o \
+        tree-cursor.o \
         tree.o \
         utils.o
 
