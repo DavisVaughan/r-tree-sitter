@@ -12,12 +12,14 @@ Parser <- R6::R6Class(
     set_language = function(language) {
       parser_set_language(self, private, language)
     },
-    language = function() {
-      parser_language(self, private)
-    },
     parse = function(text, ..., tree = NULL) {
       check_dots_empty0(...)
       parser_parse(self, private, text, tree)
+    }
+  ),
+  active = list(
+    language = function(x) {
+      parser_language(self, private, x)
     }
   )
 )
@@ -40,8 +42,14 @@ parser_set_language <- function(self, private, language) {
   self
 }
 
-parser_language <- function(self, private) {
-  private$.language
+parser_language <- function(self, private, x) {
+  if (missing(x)) {
+    # Getter
+    private$.language
+  } else {
+    # Setter
+    parser_set_language(self, private, x)
+  }
 }
 
 parser_parse <- function(self, private, text, tree) {
@@ -51,8 +59,12 @@ parser_parse <- function(self, private, text, tree) {
   pointer <- private$.pointer
   language <- private$.language
 
+  if (is.null(language)) {
+    abort("`language` must be set with `$set_language()` before calling `$parse()`.")
+  }
+
   if (!is.null(tree)) {
-    tree <- tree$pointer()
+    tree <- tree$pointer
   }
 
   text <- enc2utf8(text)

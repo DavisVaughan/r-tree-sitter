@@ -11,15 +11,6 @@ Tree <- R6::R6Class(
     initialize = function(text, language, pointer) {
       tree_initialize(self, private, text, language, pointer)
     },
-    language = function() {
-      tree_language(self, private)
-    },
-    pointer = function() {
-      tree_pointer(self, private)
-    },
-    text = function() {
-      tree_text(self, private)
-    },
     root_node = function() {
       tree_root_node(self, private)
     },
@@ -50,6 +41,17 @@ Tree <- R6::R6Class(
     },
     edited = function() {
       tree_edited(self, private)
+    }
+  ),
+  active = list(
+    language = function() {
+      tree_language(self, private)
+    },
+    pointer = function() {
+      tree_pointer(self, private)
+    },
+    text = function() {
+      tree_text(self, private)
     }
   )
 )
