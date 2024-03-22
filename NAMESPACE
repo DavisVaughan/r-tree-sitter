@@ -2,6 +2,7 @@
 
 S3method(print,tree_sitter_language)
 S3method(print,tree_sitter_node)
+S3method(print,tree_sitter_tree)
 export(language_name)
 export(language_symbol_for_name)
 export(language_symbol_name)

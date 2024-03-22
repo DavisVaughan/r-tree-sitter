@@ -1,45 +1,22 @@
-new_node <- function(raw, tree) {
-  out <- list(
-    raw = raw,
-    tree = tree
-  )
-
-  class(out) <- "tree_sitter_node"
-
-  out
-}
-
-node_raw <- function(x) {
-  .subset2(x, "raw")
-}
-
-node_tree <- function(x) {
-  check_node(x)
-  .subset2(x, "tree")
-}
-
 node_s_expression <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
   x <- node_raw(x)
   .Call(ffi_node_s_expression, x)
 }
 
 node_text <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
 
   raw <- node_raw(x)
 
   tree <- node_tree(x)
-  text <- tree$text
+  text <- tree_text(tree)
 
   .Call(ffi_node_text, raw, text)
 }
 
 node_child <- function(x, i) {
   check_node(x)
-  check_tree_unedited(x)
 
   tree <- node_tree(x)
   x <- node_raw(x)
@@ -59,14 +36,12 @@ node_child <- function(x, i) {
 
 node_child_count <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
   x <- node_raw(x)
   .Call(ffi_node_child_count, x)
 }
 
 node_named_child_count <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
   x <- node_raw(x)
   .Call(ffi_node_named_child_count, x)
 }
@@ -81,7 +56,6 @@ node_named_children <- function(x) {
 
 node_children_impl <- function(x, fn, call = caller_env()) {
   check_node(x, call = call)
-  check_tree_unedited(x, call = call)
 
   tree <- node_tree(x)
   x <- node_raw(x)
@@ -97,58 +71,85 @@ node_children_impl <- function(x, fn, call = caller_env()) {
 
 node_start_byte <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
   x <- node_raw(x)
   .Call(ffi_node_start_byte, x)
 }
 
 node_end_byte <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
   x <- node_raw(x)
   .Call(ffi_node_end_byte, x)
 }
 
 node_start_point <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
   x <- node_raw(x)
   .Call(ffi_node_start_point, x)
 }
 
 node_end_point <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
   x <- node_raw(x)
   .Call(ffi_node_end_point, x)
 }
 
 node_type <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
-
   x <- node_raw(x)
-
   .Call(ffi_node_type, x)
 }
 
 node_is_named <- function(x) {
   check_node(x)
-  check_tree_unedited(x)
-
   x <- node_raw(x)
-
   .Call(ffi_node_is_named, x)
+}
+
+node_raw <- function(x) {
+  .subset2(x, "raw")
+}
+
+node_tree <- function(x) {
+  .subset2(x, "tree")
+}
+
+new_node <- function(raw, tree) {
+  out <- list(
+    raw = raw,
+    tree = tree
+  )
+
+  class(out) <- "tree_sitter_node"
+
+  out
+}
+
+check_node <- function(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (is_node(x)) {
+    return(invisible(NULL))
+  }
+
+  stop_input_type(
+    x,
+    "a <tree_sitter_node>",
+    ...,
+    arg = arg,
+    call = call
+  )
+}
+
+is_node <- function(x) {
+  inherits(x, "tree_sitter_node")
 }
 
 #' @export
 print.tree_sitter_node <- function(x, ...) {
-  cat_line("<node>")
-
-  if (node_tree_edited(x)) {
-    cat_line("Upstream tree has been edited, this node is invalid.")
-    return(invisible(x))
-  }
+  cat_line("<tree_sitter_node>")
 
   sexp <- node_s_expression(x)
   sexp <- truncate(sexp)
@@ -175,42 +176,4 @@ truncate <- function(x) {
   }
 
   x
-}
-
-check_node <- function(
-  x,
-  ...,
-  arg = caller_arg(x),
-  call = caller_env()
-) {
-  if (is_node(x)) {
-    return(invisible(NULL))
-  }
-
-  stop_input_type(
-    x,
-    "a node",
-    ...,
-    arg = arg,
-    call = call
-  )
-}
-
-is_node <- function(x) {
-  inherits(x, "tree_sitter_node")
-}
-
-check_tree_unedited <- function(x, call = caller_env()) {
-  if (!node_tree_edited(x)) {
-    return(invisible(NULL))
-  }
-  abort(
-    "This node is attached to a tree that has been edited and is no longer valid.",
-    call = call
-  )
-}
-
-node_tree_edited <- function(x) {
-  tree <- node_tree(x)
-  tree$edited()
 }

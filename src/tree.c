@@ -25,6 +25,14 @@ r_obj* ffi_tree_edit(
 ) {
   TSTree* x = ts_tree_from_external_pointer(ffi_x);
 
+  // All important shallow copy of the tree which bumps the ref count.
+  // This allows us to edit the copy of the tree and return a new one,
+  // allowing nodes created from the previous tree to remain valid.
+  // `ts_tree_delete()` will free the memory specific to the copy, and
+  // decrement the ref count and eventually free a larger chunk of memory
+  // when the ref count hits 0.
+  x = ts_tree_copy(x);
+
   uint32_t start_byte =
       r_dbl_as_uint32(r_dbl_get(ffi_start_byte, 0), "start_byte");
   uint32_t start_row =
@@ -58,7 +66,7 @@ r_obj* ffi_tree_edit(
 
   ts_tree_edit(x, &edit);
 
-  return r_null;
+  return ts_tree_as_external_pointer(x);
 }
 
 r_obj* ts_tree_as_external_pointer(TSTree* x) {

@@ -1,97 +1,18 @@
-Tree <- R6::R6Class(
-  "tree_sitter_tree",
-  cloneable = FALSE,
-  private = list(
-    .text = NULL,
-    .edited = FALSE,
-    .language = NULL,
-    .pointer = NULL
-  ),
-  public = list(
-    initialize = function(text, language, pointer) {
-      tree_initialize(self, private, text, language, pointer)
-    },
-    root_node = function() {
-      tree_root_node(self, private)
-    },
-    walk = function() {
-      tree_walk(self, private)
-    },
-    edit = function(
-      start_byte,
-      start_row,
-      start_column,
-      old_end_byte,
-      old_end_row,
-      old_end_column,
-      new_end_byte,
-      new_end_row,
-      new_end_column
-    ) {
-      tree_edit(
-        self,
-        private,
-        start_byte,
-        start_row,
-        start_column,
-        old_end_byte,
-        old_end_row,
-        old_end_column,
-        new_end_byte,
-        new_end_row,
-        new_end_column
-      )
-    },
-    edited = function() {
-      tree_edited(self, private)
-    }
-  ),
-  active = list(
-    language = function() {
-      tree_language(self, private)
-    },
-    pointer = function() {
-      tree_pointer(self, private)
-    },
-    text = function() {
-      tree_text(self, private)
-    }
-  )
-)
-
-tree_initialize <- function(self, private, text, language, pointer) {
-  private$.text <- text
-  private$.language <- language
-  private$.pointer <- pointer
-  self
-}
-
-tree_language <- function(self, private) {
-  private$.language
-}
-
-tree_pointer <- function(self, private) {
-  private$.pointer
-}
-
-tree_text <- function(self, private) {
-  private$.text
-}
-
-tree_root_node <- function(self, private) {
-  pointer <- private$.pointer
+tree_root_node <- function(x) {
+  check_tree(x)
+  pointer <- tree_pointer(x)
   raw <- .Call(ffi_tree_root_node, pointer)
-  new_node(raw, self)
+  new_node(raw, x)
 }
 
-tree_walk <- function(self, private) {
-  node <- tree_root_node(self, private)
+tree_walk <- function(x) {
+  check_tree(x)
+  node <- tree_root_node(x)
   TreeCursor$new(node)
 }
 
 tree_edit <- function(
-  self,
-  private,
+  x,
   start_byte,
   start_row,
   start_column,
@@ -102,7 +23,11 @@ tree_edit <- function(
   new_end_row,
   new_end_column
 ) {
-  pointer <- private$.pointer
+  check_tree(x)
+
+  pointer <- tree_pointer(x)
+  text <- tree_text(x)
+  language <- tree_language(x)
 
   args <- vec_cast_common(
     start_byte = start_byte,
@@ -137,7 +62,7 @@ tree_edit <- function(
   check_number_whole(new_end_row, min = 0)
   check_number_whole(new_end_column, min = 0)
 
-  .Call(
+  pointer <- .Call(
     ffi_tree_edit,
     pointer,
     start_byte,
@@ -151,15 +76,35 @@ tree_edit <- function(
     new_end_column
   )
 
-  # Important! No longer valid to look at `text` after editing.
-  private$.text <- NULL
-  private$.edited <- TRUE
-
-  self
+  new_tree(
+    pointer = pointer,
+    text = text,
+    language = language
+  )
 }
 
-tree_edited <- function(self, private) {
-  private$.edited
+tree_pointer <- function(x) {
+  x$pointer
+}
+
+tree_text <- function(x) {
+  x$text
+}
+
+tree_language <- function(x) {
+  x$language
+}
+
+new_tree <- function(pointer, text, language) {
+  out <- list(
+    pointer = pointer,
+    text = text,
+    language = language
+  )
+
+  class(out) <- "tree_sitter_tree"
+
+  out
 }
 
 check_tree <- function(
@@ -178,7 +123,7 @@ check_tree <- function(
 
   stop_input_type(
     x,
-    "a tree",
+    "a <tree_sitter_tree>",
     ...,
     allow_null = allow_null,
     arg = arg,
@@ -188,4 +133,9 @@ check_tree <- function(
 
 is_tree <- function(x) {
   inherits(x, "tree_sitter_tree")
+}
+
+#' @export
+print.tree_sitter_tree <- function(x, ...) {
+  cat_line("<tree_sitter_tree>")
 }

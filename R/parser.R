@@ -57,7 +57,7 @@ parser_parse <- function(
   )
 
   if (!is.null(tree)) {
-    tree <- tree$pointer
+    tree <- tree_pointer(tree)
   }
 
   language <- parser_language(x)
@@ -71,7 +71,7 @@ parser_parse <- function(
     tree
   )
 
-  Tree$new(text, language, pointer)
+  new_tree(pointer, text, language)
 }
 
 parser_language <- function(x) {
