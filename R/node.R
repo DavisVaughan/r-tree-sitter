@@ -28,13 +28,9 @@ node_child <- function(x, i) {
   vec_check_size(i, 1L)
   check_positive(i)
 
-  out <- .Call(ffi_node_child, x, i)
+  raw <- .Call(ffi_node_child, x, i)
 
-  if (is.null(out)) {
-    NULL
-  } else {
-    new_node(out, tree)
-  }
+  new_node_or_null(raw, tree)
 }
 
 #' @export
@@ -105,6 +101,37 @@ node_end_point <- function(x) {
 }
 
 #' @export
+node_next_sibling <- function(x) {
+  node_sibling(x, ffi_node_next_sibling)
+}
+
+#' @export
+node_previous_sibling <- function(x) {
+  node_sibling(x, ffi_node_previous_sibling)
+}
+
+#' @export
+node_next_named_sibling <- function(x) {
+  node_sibling(x, ffi_node_next_named_sibling)
+}
+
+#' @export
+node_previous_named_sibling <- function(x) {
+  node_sibling(x, ffi_node_previous_named_sibling)
+}
+
+node_sibling <- function(x, fn, call = caller_env()) {
+  check_node(x, call = call)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  raw <- .Call(fn, x)
+
+  new_node_or_null(raw, tree)
+}
+
+#' @export
 node_type <- function(x) {
   check_node(x)
   x <- node_raw(x)
@@ -171,6 +198,14 @@ new_node <- function(raw, tree) {
   class(out) <- "tree_sitter_node"
 
   out
+}
+
+new_node_or_null <- function(raw, tree) {
+  if (is.null(raw)) {
+    NULL
+  } else {
+    new_node(raw, tree)
+  }
 }
 
 check_node <- function(

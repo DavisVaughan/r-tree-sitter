@@ -158,6 +158,30 @@ static r_obj* node_point(TSNode x, bool start) {
   return out;
 }
 
+r_obj* ffi_node_next_sibling(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  TSNode node = ts_node_next_sibling(*x);
+  return ts_node_is_null(node) ? r_null : ts_node_as_raw(node);
+}
+
+r_obj* ffi_node_previous_sibling(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  TSNode node = ts_node_prev_sibling(*x);
+  return ts_node_is_null(node) ? r_null : ts_node_as_raw(node);
+}
+
+r_obj* ffi_node_next_named_sibling(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  TSNode node = ts_node_next_named_sibling(*x);
+  return ts_node_is_null(node) ? r_null : ts_node_as_raw(node);
+}
+
+r_obj* ffi_node_previous_named_sibling(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  TSNode node = ts_node_prev_named_sibling(*x);
+  return ts_node_is_null(node) ? r_null : ts_node_as_raw(node);
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.
