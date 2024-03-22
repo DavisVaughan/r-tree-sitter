@@ -102,6 +102,44 @@ r_obj* ffi_node_is_named(r_obj* ffi_x) {
   return r_lgl(out);
 }
 
+r_obj* ffi_node_start_byte(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  uint32_t byte = ts_node_start_byte(*x);
+  return r_dbl((double) byte);
+}
+
+r_obj* ffi_node_end_byte(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  uint32_t byte = ts_node_end_byte(*x);
+  return r_dbl((double) byte);
+}
+
+r_obj* ffi_node_start_point(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return node_point(*x, true);
+}
+
+r_obj* ffi_node_end_point(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return node_point(*x, false);
+}
+
+static r_obj* node_point(TSNode x, bool start) {
+  TSPoint point = start ? ts_node_start_point(x) : ts_node_end_point(x);
+
+  r_obj* out = KEEP(r_alloc_list(2));
+  r_list_poke(out, 0, r_dbl((double) point.row));
+  r_list_poke(out, 1, r_dbl((double) point.column));
+
+  r_obj* names = r_alloc_character(2);
+  r_attrib_poke_names(out, names);
+  r_chr_poke(names, 0, r_str("row"));
+  r_chr_poke(names, 1, r_str("column"));
+
+  FREE(1);
+  return out;
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.

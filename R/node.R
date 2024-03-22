@@ -81,6 +81,34 @@ node_children_impl <- function(x, fn, call = caller_env()) {
   out
 }
 
+node_start_byte <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+  x <- node_raw(x)
+  .Call(ffi_node_start_byte, x)
+}
+
+node_end_byte <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+  x <- node_raw(x)
+  .Call(ffi_node_end_byte, x)
+}
+
+node_start_point <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+  x <- node_raw(x)
+  .Call(ffi_node_start_point, x)
+}
+
+node_end_point <- function(x) {
+  check_node(x)
+  check_tree_unedited(x)
+  x <- node_raw(x)
+  .Call(ffi_node_end_point, x)
+}
+
 node_is_named <- function(x) {
   check_node(x)
   check_tree_unedited(x)
