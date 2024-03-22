@@ -72,22 +72,22 @@ test_that("language_symbol_for_name() validates inputs", {
 })
 
 # ------------------------------------------------------------------------------
-# language_node_kind_for_id()
+# language_symbol_name()
 
-test_that("can get node kind for an id", {
-  kind <- language_node_kind_for_id(r(), 1:2)
+test_that("can get symbol name for a symbol ID", {
+  kind <- language_symbol_name(r(), 1:2)
   expect_vector(kind, ptype = character(), size = 2L)
   expect_true(!any(is.na(kind)))
 })
 
-test_that("errors on bad IDs", {
+test_that("errors on bad symbol IDs", {
   expect_snapshot(error = TRUE, {
-    language_node_kind_for_id(r(), -1L)
+    language_symbol_name(r(), -1L)
   })
 })
 
 test_that("checks language type", {
   expect_snapshot(error = TRUE, {
-    language_node_kind_for_id(1, 1L)
+    language_symbol_name(1, 1L)
   })
 })

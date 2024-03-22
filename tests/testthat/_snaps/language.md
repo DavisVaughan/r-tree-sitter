@@ -46,19 +46,19 @@
       Error in `language_symbol_for_name()`:
       ! Can't convert `named` <character> to <logical>.
 
-# errors on bad IDs
+# errors on bad symbol IDs
 
     Code
-      language_node_kind_for_id(r(), -1L)
+      language_symbol_name(r(), -1L)
     Condition
-      Error in `language_node_kind_for_id()`:
-      ! Can't convert `id` to `TSSymbol`. `id` must be within the range of `[0, UINT16_MAX]`.
+      Error in `language_symbol_name()`:
+      ! Can't convert `symbol` to `TSSymbol`. `symbol` must be within the range of `[0, UINT16_MAX]`.
 
 # checks language type
 
     Code
-      language_node_kind_for_id(1, 1L)
+      language_symbol_name(1, 1L)
     Condition
-      Error in `language_node_kind_for_id()`:
+      Error in `language_symbol_name()`:
       ! `x` must be a <tree_sitter_language>, not the number 1.
 
