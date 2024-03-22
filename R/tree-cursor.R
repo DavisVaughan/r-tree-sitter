@@ -1,3 +1,4 @@
+#' @export
 TreeCursor <- R6::R6Class(
   "tree_sitter_tree_cursor",
   cloneable = FALSE,

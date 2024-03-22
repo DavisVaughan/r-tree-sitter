@@ -93,6 +93,11 @@ language_symbol_name <- function(x, symbol) {
 }
 
 #' @export
+is_language <- function(x) {
+  inherits(x, "tree_sitter_language")
+}
+
+#' @export
 print.tree_sitter_language <- function(x, ...) {
   name <- language_name(x)
   cat(sprintf("language<%s>", name))
@@ -101,10 +106,6 @@ print.tree_sitter_language <- function(x, ...) {
 
 language_pointer <- function(x) {
   x$pointer
-}
-
-is_language <- function(x) {
-  inherits(x, "tree_sitter_language")
 }
 
 check_language <- function(

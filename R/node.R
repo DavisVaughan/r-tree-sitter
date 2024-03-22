@@ -1,9 +1,11 @@
+#' @export
 node_s_expression <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_s_expression, x)
 }
 
+#' @export
 node_text <- function(x) {
   check_node(x)
 
@@ -15,6 +17,7 @@ node_text <- function(x) {
   .Call(ffi_node_text, raw, text)
 }
 
+#' @export
 node_child <- function(x, i) {
   check_node(x)
 
@@ -34,22 +37,26 @@ node_child <- function(x, i) {
   }
 }
 
+#' @export
 node_child_count <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_child_count, x)
 }
 
+#' @export
 node_named_child_count <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_named_child_count, x)
 }
 
+#' @export
 node_children <- function(x) {
   node_children_impl(x, ffi_node_children)
 }
 
+#' @export
 node_named_children <- function(x) {
   node_children_impl(x, ffi_node_named_children)
 }
@@ -69,40 +76,82 @@ node_children_impl <- function(x, fn, call = caller_env()) {
   out
 }
 
+#' @export
 node_start_byte <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_start_byte, x)
 }
 
+#' @export
 node_end_byte <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_end_byte, x)
 }
 
+#' @export
 node_start_point <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_start_point, x)
 }
 
+#' @export
 node_end_point <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_end_point, x)
 }
 
+#' @export
 node_type <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_type, x)
 }
 
+#' @export
 node_is_named <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_is_named, x)
+}
+
+#' @export
+is_node <- function(x) {
+  inherits(x, "tree_sitter_node")
+}
+
+#' @export
+print.tree_sitter_node <- function(x, ...) {
+  cat_line("<tree_sitter_node>")
+
+  sexp <- node_s_expression(x)
+  sexp <- truncate(sexp)
+
+  text <- node_text(x)
+  text <- truncate(text)
+
+  cat_line()
+  cli::cat_rule("S-Expression")
+  cat_line(sexp)
+  cat_line()
+  cli::cat_rule("Text")
+  cat_line(text)
+
+  invisible(x)
+}
+
+truncate <- function(x) {
+  n <- nchar(x)
+
+  if (n > 200L) {
+    x <- substr(x, 1L, 200L)
+    x <- paste0(x, "\n", cli::style_italic("<truncated>"))
+  }
+
+  x
 }
 
 node_raw <- function(x) {
@@ -141,39 +190,4 @@ check_node <- function(
     arg = arg,
     call = call
   )
-}
-
-is_node <- function(x) {
-  inherits(x, "tree_sitter_node")
-}
-
-#' @export
-print.tree_sitter_node <- function(x, ...) {
-  cat_line("<tree_sitter_node>")
-
-  sexp <- node_s_expression(x)
-  sexp <- truncate(sexp)
-
-  text <- node_text(x)
-  text <- truncate(text)
-
-  cat_line()
-  cli::cat_rule("S-Expression")
-  cat_line(sexp)
-  cat_line()
-  cli::cat_rule("Text")
-  cat_line(text)
-
-  invisible(x)
-}
-
-truncate <- function(x) {
-  n <- nchar(x)
-
-  if (n > 200L) {
-    x <- substr(x, 1L, 200L)
-    x <- paste0(x, "\n", cli::style_italic("<truncated>"))
-  }
-
-  x
 }

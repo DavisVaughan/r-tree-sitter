@@ -1,8 +1,10 @@
+#' @export
 parser <- function(language) {
   check_language(language)
   new_parser(language)
 }
 
+#' @export
 parser_set_language <- function(x, language) {
   check_parser(x)
   check_language(x)
@@ -14,6 +16,7 @@ parser_set_language <- function(x, language) {
   )
 }
 
+#' @export
 parser_set_timeout <- function(x, timeout) {
   check_parser(x)
 
@@ -33,11 +36,13 @@ parser_set_timeout <- function(x, timeout) {
   )
 }
 
+#' @export
 parser_set_included_ranges <- function(x, included_ranges) {
   check_parser(x)
   abort("Setting `included_ranges` is not yet supported.")
 }
 
+#' @export
 parser_parse <- function(
   x,
   text,
@@ -74,12 +79,17 @@ parser_parse <- function(
   new_tree(pointer, text, language)
 }
 
+#' @export
+is_parser <- function(x) {
+  inherits(x, "tree_sitter_parser")
+}
+
 parser_language <- function(x) {
-  x$language
+  .subset2(x, "language")
 }
 
 parser_pointer <- function(x) {
-  x$pointer
+  .subset2(x, "pointer")
 }
 
 new_parser <- function(language, ..., timeout = NULL, included_ranges = NULL) {
@@ -123,8 +133,4 @@ check_parser <- function(
     arg = arg,
     call = call
   )
-}
-
-is_parser <- function(x) {
-  inherits(x, "tree_sitter_parser")
 }

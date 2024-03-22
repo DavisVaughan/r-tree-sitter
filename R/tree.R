@@ -1,3 +1,4 @@
+#' @export
 tree_root_node <- function(x) {
   check_tree(x)
   pointer <- tree_pointer(x)
@@ -5,12 +6,14 @@ tree_root_node <- function(x) {
   new_node(raw, x)
 }
 
+#' @export
 tree_walk <- function(x) {
   check_tree(x)
   node <- tree_root_node(x)
   TreeCursor$new(node)
 }
 
+#' @export
 tree_edit <- function(
   x,
   start_byte,
@@ -83,16 +86,26 @@ tree_edit <- function(
   )
 }
 
+#' @export
+is_tree <- function(x) {
+  inherits(x, "tree_sitter_tree")
+}
+
+#' @export
+print.tree_sitter_tree <- function(x, ...) {
+  cat_line("<tree_sitter_tree>")
+}
+
 tree_pointer <- function(x) {
-  x$pointer
+  .subset2(x, "pointer")
 }
 
 tree_text <- function(x) {
-  x$text
+  .subset2(x, "text")
 }
 
 tree_language <- function(x) {
-  x$language
+  .subset2(x, "language")
 }
 
 new_tree <- function(pointer, text, language) {
@@ -129,13 +142,4 @@ check_tree <- function(
     arg = arg,
     call = call
   )
-}
-
-is_tree <- function(x) {
-  inherits(x, "tree_sitter_tree")
-}
-
-#' @export
-print.tree_sitter_tree <- function(x, ...) {
-  cat_line("<tree_sitter_tree>")
 }
