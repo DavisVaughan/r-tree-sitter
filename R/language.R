@@ -27,9 +27,9 @@ language_version <- function(x) {
   .Call(ffi_language_version, language_pointer(x))
 }
 
-#' Language IDs
+#' Language symbols
 #'
-#' Get the integer language ID for a particular node kind. Can be useful
+#' Get the integer symbol ID for a particular node name. Can be useful
 #' for exploring the grammar.
 #'
 #' @inheritParams rlang::args_dots_empty
@@ -38,58 +38,58 @@ language_version <- function(x) {
 #'
 #'   A tree-sitter language object.
 #'
-#' @param kind `[character]`
+#' @param name `[character]`
 #'
-#'   The node kinds to look up the ID for.
+#'   The names to look up symbols for.
 #'
 #' @param named `[logical]`
 #'
 #'   Should named or anonymous nodes be looked up? Recycled to the
-#'   size of `kind`.
+#'   size of `name`.
 #'
 #' @returns
-#' An integer vector the same size as `kind` containing either:
-#' - The integer ID of the node kind, if known.
-#' - `NA` if the node kind was not known.
+#' An integer vector the same size as `name` containing either:
+#' - The integer symbol ID of the node name, if known.
+#' - `NA` if the node name was not known.
 #'
 #' @export
 #' @seealso [language_node_kind_for_id()]
-language_id_for_node_kind <- function(x, kind, ..., named = TRUE) {
+language_symbol_for_name <- function(x, name, ..., named = TRUE) {
   check_dots_empty0(...)
   check_language(x)
 
-  kind <- vec_cast(kind, character())
+  name <- vec_cast(name, character())
   named <- vec_cast(named, logical())
 
-  size <- vec_size(kind)
+  size <- vec_size(name)
   named <- vec_recycle(named, size, x_arg = "named")
 
-  .Call(ffi_language_id_for_node_kind, language_pointer(x), kind, named)
+  .Call(ffi_language_symbol_for_name, language_pointer(x), name, named)
 }
 
-#' Language node kinds
+#' Language symbol names
 #'
-#' Get the string node kind for a particular language ID. Can be useful for
+#' Get the name for a particular language symbol ID. Can be useful for
 #' exploring a grammar.
 #'
 #' @param x `[tree_sitter_language]`
 #'
 #'   A tree-sitter language object.
 #'
-#' @param id `[positive integer]`
+#' @param symbol `[positive integer]`
 #'
-#'   The language IDs to look up node kinds for.
+#'   The language symbols to look up names for.
 #'
 #' @export
-#' @seealso [language_id_for_node_kind()]
+#' @seealso [language_symbol_for_name()]
 #' @returns
-#' A character vector the same length as `id` containing:
-#' - The name of the node kind, if known.
-#' - `NA`, if the ID was not known.
-language_node_kind_for_id <- function(x, id) {
+#' A character vector the same length as `symbol` containing:
+#' - The name of the symbol, if known.
+#' - `NA`, if the symbol was not known.
+language_symbol_name <- function(x, symbol) {
   check_language(x)
-  id <- vec_cast(id, integer())
-  .Call(ffi_language_node_kind_for_id, language_pointer(x), id)
+  symbol <- vec_cast(symbol, integer())
+  .Call(ffi_language_symbol_name, language_pointer(x), symbol)
 }
 
 #' @export

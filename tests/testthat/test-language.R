@@ -26,48 +26,48 @@ test_that("checks for valid object", {
 })
 
 # ------------------------------------------------------------------------------
-# language_id_for_node_kind()
+# language_symbol_for_name()
 
 test_that("can get language id for named node", {
-  id <- language_id_for_node_kind(r(), "program")
+  id <- language_symbol_for_name(r(), "program")
   expect_vector(id, ptype = integer(), size = 1L)
   expect_true(!is.na(id))
 })
 
 test_that("can get language id for unnamed node", {
-  id <- language_id_for_node_kind(r(), "else", named = FALSE)
+  id <- language_symbol_for_name(r(), "else", named = FALSE)
   expect_vector(id, ptype = integer(), size = 1L)
   expect_true(!is.na(id))
 })
 
-test_that("incorrect node kind returns NA", {
-  expect_identical(language_id_for_node_kind(r(), "ffffoo"), NA_integer_)
+test_that("incorrect node name returns NA", {
+  expect_identical(language_symbol_for_name(r(), "ffffoo"), NA_integer_)
 })
 
-test_that("recycles `named` to size of `kind`", {
+test_that("recycles `named` to size of `name`", {
   expect_snapshot(error = TRUE, {
-    language_id_for_node_kind(r(), c("program", "else"), named = c(TRUE, FALSE, TRUE))
+    language_symbol_for_name(r(), c("program", "else"), named = c(TRUE, FALSE, TRUE))
   })
 
-  id <- language_id_for_node_kind(r(), c("program", "else"), named = TRUE)
+  id <- language_symbol_for_name(r(), c("program", "else"), named = TRUE)
   expect_vector(id, ptype = integer(), size = 2L)
   expect_true(!is.na(id)[[1L]])
   expect_true(is.na(id)[[2L]])
 
-  id <- language_id_for_node_kind(r(), c("program", "else"), named = c(TRUE, FALSE))
+  id <- language_symbol_for_name(r(), c("program", "else"), named = c(TRUE, FALSE))
   expect_vector(id, ptype = integer(), size = 2L)
   expect_true(all(!is.na(id)))
 })
 
-test_that("language_id_for_node_kind() validates inputs", {
+test_that("language_symbol_for_name() validates inputs", {
   expect_snapshot(error = TRUE, {
-    language_id_for_node_kind(1, "foo")
+    language_symbol_for_name(1, "foo")
   })
   expect_snapshot(error = TRUE, {
-    language_id_for_node_kind(r(), 1)
+    language_symbol_for_name(r(), 1)
   })
   expect_snapshot(error = TRUE, {
-    language_id_for_node_kind(r(), "foo", named = "x")
+    language_symbol_for_name(r(), "foo", named = "x")
   })
 })
 

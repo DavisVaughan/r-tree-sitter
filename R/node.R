@@ -123,13 +123,13 @@ node_end_point <- function(x) {
   .Call(ffi_node_end_point, x)
 }
 
-node_kind <- function(x) {
+node_type <- function(x) {
   check_node(x)
   check_tree_unedited(x)
 
   x <- node_raw(x)
 
-  .Call(ffi_node_kind, x)
+  .Call(ffi_node_type, x)
 }
 
 node_is_named <- function(x) {

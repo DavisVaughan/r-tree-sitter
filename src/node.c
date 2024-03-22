@@ -108,7 +108,7 @@ static r_obj* node_children(TSNode x, bool named) {
   return out;
 }
 
-r_obj* ffi_node_kind(r_obj* ffi_x) {
+r_obj* ffi_node_type(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
   const char* out = ts_node_type(*x);
   return r_chr(out);

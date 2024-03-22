@@ -15,14 +15,14 @@ r_obj* ffi_language_version(r_obj* ffi_x) {
   return out;
 }
 
-r_obj* ffi_language_id_for_node_kind(r_obj* ffi_x, r_obj* kind, r_obj* named) {
+r_obj* ffi_language_symbol_for_name(r_obj* ffi_x, r_obj* name, r_obj* named) {
   const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
 
-  const r_ssize size = r_length(kind);
+  const r_ssize size = r_length(name);
 
-  if (r_typeof(kind) != R_TYPE_character) {
+  if (r_typeof(name) != R_TYPE_character) {
     r_abort(
-        "`kind` must be a character vector, not %s.", r_obj_type_friendly(kind)
+        "`name` must be a character vector, not %s.", r_obj_type_friendly(name)
     );
   }
   if (r_typeof(named) != R_TYPE_logical) {
@@ -34,28 +34,29 @@ r_obj* ffi_language_id_for_node_kind(r_obj* ffi_x, r_obj* kind, r_obj* named) {
     r_abort("`named` can't contain missing values.");
   }
   if (r_length(named) != size) {
-    r_stop_internal("`kind` and `named` must be the same length.");
+    r_stop_internal("`name` and `named` must be the same length.");
   }
 
-  r_obj* const* v_kind = r_chr_cbegin(kind);
+  r_obj* const* v_name = r_chr_cbegin(name);
   const int* v_named = r_lgl_cbegin(named);
 
   r_obj* out = KEEP(r_alloc_integer(size));
   int* v_out = r_int_begin(out);
 
   for (r_ssize i = 0; i < size; ++i) {
-    r_obj* kind = v_kind[i];
-    const char* c_kind = r_str_c_string(kind);
-    const r_ssize kind_length = r_length(kind);
+    r_obj* elt = v_name[i];
+    const char* elt_c = r_str_c_string(elt);
+    const r_ssize elt_length = r_length(elt);
 
-    const bool named = (bool) v_named[i];
+    const bool elt_named = (bool) v_named[i];
 
-    TSSymbol id = ts_language_symbol_for_name(x, c_kind, kind_length, named);
+    TSSymbol symbol =
+        ts_language_symbol_for_name(x, elt_c, elt_length, elt_named);
 
-    if (id == (TSSymbol) 0) {
+    if (symbol == (TSSymbol) 0) {
       v_out[i] = r_globals.na_int;
     } else {
-      v_out[i] = (int) id;
+      v_out[i] = (int) symbol;
     }
   }
 
@@ -63,23 +64,23 @@ r_obj* ffi_language_id_for_node_kind(r_obj* ffi_x, r_obj* kind, r_obj* named) {
   return out;
 }
 
-r_obj* ffi_language_node_kind_for_id(r_obj* ffi_x, r_obj* id) {
+r_obj* ffi_language_symbol_name(r_obj* ffi_x, r_obj* symbol) {
   const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
 
-  if (r_typeof(id) != R_TYPE_integer) {
-    r_stop_internal("`id` must be an integer vector.");
+  if (r_typeof(symbol) != R_TYPE_integer) {
+    r_stop_internal("`symbol` must be an integer vector.");
   }
-  if (r_int_any_missing(id)) {
-    r_abort("`id` can't contain missing values.");
+  if (r_int_any_missing(symbol)) {
+    r_abort("`symbol` can't contain missing values.");
   }
 
-  const r_ssize size = r_length(id);
-  const int* v_id = r_int_cbegin(id);
+  const r_ssize size = r_length(symbol);
+  const int* v_symbol = r_int_cbegin(symbol);
 
   r_obj* out = KEEP(r_alloc_character(size));
 
   for (r_ssize i = 0; i < size; ++i) {
-    const TSSymbol elt = r_int_as_TSSymbol(v_id[i], "id");
+    const TSSymbol elt = r_int_as_TSSymbol(v_symbol[i], "symbol");
     const char* name = ts_language_symbol_name(x, elt);
 
     if (name == NULL) {

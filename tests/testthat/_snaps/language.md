@@ -14,37 +14,36 @@
       Error in `language_version()`:
       ! `x` must be a <tree_sitter_language>, not the number 1.
 
-# recycles `named` to size of `kind`
+# recycles `named` to size of `name`
 
     Code
-      language_id_for_node_kind(r(), c("program", "else"), named = c(TRUE, FALSE,
-        TRUE))
+      language_symbol_for_name(r(), c("program", "else"), named = c(TRUE, FALSE, TRUE))
     Condition
-      Error in `language_id_for_node_kind()`:
+      Error in `language_symbol_for_name()`:
       ! Can't recycle `named` (size 3) to size 2.
 
-# language_id_for_node_kind() validates inputs
+# language_symbol_for_name() validates inputs
 
     Code
-      language_id_for_node_kind(1, "foo")
+      language_symbol_for_name(1, "foo")
     Condition
-      Error in `language_id_for_node_kind()`:
+      Error in `language_symbol_for_name()`:
       ! `x` must be a <tree_sitter_language>, not the number 1.
 
 ---
 
     Code
-      language_id_for_node_kind(r(), 1)
+      language_symbol_for_name(r(), 1)
     Condition
-      Error in `language_id_for_node_kind()`:
-      ! Can't convert `kind` <double> to <character>.
+      Error in `language_symbol_for_name()`:
+      ! Can't convert `name` <double> to <character>.
 
 ---
 
     Code
-      language_id_for_node_kind(r(), "foo", named = "x")
+      language_symbol_for_name(r(), "foo", named = "x")
     Condition
-      Error in `language_id_for_node_kind()`:
+      Error in `language_symbol_for_name()`:
       ! Can't convert `named` <character> to <logical>.
 
 # errors on bad IDs

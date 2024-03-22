@@ -2,9 +2,9 @@
 
 S3method(print,tree_sitter_language)
 S3method(print,tree_sitter_node)
-export(language_id_for_node_kind)
 export(language_name)
-export(language_node_kind_for_id)
+export(language_symbol_for_name)
+export(language_symbol_name)
 import(rlang)
 import(vctrs)
 importFrom(R6,R6Class)

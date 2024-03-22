@@ -9,8 +9,8 @@
 r_obj* ffi_initialize(r_obj* ns);
 
 extern r_obj* ffi_language_version(r_obj*);
-extern r_obj* ffi_language_id_for_node_kind(r_obj*, r_obj*, r_obj*);
-extern r_obj* ffi_language_node_kind_for_id(r_obj*, r_obj*);
+extern r_obj* ffi_language_symbol_for_name(r_obj*, r_obj*, r_obj*);
+extern r_obj* ffi_language_symbol_name(r_obj*, r_obj*);
 extern r_obj* ffi_parser_initialize(void);
 extern r_obj* ffi_parser_set_language(r_obj*, r_obj*);
 extern r_obj* ffi_parser_parse(r_obj*, r_obj*, r_obj*);
@@ -22,7 +22,7 @@ extern r_obj* ffi_node_child(r_obj*, r_obj*);
 extern r_obj* ffi_node_child_count(r_obj*);
 extern r_obj* ffi_node_named_child_count(r_obj*);
 extern r_obj* ffi_node_text(r_obj*, r_obj*);
-extern r_obj* ffi_node_kind(r_obj*);
+extern r_obj* ffi_node_type(r_obj*);
 extern r_obj* ffi_node_is_named(r_obj*);
 extern r_obj* ffi_node_children(r_obj*);
 extern r_obj* ffi_node_named_children(r_obj*);
@@ -47,12 +47,10 @@ extern r_obj* ffi_tree_cursor_finalize(r_obj*);
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
     {"ffi_language_version", (DL_FUNC) &ffi_language_version, 1},
-    {"ffi_language_id_for_node_kind",
-     (DL_FUNC) &ffi_language_id_for_node_kind,
+    {"ffi_language_symbol_for_name",
+     (DL_FUNC) &ffi_language_symbol_for_name,
      3},
-    {"ffi_language_node_kind_for_id",
-     (DL_FUNC) &ffi_language_node_kind_for_id,
-     2},
+    {"ffi_language_symbol_name", (DL_FUNC) &ffi_language_symbol_name, 2},
     {"ffi_parser_initialize", (DL_FUNC) &ffi_parser_initialize, 0},
     {"ffi_parser_set_language", (DL_FUNC) &ffi_parser_set_language, 2},
     {"ffi_parser_parse", (DL_FUNC) &ffi_parser_parse, 3},
@@ -63,7 +61,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_child_count", (DL_FUNC) &ffi_node_child_count, 1},
     {"ffi_node_named_child_count", (DL_FUNC) &ffi_node_named_child_count, 1},
     {"ffi_node_text", (DL_FUNC) &ffi_node_text, 2},
-    {"ffi_node_kind", (DL_FUNC) &ffi_node_kind, 1},
+    {"ffi_node_type", (DL_FUNC) &ffi_node_type, 1},
     {"ffi_node_is_named", (DL_FUNC) &ffi_node_is_named, 1},
     {"ffi_node_children", (DL_FUNC) &ffi_node_children, 1},
     {"ffi_node_named_children", (DL_FUNC) &ffi_node_named_children, 1},
