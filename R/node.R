@@ -65,8 +65,9 @@ node_named_children <- function(x) {
   node_children_impl(x, ffi_node_named_children)
 }
 
-node_children_impl <- function(x, fn) {
-  check_node(x)
+node_children_impl <- function(x, fn, call = caller_env()) {
+  check_node(x, call = call)
+  check_tree_unedited(x, call = call)
 
   tree <- node_tree(x)
   x <- node_raw(x)
