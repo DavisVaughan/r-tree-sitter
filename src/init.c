@@ -21,6 +21,8 @@ extern r_obj* ffi_node_s_expression(r_obj*);
 extern r_obj* ffi_node_child(r_obj*, r_obj*);
 extern r_obj* ffi_node_text(r_obj*, r_obj*);
 extern r_obj* ffi_node_is_named(r_obj*);
+extern r_obj* ffi_node_children(r_obj*);
+extern r_obj* ffi_node_named_children(r_obj*);
 
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
@@ -40,6 +42,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_child", (DL_FUNC) &ffi_node_child, 2},
     {"ffi_node_text", (DL_FUNC) &ffi_node_text, 2},
     {"ffi_node_is_named", (DL_FUNC) &ffi_node_is_named, 1},
+    {"ffi_node_children", (DL_FUNC) &ffi_node_children, 1},
+    {"ffi_node_named_children", (DL_FUNC) &ffi_node_named_children, 1},
     {NULL, NULL, 0}};
 
 void R_init_treesitter(DllInfo* dll) {

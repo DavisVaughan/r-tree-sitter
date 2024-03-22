@@ -1,5 +1,7 @@
 #include "node.h"
 
+#include "decl/node-decl.h"
+
 r_obj* ffi_node_s_expression(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
 
@@ -57,6 +59,41 @@ r_obj* ffi_node_child(r_obj* ffi_x, r_obj* ffi_i) {
   } else {
     return ts_node_as_raw(out);
   }
+}
+
+r_obj* ffi_node_children(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return node_children(*x, false);
+}
+
+r_obj* ffi_node_named_children(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return node_children(*x, true);
+}
+
+static r_obj* node_children(TSNode x, bool named) {
+  const uint32_t count =
+      named ? ts_node_named_child_count(x) : ts_node_child_count(x);
+
+  r_obj* out = KEEP(r_alloc_list((r_ssize) count));
+  r_ssize i = 0;
+
+  TSTreeCursor cursor = ts_tree_cursor_new(x);
+  bool ok = ts_tree_cursor_goto_first_child(&cursor);
+
+  while (ok) {
+    TSNode elt = ts_tree_cursor_current_node(&cursor);
+
+    if (!named || ts_node_is_named(elt)) {
+      r_list_poke(out, i, ts_node_as_raw(elt));
+      ++i;
+    }
+
+    ok = ts_tree_cursor_goto_next_sibling(&cursor);
+  }
+
+  FREE(1);
+  return out;
 }
 
 r_obj* ffi_node_is_named(r_obj* ffi_x) {

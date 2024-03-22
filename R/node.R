@@ -57,6 +57,29 @@ node_child <- function(x, i) {
   }
 }
 
+node_children <- function(x) {
+  node_children_impl(x, ffi_node_children)
+}
+
+node_named_children <- function(x) {
+  node_children_impl(x, ffi_node_named_children)
+}
+
+node_children_impl <- function(x, fn) {
+  check_node(x)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  out <- .Call(fn, x)
+
+  for (i in seq_along(out)) {
+    out[[i]] <- new_node(out[[i]], tree)
+  }
+
+  out
+}
+
 node_is_named <- function(x) {
   check_node(x)
   check_tree_unedited(x)
