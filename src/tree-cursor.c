@@ -17,7 +17,7 @@ r_obj* ffi_tree_cursor_reset(r_obj* ffi_x, r_obj* ffi_node) {
   return r_null;
 }
 
-r_obj* ffi_tree_cursor_current_node(r_obj* ffi_x) {
+r_obj* ffi_tree_cursor_node(r_obj* ffi_x) {
   TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
   TSNode node = ts_tree_cursor_current_node(x);
   return ts_node_as_raw(node);

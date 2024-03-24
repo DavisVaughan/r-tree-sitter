@@ -40,7 +40,7 @@ extern r_obj* ffi_node_is_error(r_obj*);
 extern r_obj* ffi_node_has_error(r_obj*);
 extern r_obj* ffi_tree_cursor_initialize(r_obj*);
 extern r_obj* ffi_tree_cursor_reset(r_obj*, r_obj*);
-extern r_obj* ffi_tree_cursor_current_node(r_obj*);
+extern r_obj* ffi_tree_cursor_node(r_obj*);
 extern r_obj* ffi_tree_cursor_goto_parent(r_obj*);
 extern r_obj* ffi_tree_cursor_goto_next_sibling(r_obj*);
 extern r_obj* ffi_tree_cursor_goto_previous_sibling(r_obj*);
@@ -89,9 +89,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_has_error", (DL_FUNC) &ffi_node_has_error, 1},
     {"ffi_tree_cursor_initialize", (DL_FUNC) &ffi_tree_cursor_initialize, 1},
     {"ffi_tree_cursor_reset", (DL_FUNC) &ffi_tree_cursor_reset, 2},
-    {"ffi_tree_cursor_current_node",
-     (DL_FUNC) &ffi_tree_cursor_current_node,
-     1},
+    {"ffi_tree_cursor_node", (DL_FUNC) &ffi_tree_cursor_node, 1},
     {"ffi_tree_cursor_goto_parent", (DL_FUNC) &ffi_tree_cursor_goto_parent, 1},
     {"ffi_tree_cursor_goto_next_sibling",
      (DL_FUNC) &ffi_tree_cursor_goto_next_sibling,

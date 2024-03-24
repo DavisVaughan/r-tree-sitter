@@ -17,8 +17,8 @@ TreeCursor <- R6::R6Class(
     reset = function(node) {
       tree_cursor_reset(self, private, node)
     },
-    current_node = function() {
-      tree_cursor_current_node(self, private)
+    node = function() {
+      tree_cursor_node(self, private)
     },
     goto_parent = function() {
       tree_cursor_goto_parent(self, private)
@@ -72,9 +72,9 @@ tree_cursor_reset <- function(self, private, node) {
   self
 }
 
-tree_cursor_current_node <- function(self, private) {
+tree_cursor_node <- function(self, private) {
   tree <- private$.tree
-  raw <- .Call(ffi_tree_cursor_current_node, private$.raw)
+  raw <- .Call(ffi_tree_cursor_node, private$.raw)
   new_node(raw, tree)
 }
 
