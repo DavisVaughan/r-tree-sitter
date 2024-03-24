@@ -10,7 +10,7 @@ tree_root_node <- function(x) {
 tree_walk <- function(x) {
   check_tree(x)
   node <- tree_root_node(x)
-  TreeCursor$new(node)
+  node_walk(node)
 }
 
 #' @export
