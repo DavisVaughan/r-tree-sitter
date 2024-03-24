@@ -188,6 +188,26 @@ r_obj* ffi_node_previous_named_sibling(r_obj* ffi_x) {
   return ts_node_is_null(node) ? r_null : ts_node_as_raw(node);
 }
 
+r_obj* ffi_node_is_missing(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return r_lgl(ts_node_is_missing(*x));
+}
+
+r_obj* ffi_node_is_extra(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return r_lgl(ts_node_is_extra(*x));
+}
+
+r_obj* ffi_node_is_error(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return r_lgl(ts_node_is_error(*x));
+}
+
+r_obj* ffi_node_has_error(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  return r_lgl(ts_node_has_error(*x));
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.

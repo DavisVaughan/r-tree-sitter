@@ -144,6 +144,35 @@ node_sibling <- function(x, fn, call = caller_env()) {
 }
 
 #' @export
+node_is_missing <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_is_missing, x)
+}
+
+#' @export
+node_is_extra <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_is_extra, x)
+}
+
+#' @export
+node_is_error <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_is_error, x)
+}
+
+# TODO: Document that MISSING is considered a syntax error here
+#' @export
+node_has_error <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_has_error, x)
+}
+
+#' @export
 node_type <- function(x) {
   check_node(x)
   x <- node_raw(x)
