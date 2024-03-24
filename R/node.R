@@ -102,14 +102,26 @@ node_end_byte <- function(x) {
 node_start_point <- function(x) {
   check_node(x)
   x <- node_raw(x)
-  .Call(ffi_node_start_point, x)
+
+  point <- .Call(ffi_node_start_point, x)
+
+  row <- point$row
+  column <- point$column
+
+  new_point(row, column)
 }
 
 #' @export
 node_end_point <- function(x) {
   check_node(x)
   x <- node_raw(x)
-  .Call(ffi_node_end_point, x)
+
+  point <- .Call(ffi_node_end_point, x)
+
+  row <- point$row
+  column <- point$column
+
+  new_point(row, column)
 }
 
 #' @export

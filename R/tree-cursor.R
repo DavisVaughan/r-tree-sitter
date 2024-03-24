@@ -41,8 +41,8 @@ TreeCursor <- R6::R6Class(
     goto_first_child_for_byte = function(byte) {
       tree_cursor_goto_first_child_for_byte(self, private, byte)
     },
-    goto_first_child_for_point = function(row, column) {
-      tree_cursor_goto_first_child_for_point(self, private, row, column)
+    goto_first_child_for_point = function(point) {
+      tree_cursor_goto_first_child_for_point(self, private, point)
     }
   )
 )
@@ -107,9 +107,12 @@ tree_cursor_goto_first_child_for_byte <- function(self, private, byte) {
   .Call(ffi_tree_cursor_goto_first_child_for_byte, private$.raw, byte)
 }
 
-tree_cursor_goto_first_child_for_point <- function(self, private, row, column) {
-  check_number_whole(row, min = 0)
-  check_number_whole(column, min = 0)
+tree_cursor_goto_first_child_for_point <- function(self, private, point) {
+  check_point(point)
+
+  row <- point_row0(point)
+  column <- point_column0(point)
+
   .Call(ffi_tree_cursor_goto_first_child_for_point, private$.raw, row, column)
 }
 

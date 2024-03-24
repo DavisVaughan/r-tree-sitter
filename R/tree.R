@@ -17,53 +17,37 @@ tree_walk <- function(x) {
 tree_edit <- function(
   x,
   start_byte,
-  start_row,
-  start_column,
+  start_point,
   old_end_byte,
-  old_end_row,
-  old_end_column,
+  old_end_point,
   new_end_byte,
-  new_end_row,
-  new_end_column
+  new_end_point
 ) {
   check_tree(x)
-
   pointer <- tree_pointer(x)
   text <- tree_text(x)
   language <- tree_language(x)
 
-  args <- vec_cast_common(
-    start_byte = start_byte,
-    start_row = start_row,
-    start_column = start_column,
-    old_end_byte = old_end_byte,
-    old_end_row = old_end_row,
-    old_end_column = old_end_column,
-    new_end_byte = new_end_byte,
-    new_end_row = new_end_row,
-    new_end_column = new_end_column,
-    .to = double()
-  )
+  check_point(start_point)
+  start_row <- point_row0(start_point)
+  start_column <- point_row0(start_point)
 
-  start_byte <- args$start_byte
-  start_row <- args$start_row
-  start_column <- args$start_column
-  old_end_byte <- args$old_end_byte
-  old_end_row <- args$old_end_row
-  old_end_column <- args$old_end_column
-  new_end_byte <- args$new_end_byte
-  new_end_row <- args$new_end_row
-  new_end_column <- args$new_end_column
+  check_point(old_end_point)
+  old_end_row <- point_row0(old_end_point)
+  old_end_column <- point_row0(old_end_point)
 
+  check_point(new_end_point)
+  new_end_row <- point_row0(new_end_point)
+  new_end_column <- point_row0(new_end_point)
+
+  start_byte <- vec_cast(start_byte, double())
   check_number_whole(start_byte, min = 0)
-  check_number_whole(start_row, min = 0)
-  check_number_whole(start_column, min = 0)
+
+  old_end_byte <- vec_cast(old_end_byte, double())
   check_number_whole(old_end_byte, min = 0)
-  check_number_whole(old_end_row, min = 0)
-  check_number_whole(old_end_column, min = 0)
+
+  new_end_byte <- vec_cast(new_end_byte, double())
   check_number_whole(new_end_byte, min = 0)
-  check_number_whole(new_end_row, min = 0)
-  check_number_whole(new_end_column, min = 0)
 
   pointer <- .Call(
     ffi_tree_edit,
