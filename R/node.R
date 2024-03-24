@@ -18,6 +18,18 @@ node_text <- function(x) {
 }
 
 #' @export
+node_parent <- function(x) {
+  check_node(x)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  raw <- .Call(ffi_node_parent, x)
+
+  new_node_or_null(raw, tree)
+}
+
+#' @export
 node_child <- function(x, i) {
   check_node(x)
 

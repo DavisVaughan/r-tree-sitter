@@ -46,6 +46,12 @@ r_obj* ffi_node_text(r_obj* ffi_x, r_obj* ffi_text) {
   return out;
 }
 
+r_obj* ffi_node_parent(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  TSNode out = ts_node_parent(*x);
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
 r_obj* ffi_node_child(r_obj* ffi_x, r_obj* ffi_i) {
   TSNode* x = ts_node_from_raw(ffi_x);
 
