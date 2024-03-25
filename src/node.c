@@ -1,6 +1,7 @@
 #include "node.h"
 
 #include "decl/node-decl.h"
+#include "utils.h"
 
 r_obj* ffi_node_s_expression(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
@@ -54,16 +55,16 @@ r_obj* ffi_node_parent(r_obj* ffi_x) {
 
 r_obj* ffi_node_child(r_obj* ffi_x, r_obj* ffi_i) {
   TSNode* x = ts_node_from_raw(ffi_x);
-  // Validated on R side to be positive integer of length 1, 1-indexed
-  const uint32_t i = (uint32_t) r_int_get(ffi_i, 0) - 1;
+  // Validated on R side to be positive whole double of length 1, 1-indexed
+  const uint32_t i = r_dbl_as_uint32(r_dbl_get(ffi_i, 0), "i") - 1;
   TSNode out = ts_node_child(*x, i);
   return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
 }
 
 r_obj* ffi_node_named_child(r_obj* ffi_x, r_obj* ffi_i) {
   TSNode* x = ts_node_from_raw(ffi_x);
-  // Validated on R side to be positive integer of length 1, 1-indexed
-  const uint32_t i = (uint32_t) r_int_get(ffi_i, 0) - 1;
+  // Validated on R side to be positive whole double of length 1, 1-indexed
+  const uint32_t i = r_dbl_as_uint32(r_dbl_get(ffi_i, 0), "i") - 1;
   TSNode out = ts_node_named_child(*x, i);
   return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
 }

@@ -51,9 +51,8 @@ node_child_impl <- function(x, i, fn, call = caller_env()) {
   tree <- node_tree(x)
   x <- node_raw(x)
 
-  i <- vec_cast(i, integer(), call = call)
-  vec_check_size(i, 1L, call = call)
-  check_positive(i, call = call)
+  i <- vec_cast(i, double(), call = call)
+  check_number_whole(i, min = 0, call = call)
 
   raw <- .Call(fn, x, i)
 
