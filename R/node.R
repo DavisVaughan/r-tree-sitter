@@ -37,16 +37,25 @@ node_parent <- function(x) {
 
 #' @export
 node_child <- function(x, i) {
-  check_node(x)
+  node_child_impl(x, i, ffi_node_child)
+}
+
+#' @export
+node_named_child <- function(x, i) {
+  node_child_impl(x, i, ffi_node_named_child)
+}
+
+node_child_impl <- function(x, i, fn, call = caller_env()) {
+  check_node(x, call = call)
 
   tree <- node_tree(x)
   x <- node_raw(x)
 
-  i <- vec_cast(i, integer())
-  vec_check_size(i, 1L)
-  check_positive(i)
+  i <- vec_cast(i, integer(), call = call)
+  vec_check_size(i, 1L, call = call)
+  check_positive(i, call = call)
 
-  raw <- .Call(ffi_node_child, x, i)
+  raw <- .Call(fn, x, i)
 
   new_node_or_null(raw, tree)
 }
