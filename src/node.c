@@ -116,6 +116,24 @@ static r_obj* node_children(TSNode x, bool named) {
   return out;
 }
 
+r_obj* ffi_node_child_by_field_id(r_obj* ffi_x, r_obj* ffi_id) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  const TSFieldId id = r_int_as_TSFieldId(r_int_get(ffi_id, 0), "id");
+  TSNode out = ts_node_child_by_field_id(*x, id);
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
+r_obj* ffi_node_child_by_field_name(r_obj* ffi_x, r_obj* ffi_name) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+
+  r_obj* name = r_chr_get(ffi_name, 0);
+  const char* name_c = r_str_c_string(name);
+  const uint32_t name_size = r_ssize_as_uint32(r_length(name));
+
+  TSNode out = ts_node_child_by_field_name(*x, name_c, name_size);
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
 r_obj* ffi_node_type(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
   const char* out = ts_node_type(*x);

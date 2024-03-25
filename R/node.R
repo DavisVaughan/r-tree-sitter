@@ -99,6 +99,35 @@ node_children_impl <- function(x, fn, call = caller_env()) {
 }
 
 #' @export
+node_child_by_field_id <- function(x, id) {
+  check_node(x)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  id <- vec_cast(id, integer())
+  check_number_whole(id, min = 0)
+
+  raw <- .Call(ffi_node_child_by_field_id, x, id)
+
+  new_node_or_null(raw, tree)
+}
+
+#' @export
+node_child_by_field_name <- function(x, name) {
+  check_node(x)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  check_string(name)
+
+  raw <- .Call(ffi_node_child_by_field_name, x, name)
+
+  new_node_or_null(raw, tree)
+}
+
+#' @export
 node_start_byte <- function(x) {
   check_node(x)
   x <- node_raw(x)
