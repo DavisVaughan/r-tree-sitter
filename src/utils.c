@@ -80,6 +80,11 @@ int r_TSFieldId_as_int(TSFieldId x) {
   return (int) x;
 }
 
+// `TSStateId` is `uint16_t`
+int r_TSStateId_as_int(TSStateId x) {
+  return (int) x;
+}
+
 bool r_lgl_any_missing(r_obj* x) {
   const r_ssize size = r_length(x);
   const int* v_x = r_lgl_cbegin(x);

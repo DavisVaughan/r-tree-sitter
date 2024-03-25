@@ -235,6 +235,20 @@ node_has_error <- function(x) {
 }
 
 #' @export
+node_parse_state <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_parse_state, x)
+}
+
+#' @export
+node_next_parse_state <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_next_parse_state, x)
+}
+
+#' @export
 node_type <- function(x) {
   check_node(x)
   x <- node_raw(x)
