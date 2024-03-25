@@ -145,6 +145,32 @@ node_field_name_for_child <- function(x, i) {
   .Call(ffi_node_field_name_for_child, x, i)
 }
 
+# TODO: Document that this is 0-indexed, like `tree_edit()` and other
+# byte related functions
+#' @export
+node_first_child_for_byte <- function(x, byte) {
+  node_first_child_for_byte_impl(x, byte, ffi_node_first_child_for_byte)
+}
+
+#' @export
+node_first_named_child_for_byte <- function(x, byte) {
+  node_first_child_for_byte_impl(x, byte, ffi_node_first_named_child_for_byte)
+}
+
+node_first_child_for_byte_impl <- function(x, byte, fn, call = caller_env()) {
+  check_node(x, call = call)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  byte <- vec_cast(byte, double(), call = call)
+  check_number_whole(byte, min = 0, call = call)
+
+  raw <- .Call(fn, x, byte)
+
+  new_node_or_null(raw, tree)
+}
+
 #' @export
 node_start_byte <- function(x) {
   check_node(x)

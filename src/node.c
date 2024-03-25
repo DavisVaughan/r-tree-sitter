@@ -142,6 +142,20 @@ r_obj* ffi_node_field_name_for_child(r_obj* ffi_x, r_obj* ffi_i) {
   return (out == NULL) ? r_null : r_chr(out);
 }
 
+r_obj* ffi_node_first_child_for_byte(r_obj* ffi_x, r_obj* ffi_byte) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  const uint32_t byte = r_dbl_as_uint32(r_dbl_get(ffi_byte, 0), "byte");
+  TSNode out = ts_node_first_child_for_byte(*x, byte);
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
+r_obj* ffi_node_first_named_child_for_byte(r_obj* ffi_x, r_obj* ffi_byte) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  const uint32_t byte = r_dbl_as_uint32(r_dbl_get(ffi_byte, 0), "byte");
+  TSNode out = ts_node_first_named_child_for_byte(*x, byte);
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
 r_obj* ffi_node_type(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
   const char* out = ts_node_type(*x);

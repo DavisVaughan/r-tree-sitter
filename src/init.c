@@ -34,6 +34,8 @@ extern r_obj* ffi_node_named_children(r_obj*);
 extern r_obj* ffi_node_child_by_field_id(r_obj*, r_obj*);
 extern r_obj* ffi_node_child_by_field_name(r_obj*, r_obj*);
 extern r_obj* ffi_node_field_name_for_child(r_obj*, r_obj*);
+extern r_obj* ffi_node_first_child_for_byte(r_obj*, r_obj*);
+extern r_obj* ffi_node_first_named_child_for_byte(r_obj*, r_obj*);
 extern r_obj* ffi_node_start_byte(r_obj*);
 extern r_obj* ffi_node_end_byte(r_obj*);
 extern r_obj* ffi_node_start_point(r_obj*);
@@ -96,6 +98,12 @@ static const R_CallMethodDef CallEntries[] = {
      2},
     {"ffi_node_field_name_for_child",
      (DL_FUNC) &ffi_node_field_name_for_child,
+     2},
+    {"ffi_node_first_child_for_byte",
+     (DL_FUNC) &ffi_node_first_child_for_byte,
+     2},
+    {"ffi_node_first_named_child_for_byte",
+     (DL_FUNC) &ffi_node_first_named_child_for_byte,
      2},
     {"ffi_node_start_byte", (DL_FUNC) &ffi_node_start_byte, 1},
     {"ffi_node_end_byte", (DL_FUNC) &ffi_node_end_byte, 1},
