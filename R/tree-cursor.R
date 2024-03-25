@@ -35,8 +35,8 @@ TreeCursor <- R6::R6Class(
     goto_last_child = function() {
       tree_cursor_goto_last_child(self, private)
     },
-    current_depth = function() {
-      tree_cursor_current_depth(self, private)
+    depth = function() {
+      tree_cursor_depth(self, private)
     },
     goto_first_child_for_byte = function(byte) {
       tree_cursor_goto_first_child_for_byte(self, private, byte)
@@ -98,8 +98,8 @@ tree_cursor_goto_last_child <- function(self, private) {
   .Call(ffi_tree_cursor_goto_last_child, private$.raw)
 }
 
-tree_cursor_current_depth <- function(self, private) {
-  .Call(ffi_tree_cursor_current_depth, private$.raw)
+tree_cursor_depth <- function(self, private) {
+  .Call(ffi_tree_cursor_depth, private$.raw)
 }
 
 tree_cursor_goto_first_child_for_byte <- function(self, private, byte) {

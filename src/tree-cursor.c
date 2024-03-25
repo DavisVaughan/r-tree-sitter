@@ -53,7 +53,7 @@ r_obj* ffi_tree_cursor_goto_last_child(r_obj* ffi_x) {
   return r_lgl(out);
 }
 
-r_obj* ffi_tree_cursor_current_depth(r_obj* ffi_x) {
+r_obj* ffi_tree_cursor_depth(r_obj* ffi_x) {
   TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
   uint32_t out = ts_tree_cursor_current_depth(x);
   return r_dbl((double) out);
