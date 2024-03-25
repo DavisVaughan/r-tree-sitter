@@ -42,6 +42,10 @@ uint32_t r_dbl_as_uint32(double x, const char* arg) {
   return (uint32_t) x;
 }
 
+double r_uint32_as_dbl(uint32_t x) {
+  return (double) x;
+}
+
 // `TSSymbol` is `uint16_t`
 TSSymbol r_int_as_TSSymbol(int x, const char* arg) {
   if (x > (int) UINT16_MAX || x < 0) {

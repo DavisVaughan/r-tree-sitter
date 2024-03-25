@@ -280,6 +280,12 @@ r_obj* ffi_node_next_parse_state(r_obj* ffi_x) {
   return r_int(r_TSStateId_as_int(out));
 }
 
+r_obj* ffi_node_descendent_count(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  const uint32_t out = ts_node_descendant_count(*x);
+  return r_dbl(r_uint32_as_dbl(out));
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.

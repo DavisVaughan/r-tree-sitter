@@ -321,6 +321,13 @@ node_is_named <- function(x) {
 }
 
 #' @export
+node_descendant_count <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_descendant_count, x)
+}
+
+#' @export
 is_node <- function(x) {
   inherits(x, "tree_sitter_node")
 }

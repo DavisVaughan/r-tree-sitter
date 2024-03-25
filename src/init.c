@@ -50,6 +50,7 @@ extern r_obj* ffi_node_is_error(r_obj*);
 extern r_obj* ffi_node_has_error(r_obj*);
 extern r_obj* ffi_node_parse_state(r_obj*);
 extern r_obj* ffi_node_next_parse_state(r_obj*);
+extern r_obj* ffi_node_descendent_count(r_obj*);
 extern r_obj* ffi_tree_cursor_initialize(r_obj*);
 extern r_obj* ffi_tree_cursor_reset(r_obj*, r_obj*);
 extern r_obj* ffi_tree_cursor_node(r_obj*);
@@ -121,6 +122,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_has_error", (DL_FUNC) &ffi_node_has_error, 1},
     {"ffi_node_parse_state", (DL_FUNC) &ffi_node_parse_state, 1},
     {"ffi_node_next_parse_state", (DL_FUNC) &ffi_node_next_parse_state, 1},
+    {"ffi_node_descendant_count", (DL_FUNC) &ffi_node_descendent_count, 1},
     {"ffi_tree_cursor_initialize", (DL_FUNC) &ffi_tree_cursor_initialize, 1},
     {"ffi_tree_cursor_reset", (DL_FUNC) &ffi_tree_cursor_reset, 2},
     {"ffi_tree_cursor_node", (DL_FUNC) &ffi_tree_cursor_node, 1},
