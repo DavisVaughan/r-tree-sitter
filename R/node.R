@@ -135,6 +135,17 @@ node_child_by_field_name <- function(x, name) {
 }
 
 #' @export
+node_field_name_for_child <- function(x, i) {
+  check_node(x)
+  x <- node_raw(x)
+
+  i <- vec_cast(i, double())
+  check_number_whole(i, min = 0)
+
+  .Call(ffi_node_field_name_for_child, x, i)
+}
+
+#' @export
 node_start_byte <- function(x) {
   check_node(x)
   x <- node_raw(x)
