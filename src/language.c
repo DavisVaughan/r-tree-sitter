@@ -133,6 +133,24 @@ r_obj* ffi_language_field_name_for_id(r_obj* ffi_x, r_obj* ffi_id) {
   return out;
 }
 
+r_obj* ffi_language_symbol_count(r_obj* ffi_x) {
+  const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
+  const uint32_t out = ts_language_symbol_count(x);
+  return r_dbl(r_uint32_as_dbl(out));
+}
+
+r_obj* ffi_language_state_count(r_obj* ffi_x) {
+  const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
+  const uint32_t out = ts_language_state_count(x);
+  return r_dbl(r_uint32_as_dbl(out));
+}
+
+r_obj* ffi_language_field_count(r_obj* ffi_x) {
+  const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
+  const uint32_t out = ts_language_field_count(x);
+  return r_dbl(r_uint32_as_dbl(out));
+}
+
 const TSLanguage* ts_language_from_external_pointer(r_obj* x) {
   TS_OBJECT_FROM_EXTERNAL_POINTER(x, const TSLanguage*);
 }

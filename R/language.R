@@ -113,6 +113,24 @@ language_field_name_for_id <- function(x, id) {
 }
 
 #' @export
+language_symbol_count <- function(x) {
+  check_language(x)
+  .Call(ffi_language_symbol_count, language_pointer(x))
+}
+
+#' @export
+language_state_count <- function(x) {
+  check_language(x)
+  .Call(ffi_language_state_count, language_pointer(x))
+}
+
+#' @export
+language_field_count <- function(x) {
+  check_language(x)
+  .Call(ffi_language_field_count, language_pointer(x))
+}
+
+#' @export
 is_language <- function(x) {
   inherits(x, "tree_sitter_language")
 }
