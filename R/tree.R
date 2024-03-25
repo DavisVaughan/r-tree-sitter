@@ -25,8 +25,8 @@ tree_edit <- function(
 ) {
   check_tree(x)
   pointer <- tree_pointer(x)
-  text <- tree_text(x)
-  language <- tree_language(x)
+  text <- tree_text0(x)
+  language <- tree_language0(x)
 
   check_point(start_point)
   start_row <- point_row0(start_point)
@@ -71,6 +71,18 @@ tree_edit <- function(
 }
 
 #' @export
+tree_text <- function(x) {
+  check_tree(x)
+  tree_text0(x)
+}
+
+#' @export
+tree_language <- function(x) {
+  check_tree(x)
+  tree_language0(x)
+}
+
+#' @export
 is_tree <- function(x) {
   inherits(x, "tree_sitter_tree")
 }
@@ -84,11 +96,11 @@ tree_pointer <- function(x) {
   .subset2(x, "pointer")
 }
 
-tree_text <- function(x) {
+tree_text0 <- function(x) {
   .subset2(x, "text")
 }
 
-tree_language <- function(x) {
+tree_language0 <- function(x) {
   .subset2(x, "language")
 }
 

@@ -12,7 +12,7 @@ node_text <- function(x) {
   raw <- node_raw(x)
 
   tree <- node_tree(x)
-  text <- tree_text(tree)
+  text <- tree_text0(tree)
 
   .Call(ffi_node_text, raw, text)
 }
