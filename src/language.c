@@ -115,6 +115,24 @@ r_obj* ffi_language_field_id_for_name(r_obj* ffi_x, r_obj* ffi_name) {
   return out;
 }
 
+r_obj* ffi_language_field_name_for_id(r_obj* ffi_x, r_obj* ffi_id) {
+  const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
+
+  const r_ssize size = r_length(ffi_id);
+  const int* v_id = r_int_cbegin(ffi_id);
+
+  r_obj* out = KEEP(r_alloc_character(size));
+
+  for (r_ssize i = 0; i < size; ++i) {
+    TSFieldId elt = r_int_as_TSFieldId(v_id[i], "id");
+    const char* name = ts_language_field_name_for_id(x, elt);
+    r_chr_poke(out, i, (name == NULL) ? r_globals.na_str : r_str(name));
+  }
+
+  FREE(1);
+  return out;
+}
+
 const TSLanguage* ts_language_from_external_pointer(r_obj* x) {
   TS_OBJECT_FROM_EXTERNAL_POINTER(x, const TSLanguage*);
 }

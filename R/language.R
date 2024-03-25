@@ -103,6 +103,16 @@ language_field_id_for_name <- function(x, name) {
 }
 
 #' @export
+language_field_name_for_id <- function(x, id) {
+  check_language(x)
+
+  id <- vec_cast(id, integer())
+  check_no_missing(id)
+
+  .Call(ffi_language_field_name_for_id, language_pointer(x), id)
+}
+
+#' @export
 is_language <- function(x) {
   inherits(x, "tree_sitter_language")
 }
