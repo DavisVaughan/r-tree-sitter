@@ -327,6 +327,35 @@ node_descendant_count <- function(x) {
   .Call(ffi_node_descendant_count, x)
 }
 
+# TODO: Document that it does not seem like this returns `NULL` even
+# with OOB byte ranges
+#' @export
+node_descendent_for_byte_range <- function(x, start, end) {
+  node_descendent_for_byte_range_impl(x, start, end, ffi_node_descendent_for_byte_range)
+}
+
+#' @export
+node_named_descendent_for_byte_range <- function(x, start, end) {
+  node_descendent_for_byte_range_impl(x, start, end, ffi_node_named_descendent_for_byte_range)
+}
+
+node_descendent_for_byte_range_impl <- function(x, start, end, fn, call = caller_env()) {
+  check_node(x, call = call)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  start <- vec_cast(start, double(), call = call)
+  check_number_whole(start, min = 0, call = call)
+
+  end <- vec_cast(end, double(), call = call)
+  check_number_whole(end, min = 0, call = call)
+
+  raw <- .Call(fn, x, start, end)
+
+  new_node_or_null(raw, tree)
+}
+
 #' @export
 is_node <- function(x) {
   inherits(x, "tree_sitter_node")

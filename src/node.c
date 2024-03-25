@@ -286,6 +286,30 @@ r_obj* ffi_node_descendent_count(r_obj* ffi_x) {
   return r_dbl(r_uint32_as_dbl(out));
 }
 
+r_obj* ffi_node_descendent_for_byte_range(
+    r_obj* ffi_x,
+    r_obj* ffi_start,
+    r_obj* ffi_end
+) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  const uint32_t start = r_dbl_as_uint32(r_dbl_get(ffi_start, 0), "start");
+  const uint32_t end = r_dbl_as_uint32(r_dbl_get(ffi_end, 0), "end");
+  const TSNode out = ts_node_descendant_for_byte_range(*x, start, end);
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
+r_obj* ffi_node_named_descendent_for_byte_range(
+    r_obj* ffi_x,
+    r_obj* ffi_start,
+    r_obj* ffi_end
+) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  const uint32_t start = r_dbl_as_uint32(r_dbl_get(ffi_start, 0), "start");
+  const uint32_t end = r_dbl_as_uint32(r_dbl_get(ffi_end, 0), "end");
+  const TSNode out = ts_node_named_descendant_for_byte_range(*x, start, end);
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.
