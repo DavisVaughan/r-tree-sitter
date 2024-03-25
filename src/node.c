@@ -122,6 +122,12 @@ r_obj* ffi_node_type(r_obj* ffi_x) {
   return r_chr(out);
 }
 
+r_obj* ffi_node_symbol(r_obj* ffi_x) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+  const TSSymbol out = ts_node_symbol(*x);
+  return r_int(r_TSSymbol_as_int(out));
+}
+
 r_obj* ffi_node_is_named(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
   bool out = ts_node_is_named(*x);

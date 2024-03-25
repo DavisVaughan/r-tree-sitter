@@ -56,6 +56,11 @@ TSSymbol r_int_as_TSSymbol(int x, const char* arg) {
   return (TSSymbol) x;
 }
 
+// `TSSymbol` is `uint16_t`
+int r_TSSymbol_as_int(TSSymbol x) {
+  return (int) x;
+}
+
 bool r_lgl_any_missing(r_obj* x) {
   const r_ssize size = r_length(x);
   const int* v_x = r_lgl_cbegin(x);

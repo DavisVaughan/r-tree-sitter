@@ -24,6 +24,7 @@ extern r_obj* ffi_node_child_count(r_obj*);
 extern r_obj* ffi_node_named_child_count(r_obj*);
 extern r_obj* ffi_node_text(r_obj*, r_obj*);
 extern r_obj* ffi_node_type(r_obj*);
+extern r_obj* ffi_node_symbol(r_obj*);
 extern r_obj* ffi_node_is_named(r_obj*);
 extern r_obj* ffi_node_children(r_obj*);
 extern r_obj* ffi_node_named_children(r_obj*);
@@ -72,6 +73,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_named_child_count", (DL_FUNC) &ffi_node_named_child_count, 1},
     {"ffi_node_text", (DL_FUNC) &ffi_node_text, 2},
     {"ffi_node_type", (DL_FUNC) &ffi_node_type, 1},
+    {"ffi_node_symbol", (DL_FUNC) &ffi_node_symbol, 1},
     {"ffi_node_is_named", (DL_FUNC) &ffi_node_is_named, 1},
     {"ffi_node_children", (DL_FUNC) &ffi_node_children, 1},
     {"ffi_node_named_children", (DL_FUNC) &ffi_node_named_children, 1},

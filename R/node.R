@@ -206,6 +206,13 @@ node_type <- function(x) {
 }
 
 #' @export
+node_symbol <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_symbol, x)
+}
+
+#' @export
 node_is_named <- function(x) {
   check_node(x)
   x <- node_raw(x)
