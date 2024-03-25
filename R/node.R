@@ -249,6 +249,20 @@ node_symbol <- function(x) {
 }
 
 #' @export
+node_grammar_type <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_grammar_type, x)
+}
+
+#' @export
+node_grammar_symbol <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_grammar_symbol, x)
+}
+
+#' @export
 node_is_named <- function(x) {
   check_node(x)
   x <- node_raw(x)
