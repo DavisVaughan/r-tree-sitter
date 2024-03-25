@@ -11,6 +11,7 @@ r_obj* ffi_initialize(r_obj* ns);
 extern r_obj* ffi_language_version(r_obj*);
 extern r_obj* ffi_language_symbol_for_name(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_language_symbol_name(r_obj*, r_obj*);
+extern r_obj* ffi_language_field_id_for_name(r_obj*, r_obj*);
 extern r_obj* ffi_parser_new(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_parser_parse(r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_root_node(r_obj*);
@@ -61,6 +62,9 @@ static const R_CallMethodDef CallEntries[] = {
      (DL_FUNC) &ffi_language_symbol_for_name,
      3},
     {"ffi_language_symbol_name", (DL_FUNC) &ffi_language_symbol_name, 2},
+    {"ffi_language_field_id_for_name",
+     (DL_FUNC) &ffi_language_field_id_for_name,
+     2},
     {"ffi_parser_new", (DL_FUNC) &ffi_parser_new, 3},
     {"ffi_parser_parse", (DL_FUNC) &ffi_parser_parse, 4},
     {"ffi_tree_root_node", (DL_FUNC) &ffi_tree_root_node, 1},

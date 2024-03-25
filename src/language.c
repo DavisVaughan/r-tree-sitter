@@ -94,6 +94,27 @@ r_obj* ffi_language_symbol_name(r_obj* ffi_x, r_obj* symbol) {
   return out;
 }
 
+r_obj* ffi_language_field_id_for_name(r_obj* ffi_x, r_obj* ffi_name) {
+  const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
+
+  const r_ssize size = r_length(ffi_name);
+  r_obj* const* v_name = r_chr_cbegin(ffi_name);
+
+  r_obj* out = KEEP(r_alloc_integer(size));
+  int* v_out = r_int_begin(out);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    r_obj* elt = v_name[i];
+    const char* elt_c = r_str_c_string(elt);
+    const uint32_t elt_size = r_ssize_as_uint32(r_length(elt));
+    const TSFieldId id = ts_language_field_id_for_name(x, elt_c, elt_size);
+    v_out[i] = (id == 0) ? r_globals.na_int : r_TSFieldId_as_int(id);
+  }
+
+  FREE(1);
+  return out;
+}
+
 const TSLanguage* ts_language_from_external_pointer(r_obj* x) {
   TS_OBJECT_FROM_EXTERNAL_POINTER(x, const TSLanguage*);
 }

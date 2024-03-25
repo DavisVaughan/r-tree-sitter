@@ -61,6 +61,11 @@ int r_TSSymbol_as_int(TSSymbol x) {
   return (int) x;
 }
 
+// `TSFieldId` is `uint16_t`
+int r_TSFieldId_as_int(TSFieldId x) {
+  return (int) x;
+}
+
 bool r_lgl_any_missing(r_obj* x) {
   const r_ssize size = r_length(x);
   const int* v_x = r_lgl_cbegin(x);
@@ -80,6 +85,19 @@ bool r_int_any_missing(r_obj* x) {
 
   for (r_ssize i = 0; i < size; ++i) {
     if (v_x[i] == r_globals.na_int) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool r_chr_any_missing(r_obj* x) {
+  const r_ssize size = r_length(x);
+  r_obj* const* v_x = r_chr_cbegin(x);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    if (v_x[i] == r_globals.na_str) {
       return true;
     }
   }
