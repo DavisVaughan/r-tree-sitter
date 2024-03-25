@@ -310,6 +310,59 @@ r_obj* ffi_node_named_descendent_for_byte_range(
   return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
 }
 
+r_obj* ffi_node_descendent_for_point_range(
+    r_obj* ffi_x,
+    r_obj* ffi_start_row,
+    r_obj* ffi_start_column,
+    r_obj* ffi_end_row,
+    r_obj* ffi_end_column
+) {
+  return node_descendent_for_point_range(
+      ffi_x, ffi_start_row, ffi_start_column, ffi_end_row, ffi_end_column, false
+  );
+}
+
+r_obj* ffi_node_named_descendent_for_point_range(
+    r_obj* ffi_x,
+    r_obj* ffi_start_row,
+    r_obj* ffi_start_column,
+    r_obj* ffi_end_row,
+    r_obj* ffi_end_column
+) {
+  return node_descendent_for_point_range(
+      ffi_x, ffi_start_row, ffi_start_column, ffi_end_row, ffi_end_column, true
+  );
+}
+
+static r_obj* node_descendent_for_point_range(
+    r_obj* ffi_x,
+    r_obj* ffi_start_row,
+    r_obj* ffi_start_column,
+    r_obj* ffi_end_row,
+    r_obj* ffi_end_column,
+    bool named
+) {
+  TSNode* x = ts_node_from_raw(ffi_x);
+
+  const uint32_t start_row =
+      r_dbl_as_uint32(r_dbl_get(ffi_start_row, 0), "start_row");
+  const uint32_t start_column =
+      r_dbl_as_uint32(r_dbl_get(ffi_start_column, 0), "start_column");
+  const uint32_t end_row =
+      r_dbl_as_uint32(r_dbl_get(ffi_end_row, 0), "end_row");
+  const uint32_t end_column =
+      r_dbl_as_uint32(r_dbl_get(ffi_end_column, 0), "end_column");
+
+  const TSPoint start = {.row = start_row, .column = start_column};
+  const TSPoint end = {.row = end_row, .column = end_column};
+
+  const TSNode out =
+      named ? ts_node_named_descendant_for_point_range(*x, start, end)
+            : ts_node_descendant_for_point_range(*x, start, end);
+
+  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.

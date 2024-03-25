@@ -357,6 +357,35 @@ node_descendent_for_byte_range_impl <- function(x, start, end, fn, call = caller
 }
 
 #' @export
+node_descendent_for_point_range <- function(x, start, end) {
+  node_descendent_for_point_range_impl(x, start, end, ffi_node_descendent_for_point_range)
+}
+
+#' @export
+node_named_descendent_for_point_range <- function(x, start, end) {
+  node_descendent_for_point_range_impl(x, start, end, ffi_node_named_descendent_for_point_range)
+}
+
+node_descendent_for_point_range_impl <- function(x, start, end, fn, call = caller_env()) {
+  check_node(x, call = call)
+
+  tree <- node_tree(x)
+  x <- node_raw(x)
+
+  check_point(start, call = call)
+  start_row <- point_row0(start)
+  start_column <- point_column0(start)
+
+  check_point(end, call = call)
+  end_row <- point_row0(end)
+  end_column <- point_column0(end)
+
+  raw <- .Call(fn, x, start_row, start_column, end_row, end_column)
+
+  new_node_or_null(raw, tree)
+}
+
+#' @export
 is_node <- function(x) {
   inherits(x, "tree_sitter_node")
 }
