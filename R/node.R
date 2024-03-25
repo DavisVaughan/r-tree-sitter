@@ -18,6 +18,13 @@ node_text <- function(x) {
 }
 
 #' @export
+node_language <- function(x) {
+  check_node(x)
+  tree <- node_tree(x)
+  tree_language0(tree)
+}
+
+#' @export
 node_walk <- function(x) {
   check_node(x)
   TreeCursor$new(x)
