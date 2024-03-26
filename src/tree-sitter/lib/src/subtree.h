@@ -13,7 +13,7 @@ extern "C" {
 #include "./error_costs.h"
 #include "./host.h"
 #include "tree_sitter/api.h"
-#include "tree_sitter/parser.h"
+#include "./parser.h"
 
 #define TS_TREE_STATE_NONE USHRT_MAX
 #define NULL_SUBTREE ((Subtree) {.ptr = NULL})
@@ -200,13 +200,13 @@ Subtree ts_subtree_new_missing_leaf(SubtreePool *, TSSymbol, Length, uint32_t, c
 MutableSubtree ts_subtree_make_mut(SubtreePool *, Subtree);
 void ts_subtree_retain(Subtree);
 void ts_subtree_release(SubtreePool *, Subtree);
-int ts_subtree_compare(Subtree, Subtree);
+int ts_subtree_compare(Subtree, Subtree, SubtreePool *);
 void ts_subtree_set_symbol(MutableSubtree *, TSSymbol, const TSLanguage *);
 void ts_subtree_summarize(MutableSubtree, const Subtree *, uint32_t, const TSLanguage *);
 void ts_subtree_summarize_children(MutableSubtree, const TSLanguage *);
 void ts_subtree_balance(Subtree, SubtreePool *, const TSLanguage *);
 Subtree ts_subtree_edit(Subtree, const TSInputEdit *edit, SubtreePool *);
-char *ts_subtree_string(Subtree, const TSLanguage *, bool include_all);
+char *ts_subtree_string(Subtree, TSSymbol, bool, const TSLanguage *, bool include_all);
 void ts_subtree_print_dot_graph(Subtree, const TSLanguage *, FILE *);
 Subtree ts_subtree_last_external_token(Subtree);
 const ExternalScannerState *ts_subtree_external_scanner_state(Subtree self);

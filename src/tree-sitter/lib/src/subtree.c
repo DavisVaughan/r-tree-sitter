@@ -1,10 +1,11 @@
 #include <assert.h>
 #include <ctype.h>
-#include <limits.h>
+#include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
 #include "./alloc.h"
+#include "./array.h"
 #include "./atomic.h"
 #include "./subtree.h"
 #include "./length.h"
@@ -618,20 +619,32 @@ void ts_subtree_release(SubtreePool *pool, Subtree self) {
   }
 }
 
-int ts_subtree_compare(Subtree left, Subtree right) {
-  if (ts_subtree_symbol(left) < ts_subtree_symbol(right)) return -1;
-  if (ts_subtree_symbol(right) < ts_subtree_symbol(left)) return 1;
-  if (ts_subtree_child_count(left) < ts_subtree_child_count(right)) return -1;
-  if (ts_subtree_child_count(right) < ts_subtree_child_count(left)) return 1;
-  for (uint32_t i = 0, n = ts_subtree_child_count(left); i < n; i++) {
-    Subtree left_child = ts_subtree_children(left)[i];
-    Subtree right_child = ts_subtree_children(right)[i];
-    switch (ts_subtree_compare(left_child, right_child)) {
-      case -1: return -1;
-      case 1: return 1;
-      default: break;
+int ts_subtree_compare(Subtree left, Subtree right, SubtreePool *pool) {
+  array_push(&pool->tree_stack, ts_subtree_to_mut_unsafe(left));
+  array_push(&pool->tree_stack, ts_subtree_to_mut_unsafe(right));
+
+  while (pool->tree_stack.size > 0) {
+    right = ts_subtree_from_mut(array_pop(&pool->tree_stack));
+    left = ts_subtree_from_mut(array_pop(&pool->tree_stack));
+
+    int result = 0;
+    if (ts_subtree_symbol(left) < ts_subtree_symbol(right)) result = -1;
+    else if (ts_subtree_symbol(right) < ts_subtree_symbol(left)) result = 1;
+    else if (ts_subtree_child_count(left) < ts_subtree_child_count(right)) result = -1;
+    else if (ts_subtree_child_count(right) < ts_subtree_child_count(left)) result = 1;
+    if (result != 0) {
+      array_clear(&pool->tree_stack);
+      return result;
+    }
+
+    for (uint32_t i = ts_subtree_child_count(left); i > 0; i--) {
+      Subtree left_child = ts_subtree_children(left)[i - 1];
+      Subtree right_child = ts_subtree_children(right)[i - 1];
+      array_push(&pool->tree_stack, ts_subtree_to_mut_unsafe(left_child));
+      array_push(&pool->tree_stack, ts_subtree_to_mut_unsafe(right_child));
     }
   }
+
   return 0;
 }
 
@@ -877,9 +890,15 @@ static size_t ts_subtree__write_to_string(
       }
     }
   } else if (is_root) {
-    TSSymbol symbol = ts_subtree_symbol(self);
+    TSSymbol symbol = alias_symbol ? alias_symbol : ts_subtree_symbol(self);
     const char *symbol_name = ts_language_symbol_name(language, symbol);
-    cursor += snprintf(*writer, limit, "(\"%s\")", symbol_name);
+    if (ts_subtree_child_count(self) > 0) {
+      cursor += snprintf(*writer, limit, "(%s", symbol_name);
+    } else if (ts_subtree_named(self)) {
+      cursor += snprintf(*writer, limit, "(%s)", symbol_name);
+    } else {
+      cursor += snprintf(*writer, limit, "(\"%s\")", symbol_name);
+    }
   }
 
   if (ts_subtree_child_count(self)) {
@@ -934,6 +953,8 @@ static size_t ts_subtree__write_to_string(
 
 char *ts_subtree_string(
   Subtree self,
+  TSSymbol alias_symbol,
+  bool alias_is_named,
   const TSLanguage *language,
   bool include_all
 ) {
@@ -941,13 +962,13 @@ char *ts_subtree_string(
   size_t size = ts_subtree__write_to_string(
     self, scratch_string, 1,
     language, include_all,
-    0, false, ROOT_FIELD
+    alias_symbol, alias_is_named, ROOT_FIELD
   ) + 1;
   char *result = ts_malloc(size * sizeof(char));
   ts_subtree__write_to_string(
     self, result, size,
     language, include_all,
-    0, false, ROOT_FIELD
+    alias_symbol, alias_is_named, ROOT_FIELD
   );
   return result;
 }
@@ -984,7 +1005,7 @@ void ts_subtree__print_dot_graph(const Subtree *self, uint32_t start_offset,
     ts_subtree_lookahead_bytes(*self)
   );
 
-  if (ts_subtree_is_error(*self) && ts_subtree_child_count(*self) == 0) {
+  if (ts_subtree_is_error(*self) && ts_subtree_child_count(*self) == 0 && self->ptr->lookahead_char != 0) {
     fprintf(f, "\ncharacter: '%c'", self->ptr->lookahead_char);
   }
 
