@@ -23,6 +23,7 @@ extern r_obj* ffi_tree_root_node(r_obj*);
 extern r_obj* ffi_tree_root_node_with_offset(r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj*
 ffi_tree_edit(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
+extern r_obj* ffi_tree_included_ranges(r_obj*);
 extern r_obj* ffi_node_s_expression(r_obj*);
 extern r_obj* ffi_node_parent(r_obj*);
 extern r_obj* ffi_node_child(r_obj*, r_obj*);
@@ -101,6 +102,7 @@ static const R_CallMethodDef CallEntries[] = {
      (DL_FUNC) &ffi_tree_root_node_with_offset,
      4},
     {"ffi_tree_edit", (DL_FUNC) &ffi_tree_edit, 10},
+    {"ffi_tree_included_ranges", (DL_FUNC) &ffi_tree_included_ranges, 1},
     {"ffi_node_s_expression", (DL_FUNC) &ffi_node_s_expression, 1},
     {"ffi_node_parent", (DL_FUNC) &ffi_node_parent, 1},
     {"ffi_node_child", (DL_FUNC) &ffi_node_child, 2},

@@ -93,6 +93,49 @@ tree_edit <- function(
   )
 }
 
+# TODO: Document that the default includes a range that covers the
+# whole document
+#' @export
+tree_included_ranges <- function(x) {
+  check_tree(x)
+  x <- tree_pointer(x)
+  info <- .Call(ffi_tree_included_ranges, x)
+
+  start_bytes <- info[[1L]]
+  start_rows <- info[[2L]]
+  start_columns <- info[[3L]]
+  end_bytes <- info[[4L]]
+  end_rows <- info[[5L]]
+  end_columns <- info[[6L]]
+
+  size <- length(start_bytes)
+  out <- vector("list", size)
+
+  for (i in seq_len(size)) {
+    start_byte <- start_bytes[[i]]
+    start_row <- start_rows[[i]]
+    start_column <- start_columns[[i]]
+
+    end_byte <- end_bytes[[i]]
+    end_row <- end_rows[[i]]
+    end_column <- end_columns[[i]]
+
+    start_point <- new_point(start_row, start_column)
+    end_point <- new_point(end_row, end_column)
+
+    range <- new_range(
+      start_byte = start_byte,
+      start_point = start_point,
+      end_byte = end_byte,
+      end_point = end_point
+    )
+
+    out[[i]] <- range
+  }
+
+  out
+}
+
 #' @export
 tree_text <- function(x) {
   check_tree(x)
