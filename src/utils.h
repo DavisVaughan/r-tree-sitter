@@ -17,6 +17,7 @@ int r_TSSymbol_as_int(TSSymbol x);
 TSFieldId r_int_as_TSFieldId(int x, const char* arg);
 int r_TSFieldId_as_int(TSFieldId x);
 
+TSStateId r_int_as_TSStateId(int x, const char* arg);
 int r_TSStateId_as_int(TSStateId x);
 
 bool r_lgl_any_missing(r_obj* x);

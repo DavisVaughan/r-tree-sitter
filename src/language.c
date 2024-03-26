@@ -151,6 +151,29 @@ r_obj* ffi_language_field_count(r_obj* ffi_x) {
   return r_dbl(r_uint32_as_dbl(out));
 }
 
+r_obj*
+ffi_language_next_state(r_obj* ffi_x, r_obj* ffi_state, r_obj* ffi_symbol) {
+  const TSLanguage* x = ts_language_from_external_pointer(ffi_x);
+
+  const int* v_state = r_int_cbegin(ffi_state);
+  const int* v_symbol = r_int_cbegin(ffi_symbol);
+
+  const r_ssize size = r_length(ffi_state);
+
+  r_obj* out = KEEP(r_alloc_integer(size));
+  int* v_out = r_int_begin(out);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const TSStateId state = r_int_as_TSStateId(v_state[i], "state");
+    const TSSymbol symbol = r_int_as_TSSymbol(v_symbol[i], "symbol");
+    const TSStateId next = ts_language_next_state(x, state, symbol);
+    v_out[i] = r_TSStateId_as_int(next);
+  }
+
+  FREE(1);
+  return out;
+}
+
 const TSLanguage* ts_language_from_external_pointer(r_obj* x) {
   TS_OBJECT_FROM_EXTERNAL_POINTER(x, const TSLanguage*);
 }

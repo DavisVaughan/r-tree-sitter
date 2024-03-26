@@ -131,6 +131,23 @@ language_field_count <- function(x) {
 }
 
 #' @export
+language_next_state <- function(x, state, symbol) {
+  check_language(x)
+
+  state <- vec_cast(state, integer())
+  check_no_missing(state)
+
+  symbol <- vec_cast(symbol, integer())
+  check_no_missing(symbol)
+
+  args <- vec_recycle_common(state = state, symbol = symbol)
+  state <- args$state
+  symbol <- args$symbol
+
+  .Call(ffi_language_next_state, language_pointer(x), state, symbol)
+}
+
+#' @export
 is_language <- function(x) {
   inherits(x, "tree_sitter_language")
 }

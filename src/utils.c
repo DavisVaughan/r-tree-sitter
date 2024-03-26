@@ -85,6 +85,20 @@ int r_TSFieldId_as_int(TSFieldId x) {
 }
 
 // `TSStateId` is `uint16_t`
+TSStateId r_int_as_TSStateId(int x, const char* arg) {
+  if (x > (int) UINT16_MAX || x < 0) {
+    r_abort(
+        "Can't convert `%s` to `TSStateId`. `%s` must be within the range of "
+        "`[0, "
+        "UINT16_MAX]`.",
+        arg,
+        arg
+    );
+  }
+  return (TSStateId) x;
+}
+
+// `TSStateId` is `uint16_t`
 int r_TSStateId_as_int(TSStateId x) {
   return (int) x;
 }
