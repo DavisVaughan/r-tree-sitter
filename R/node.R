@@ -211,6 +211,24 @@ node_end_point <- function(x) {
 }
 
 #' @export
+node_range <- function(x) {
+  check_node(x)
+
+  start_byte <- node_start_byte(x)
+  start_point <- node_start_point(x)
+
+  end_byte <- node_end_byte(x)
+  end_point <- node_end_point(x)
+
+  new_range(
+    start_byte = start_byte,
+    start_point = start_point,
+    end_byte = end_byte,
+    end_point = end_point
+  )
+}
+
+#' @export
 node_next_sibling <- function(x) {
   node_sibling(x, ffi_node_next_sibling)
 }
