@@ -149,7 +149,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_has_error", (DL_FUNC) &ffi_node_has_error, 1},
     {"ffi_node_parse_state", (DL_FUNC) &ffi_node_parse_state, 1},
     {"ffi_node_next_parse_state", (DL_FUNC) &ffi_node_next_parse_state, 1},
-    {"ffi_node_descendant_count", (DL_FUNC) &ffi_node_descendent_count, 1},
+    {"ffi_node_descendent_count", (DL_FUNC) &ffi_node_descendent_count, 1},
     {"ffi_node_descendent_for_byte_range",
      (DL_FUNC) &ffi_node_descendent_for_byte_range,
      3},

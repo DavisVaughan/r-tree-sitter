@@ -338,10 +338,10 @@ node_is_named <- function(x) {
 }
 
 #' @export
-node_descendant_count <- function(x) {
+node_descendent_count <- function(x) {
   check_node(x)
   x <- node_raw(x)
-  .Call(ffi_node_descendant_count, x)
+  .Call(ffi_node_descendent_count, x)
 }
 
 # TODO: Document that it does not seem like this returns `NULL` even
