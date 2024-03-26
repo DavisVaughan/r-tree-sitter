@@ -11,6 +11,26 @@ r_obj* ffi_tree_root_node(r_obj* ffi_x) {
   return ts_node_as_raw(node);
 }
 
+r_obj* ffi_tree_root_node_with_offset(
+    r_obj* ffi_x,
+    r_obj* ffi_byte,
+    r_obj* ffi_row,
+    r_obj* ffi_column
+) {
+  TSTree* x = ts_tree_from_external_pointer(ffi_x);
+
+  const uint32_t byte = r_dbl_as_uint32(r_dbl_get(ffi_byte, 0), "byte");
+
+  const uint32_t row = r_dbl_as_uint32(r_dbl_get(ffi_row, 0), "row");
+  const uint32_t column = r_dbl_as_uint32(r_dbl_get(ffi_column, 0), "column");
+
+  const TSPoint point = {.row = row, .column = column};
+
+  TSNode node = ts_tree_root_node_with_offset(x, byte, point);
+
+  return ts_node_as_raw(node);
+}
+
 r_obj* ffi_tree_edit(
     r_obj* ffi_x,
     r_obj* ffi_start_byte,

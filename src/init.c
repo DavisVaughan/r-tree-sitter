@@ -20,6 +20,7 @@ extern r_obj* ffi_language_next_state(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_parser_new(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_parser_parse(r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_root_node(r_obj*);
+extern r_obj* ffi_tree_root_node_with_offset(r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj*
 ffi_tree_edit(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_node_s_expression(r_obj*);
@@ -96,6 +97,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_parser_new", (DL_FUNC) &ffi_parser_new, 3},
     {"ffi_parser_parse", (DL_FUNC) &ffi_parser_parse, 4},
     {"ffi_tree_root_node", (DL_FUNC) &ffi_tree_root_node, 1},
+    {"ffi_tree_root_node_with_offset",
+     (DL_FUNC) &ffi_tree_root_node_with_offset,
+     4},
     {"ffi_tree_edit", (DL_FUNC) &ffi_tree_edit, 10},
     {"ffi_node_s_expression", (DL_FUNC) &ffi_node_s_expression, 1},
     {"ffi_node_parent", (DL_FUNC) &ffi_node_parent, 1},

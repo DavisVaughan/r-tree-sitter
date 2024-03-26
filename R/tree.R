@@ -6,6 +6,34 @@ tree_root_node <- function(x) {
   new_node(raw, x)
 }
 
+# TODO: When documenting, pull from this PR to talk about potential use cases
+# for this https://github.com/tree-sitter/tree-sitter/pull/1845
+#' @export
+tree_root_node_with_offset <- function(x, byte, point) {
+  check_tree(x)
+  check_point(point)
+
+  byte <- coerce_byte(byte)
+  row <- point_row0(point)
+  column <- point_column0(point)
+
+  text <- tree_text0(x)
+  language <- tree_language0(x)
+  pointer <- tree_pointer(x)
+
+  # Shift the `text` "forward" by the `byte` amount by padding with whitespace.
+  # This ensures that views into the `text` still work with the start/end byte
+  # indices returned by the offset tree nodes.
+  padding <- strrep(" ", byte)
+  text <- paste0(padding, text)
+
+  x <- new_tree(pointer, text, language)
+
+  raw <- .Call(ffi_tree_root_node_with_offset, pointer, byte, row, column)
+
+  new_node(raw, x)
+}
+
 #' @export
 tree_walk <- function(x) {
   check_tree(x)
