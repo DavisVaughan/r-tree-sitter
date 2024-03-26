@@ -43,7 +43,7 @@ r_obj* ffi_tree_cursor_field_id(r_obj* ffi_x) {
   );
 }
 
-r_obj* ffi_tree_cursor_descendent_index(r_obj* ffi_x) {
+r_obj* ffi_tree_cursor_descendant_index(r_obj* ffi_x) {
   TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
   const uint32_t out = ts_tree_cursor_current_descendant_index(x);
   return r_dbl(r_uint32_as_dbl(out));

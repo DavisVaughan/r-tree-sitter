@@ -57,19 +57,19 @@ extern r_obj* ffi_node_is_error(r_obj*);
 extern r_obj* ffi_node_has_error(r_obj*);
 extern r_obj* ffi_node_parse_state(r_obj*);
 extern r_obj* ffi_node_next_parse_state(r_obj*);
-extern r_obj* ffi_node_descendent_count(r_obj*);
-extern r_obj* ffi_node_descendent_for_byte_range(r_obj*, r_obj*, r_obj*);
-extern r_obj* ffi_node_named_descendent_for_byte_range(r_obj*, r_obj*, r_obj*);
+extern r_obj* ffi_node_descendant_count(r_obj*);
+extern r_obj* ffi_node_descendant_for_byte_range(r_obj*, r_obj*, r_obj*);
+extern r_obj* ffi_node_named_descendant_for_byte_range(r_obj*, r_obj*, r_obj*);
 extern r_obj*
-ffi_node_descendent_for_point_range(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
+ffi_node_descendant_for_point_range(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj*
-ffi_node_named_descendent_for_point_range(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
+ffi_node_named_descendant_for_point_range(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_cursor_initialize(r_obj*);
 extern r_obj* ffi_tree_cursor_reset(r_obj*, r_obj*);
 extern r_obj* ffi_tree_cursor_node(r_obj*);
 extern r_obj* ffi_tree_cursor_field_name(r_obj*);
 extern r_obj* ffi_tree_cursor_field_id(r_obj*);
-extern r_obj* ffi_tree_cursor_descendent_index(r_obj*);
+extern r_obj* ffi_tree_cursor_descendant_index(r_obj*);
 extern r_obj* ffi_tree_cursor_goto_parent(r_obj*);
 extern r_obj* ffi_tree_cursor_goto_next_sibling(r_obj*);
 extern r_obj* ffi_tree_cursor_goto_previous_sibling(r_obj*);
@@ -149,26 +149,26 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_has_error", (DL_FUNC) &ffi_node_has_error, 1},
     {"ffi_node_parse_state", (DL_FUNC) &ffi_node_parse_state, 1},
     {"ffi_node_next_parse_state", (DL_FUNC) &ffi_node_next_parse_state, 1},
-    {"ffi_node_descendent_count", (DL_FUNC) &ffi_node_descendent_count, 1},
-    {"ffi_node_descendent_for_byte_range",
-     (DL_FUNC) &ffi_node_descendent_for_byte_range,
+    {"ffi_node_descendant_count", (DL_FUNC) &ffi_node_descendant_count, 1},
+    {"ffi_node_descendant_for_byte_range",
+     (DL_FUNC) &ffi_node_descendant_for_byte_range,
      3},
-    {"ffi_node_named_descendent_for_byte_range",
-     (DL_FUNC) &ffi_node_named_descendent_for_byte_range,
+    {"ffi_node_named_descendant_for_byte_range",
+     (DL_FUNC) &ffi_node_named_descendant_for_byte_range,
      3},
-    {"ffi_node_descendent_for_point_range",
-     (DL_FUNC) &ffi_node_descendent_for_point_range,
+    {"ffi_node_descendant_for_point_range",
+     (DL_FUNC) &ffi_node_descendant_for_point_range,
      5},
-    {"ffi_node_named_descendent_for_point_range",
-     (DL_FUNC) &ffi_node_named_descendent_for_point_range,
+    {"ffi_node_named_descendant_for_point_range",
+     (DL_FUNC) &ffi_node_named_descendant_for_point_range,
      5},
     {"ffi_tree_cursor_initialize", (DL_FUNC) &ffi_tree_cursor_initialize, 1},
     {"ffi_tree_cursor_reset", (DL_FUNC) &ffi_tree_cursor_reset, 2},
     {"ffi_tree_cursor_node", (DL_FUNC) &ffi_tree_cursor_node, 1},
     {"ffi_tree_cursor_field_name", (DL_FUNC) &ffi_tree_cursor_field_name, 1},
     {"ffi_tree_cursor_field_id", (DL_FUNC) &ffi_tree_cursor_field_id, 1},
-    {"ffi_tree_cursor_descendent_index",
-     (DL_FUNC) &ffi_tree_cursor_descendent_index,
+    {"ffi_tree_cursor_descendant_index",
+     (DL_FUNC) &ffi_tree_cursor_descendant_index,
      1},
     {"ffi_tree_cursor_goto_parent", (DL_FUNC) &ffi_tree_cursor_goto_parent, 1},
     {"ffi_tree_cursor_goto_next_sibling",

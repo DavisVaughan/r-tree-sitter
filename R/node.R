@@ -338,25 +338,25 @@ node_is_named <- function(x) {
 }
 
 #' @export
-node_descendent_count <- function(x) {
+node_descendant_count <- function(x) {
   check_node(x)
   x <- node_raw(x)
-  .Call(ffi_node_descendent_count, x)
+  .Call(ffi_node_descendant_count, x)
 }
 
 # TODO: Document that it does not seem like this returns `NULL` even
 # with OOB byte ranges
 #' @export
-node_descendent_for_byte_range <- function(x, start, end) {
-  node_descendent_for_byte_range_impl(x, start, end, ffi_node_descendent_for_byte_range)
+node_descendant_for_byte_range <- function(x, start, end) {
+  node_descendant_for_byte_range_impl(x, start, end, ffi_node_descendant_for_byte_range)
 }
 
 #' @export
-node_named_descendent_for_byte_range <- function(x, start, end) {
-  node_descendent_for_byte_range_impl(x, start, end, ffi_node_named_descendent_for_byte_range)
+node_named_descendant_for_byte_range <- function(x, start, end) {
+  node_descendant_for_byte_range_impl(x, start, end, ffi_node_named_descendant_for_byte_range)
 }
 
-node_descendent_for_byte_range_impl <- function(x, start, end, fn, call = caller_env()) {
+node_descendant_for_byte_range_impl <- function(x, start, end, fn, call = caller_env()) {
   check_node(x, call = call)
 
   tree <- node_tree(x)
@@ -371,16 +371,16 @@ node_descendent_for_byte_range_impl <- function(x, start, end, fn, call = caller
 }
 
 #' @export
-node_descendent_for_point_range <- function(x, start, end) {
-  node_descendent_for_point_range_impl(x, start, end, ffi_node_descendent_for_point_range)
+node_descendant_for_point_range <- function(x, start, end) {
+  node_descendant_for_point_range_impl(x, start, end, ffi_node_descendant_for_point_range)
 }
 
 #' @export
-node_named_descendent_for_point_range <- function(x, start, end) {
-  node_descendent_for_point_range_impl(x, start, end, ffi_node_named_descendent_for_point_range)
+node_named_descendant_for_point_range <- function(x, start, end) {
+  node_descendant_for_point_range_impl(x, start, end, ffi_node_named_descendant_for_point_range)
 }
 
-node_descendent_for_point_range_impl <- function(x, start, end, fn, call = caller_env()) {
+node_descendant_for_point_range_impl <- function(x, start, end, fn, call = caller_env()) {
   check_node(x, call = call)
 
   tree <- node_tree(x)

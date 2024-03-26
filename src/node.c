@@ -287,13 +287,13 @@ r_obj* ffi_node_next_parse_state(r_obj* ffi_x) {
   return r_int(r_TSStateId_as_int(out));
 }
 
-r_obj* ffi_node_descendent_count(r_obj* ffi_x) {
+r_obj* ffi_node_descendant_count(r_obj* ffi_x) {
   TSNode* x = ts_node_from_raw(ffi_x);
   const uint32_t out = ts_node_descendant_count(*x);
   return r_dbl(r_uint32_as_dbl(out));
 }
 
-r_obj* ffi_node_descendent_for_byte_range(
+r_obj* ffi_node_descendant_for_byte_range(
     r_obj* ffi_x,
     r_obj* ffi_start,
     r_obj* ffi_end
@@ -305,7 +305,7 @@ r_obj* ffi_node_descendent_for_byte_range(
   return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
 }
 
-r_obj* ffi_node_named_descendent_for_byte_range(
+r_obj* ffi_node_named_descendant_for_byte_range(
     r_obj* ffi_x,
     r_obj* ffi_start,
     r_obj* ffi_end
@@ -317,31 +317,31 @@ r_obj* ffi_node_named_descendent_for_byte_range(
   return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
 }
 
-r_obj* ffi_node_descendent_for_point_range(
+r_obj* ffi_node_descendant_for_point_range(
     r_obj* ffi_x,
     r_obj* ffi_start_row,
     r_obj* ffi_start_column,
     r_obj* ffi_end_row,
     r_obj* ffi_end_column
 ) {
-  return node_descendent_for_point_range(
+  return node_descendant_for_point_range(
       ffi_x, ffi_start_row, ffi_start_column, ffi_end_row, ffi_end_column, false
   );
 }
 
-r_obj* ffi_node_named_descendent_for_point_range(
+r_obj* ffi_node_named_descendant_for_point_range(
     r_obj* ffi_x,
     r_obj* ffi_start_row,
     r_obj* ffi_start_column,
     r_obj* ffi_end_row,
     r_obj* ffi_end_column
 ) {
-  return node_descendent_for_point_range(
+  return node_descendant_for_point_range(
       ffi_x, ffi_start_row, ffi_start_column, ffi_end_row, ffi_end_column, true
   );
 }
 
-static r_obj* node_descendent_for_point_range(
+static r_obj* node_descendant_for_point_range(
     r_obj* ffi_x,
     r_obj* ffi_start_row,
     r_obj* ffi_start_column,
