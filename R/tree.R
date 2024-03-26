@@ -40,14 +40,9 @@ tree_edit <- function(
   new_end_row <- point_row0(new_end_point)
   new_end_column <- point_row0(new_end_point)
 
-  start_byte <- vec_cast(start_byte, double())
-  check_number_whole(start_byte, min = 0)
-
-  old_end_byte <- vec_cast(old_end_byte, double())
-  check_number_whole(old_end_byte, min = 0)
-
-  new_end_byte <- vec_cast(new_end_byte, double())
-  check_number_whole(new_end_byte, min = 0)
+  start_byte <- coerce_byte(start_byte)
+  old_end_byte <- coerce_byte(old_end_byte)
+  new_end_byte <- coerce_byte(new_end_byte)
 
   pointer <- .Call(
     ffi_tree_edit,

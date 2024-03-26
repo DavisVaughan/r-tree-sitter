@@ -163,8 +163,7 @@ node_first_child_for_byte_impl <- function(x, byte, fn, call = caller_env()) {
   tree <- node_tree(x)
   x <- node_raw(x)
 
-  byte <- vec_cast(byte, double(), call = call)
-  check_number_whole(byte, min = 0, call = call)
+  byte <- coerce_byte(byte, call = call)
 
   raw <- .Call(fn, x, byte)
 
@@ -345,11 +344,8 @@ node_descendent_for_byte_range_impl <- function(x, start, end, fn, call = caller
   tree <- node_tree(x)
   x <- node_raw(x)
 
-  start <- vec_cast(start, double(), call = call)
-  check_number_whole(start, min = 0, call = call)
-
-  end <- vec_cast(end, double(), call = call)
-  check_number_whole(end, min = 0, call = call)
+  start <- coerce_byte(start, call = call)
+  end <- coerce_byte(end, call = call)
 
   raw <- .Call(fn, x, start, end)
 

@@ -103,7 +103,7 @@ tree_cursor_depth <- function(self, private) {
 }
 
 tree_cursor_goto_first_child_for_byte <- function(self, private, byte) {
-  check_number_whole(byte, min = 0)
+  byte <- coerce_byte(byte)
   .Call(ffi_tree_cursor_goto_first_child_for_byte, private$.raw, byte)
 }
 
