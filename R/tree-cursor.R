@@ -20,6 +20,15 @@ TreeCursor <- R6::R6Class(
     node = function() {
       tree_cursor_node(self, private)
     },
+    field_name = function() {
+      tree_cursor_field_name(self, private)
+    },
+    field_id = function() {
+      tree_cursor_field_id(self, private)
+    },
+    descendent_index = function() {
+      tree_cursor_descendent_index(self, private)
+    },
     goto_parent = function() {
       tree_cursor_goto_parent(self, private)
     },
@@ -76,6 +85,18 @@ tree_cursor_node <- function(self, private) {
   tree <- private$.tree
   raw <- .Call(ffi_tree_cursor_node, private$.raw)
   new_node(raw, tree)
+}
+
+tree_cursor_field_name <- function(self, private) {
+  .Call(ffi_tree_cursor_field_name, private$.raw)
+}
+
+tree_cursor_field_id <- function(self, private) {
+  .Call(ffi_tree_cursor_field_id, private$.raw)
+}
+
+tree_cursor_descendent_index <- function(self, private) {
+  .Call(ffi_tree_cursor_descendent_index, private$.raw)
 }
 
 tree_cursor_goto_parent <- function(self, private) {
