@@ -102,7 +102,7 @@ parser_pointer <- function(x) {
   .subset2(x, "pointer")
 }
 
-new_parser <- function(language, ..., timeout = NULL, included_ranges = list()) {
+new_parser <- function(language, ..., timeout = 0, included_ranges = list()) {
   check_dots_empty0(...)
 
   pointer <- language$pointer

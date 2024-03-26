@@ -20,11 +20,9 @@ r_obj* ffi_parser_new(
     r_abort("Failed to set the parser language.");
   }
 
-  if (ffi_timeout != r_null) {
-    // Validated on R side
-    const uint64_t timeout = (uint64_t) r_dbl_get(ffi_timeout, 0);
-    ts_parser_set_timeout_micros(parser, timeout);
-  }
+  // Validated on R side (0 turns off the timeout)
+  const uint64_t timeout = (uint64_t) r_dbl_get(ffi_timeout, 0);
+  ts_parser_set_timeout_micros(parser, timeout);
 
   // Validated on R side
   parser_set_included_ranges(parser, ffi_included_range_vectors);
