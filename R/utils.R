@@ -3,6 +3,16 @@ cat_line <- function(...) {
   cat(out, "\n", sep = "", file = stdout(), append = TRUE)
 }
 
+coerce_byte <- function(
+  x,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  x <- vec_cast(x, double(), x_arg = arg, call = call)
+  check_number_whole(x, min = 0, arg = arg, call = call)
+  x
+}
+
 check_no_missing <- function(
   x,
   ...,
