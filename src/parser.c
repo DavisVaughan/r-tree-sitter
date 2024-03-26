@@ -25,12 +25,18 @@ r_obj* ffi_parser_new(
   ts_parser_set_timeout_micros(parser, timeout);
 
   // Validated on R side
-  parser_set_included_ranges(parser, ffi_included_range_vectors);
+  if (!parser_set_included_ranges(parser, ffi_included_range_vectors)) {
+    ts_parser_delete(parser);
+    r_abort(
+        "Failed to set the `included_ranges`. Make sure they ordered earliest "
+        "to latest, and don't overlap."
+    );
+  }
 
   return ts_parser_as_external_pointer(parser);
 }
 
-static void
+static bool
 parser_set_included_ranges(TSParser* x, r_obj* included_range_vectors) {
   r_obj* start_bytes = r_list_get(included_range_vectors, 0);
   const double* v_start_bytes = r_dbl_cbegin(start_bytes);
@@ -80,9 +86,11 @@ parser_set_included_ranges(TSParser* x, r_obj* included_range_vectors) {
     v_ranges[i] = range;
   }
 
-  ts_parser_set_included_ranges(x, v_ranges, r_ssize_as_uint32(size));
+  bool out =
+      ts_parser_set_included_ranges(x, v_ranges, r_ssize_as_uint32(size));
 
   FREE(1);
+  return out;
 }
 
 r_obj* ffi_parser_parse(
