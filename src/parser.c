@@ -4,11 +4,12 @@
 #include "external-pointer.h"
 #include "language.h"
 #include "tree.h"
+#include "utils.h"
 
 r_obj* ffi_parser_new(
     r_obj* ffi_language,
     r_obj* ffi_timeout,
-    r_obj* ffi_included_ranges
+    r_obj* ffi_included_range_vectors
 ) {
   TSParser* parser = ts_parser_new();
 
@@ -25,13 +26,65 @@ r_obj* ffi_parser_new(
     ts_parser_set_timeout_micros(parser, timeout);
   }
 
-  if (ffi_included_ranges != r_null) {
-    // Validated on R side
-    ts_parser_delete(parser);
-    r_stop_internal("TODO: Add support for `included_ranges`.");
-  }
+  // Validated on R side
+  parser_set_included_ranges(parser, ffi_included_range_vectors);
 
   return ts_parser_as_external_pointer(parser);
+}
+
+static void
+parser_set_included_ranges(TSParser* x, r_obj* included_range_vectors) {
+  r_obj* start_bytes = r_list_get(included_range_vectors, 0);
+  const double* v_start_bytes = r_dbl_cbegin(start_bytes);
+
+  r_obj* start_rows = r_list_get(included_range_vectors, 1);
+  const double* v_start_rows = r_dbl_cbegin(start_rows);
+
+  r_obj* start_columns = r_list_get(included_range_vectors, 2);
+  const double* v_start_columns = r_dbl_cbegin(start_columns);
+
+  r_obj* end_bytes = r_list_get(included_range_vectors, 3);
+  const double* v_end_bytes = r_dbl_cbegin(end_bytes);
+
+  r_obj* end_rows = r_list_get(included_range_vectors, 4);
+  const double* v_end_rows = r_dbl_cbegin(end_rows);
+
+  r_obj* end_columns = r_list_get(included_range_vectors, 5);
+  const double* v_end_columns = r_dbl_cbegin(end_columns);
+
+  const r_ssize size = r_length(start_bytes);
+
+  r_obj* ranges = KEEP(r_alloc_raw(size * sizeof(TSRange)));
+  TSRange* v_ranges = (TSRange*) r_raw_begin(ranges);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    const double start_byte = v_start_bytes[i];
+    const double start_row = v_start_rows[i];
+    const double start_column = v_start_columns[i];
+
+    const double end_byte = v_end_bytes[i];
+    const double end_row = v_end_rows[i];
+    const double end_column = v_end_columns[i];
+
+    TSPoint start_point = {
+        .row = r_dbl_as_uint32(start_row, "start_row"),
+        .column = r_dbl_as_uint32(start_column, "start_column")};
+    TSPoint end_point = {
+        .row = r_dbl_as_uint32(end_row, "end_row"),
+        .column = r_dbl_as_uint32(end_column, "end_column")};
+
+    TSRange range = {
+        .start_point = start_point,
+        .end_point = end_point,
+        .start_byte = start_byte,
+        .end_byte = end_byte};
+
+    v_ranges[i] = range;
+  }
+
+  ts_parser_set_included_ranges(x, v_ranges, r_ssize_as_uint32(size));
+
+  FREE(1);
 }
 
 r_obj* ffi_parser_parse(

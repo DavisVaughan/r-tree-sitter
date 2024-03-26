@@ -20,7 +20,7 @@ parser_set_language <- function(x, language) {
 parser_set_timeout <- function(x, timeout) {
   check_parser(x)
 
-    # `max` is the largest representable whole double value that is below the
+  # `max` is the largest representable whole double value that is below the
   # max `uint64_t` value that can be parsed by the R parser
   check_number_whole(
     x = timeout,
@@ -36,10 +36,20 @@ parser_set_timeout <- function(x, timeout) {
   )
 }
 
+# TODO: Document that an empty list is a valid way to clear the included ranges
+# so that it again parses the whole document
 #' @export
 parser_set_included_ranges <- function(x, included_ranges) {
   check_parser(x)
-  abort("Setting `included_ranges` is not yet supported.")
+
+  obj_check_list(included_ranges)
+  list_check_all_ranges(included_ranges)
+
+  new_parser(
+    language = x$language,
+    timeout = x$timeout,
+    included_ranges = included_ranges
+  )
 }
 
 #' @export
@@ -92,16 +102,18 @@ parser_pointer <- function(x) {
   .subset2(x, "pointer")
 }
 
-new_parser <- function(language, ..., timeout = NULL, included_ranges = NULL) {
+new_parser <- function(language, ..., timeout = NULL, included_ranges = list()) {
   check_dots_empty0(...)
 
   pointer <- language$pointer
+
+  included_range_vectors <- transpose_list_of_ranges(included_ranges)
 
   pointer <- .Call(
     ffi_parser_new,
     pointer,
     timeout,
-    included_ranges
+    included_range_vectors
   )
 
   out <- list(
@@ -132,5 +144,29 @@ check_parser <- function(
     ...,
     arg = arg,
     call = call
+  )
+}
+
+# Puts `included_ranges` in a form that is easier to process at the C level
+transpose_list_of_ranges <- function(x) {
+  start_bytes <- vapply(x, range_start_byte0, double(1))
+  end_bytes <- vapply(x, range_end_byte0, double(1))
+
+  start_points <- lapply(x, range_start_point0)
+  start_rows <- vapply(start_points, point_row0, double(1))
+  start_columns <- vapply(start_points, point_column0, double(1))
+
+  end_points <- lapply(x, range_end_point0)
+  end_rows <- vapply(end_points, point_row0, double(1))
+  end_columns <- vapply(end_points, point_column0, double(1))
+
+  # Field ordering matters for C level indexing
+  list(
+    start_bytes = start_bytes,
+    start_rows = start_rows,
+    start_columns = start_columns,
+    end_bytes = end_bytes,
+    end_rows = end_rows,
+    end_columns = end_columns
   )
 }
