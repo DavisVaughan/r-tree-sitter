@@ -11,7 +11,8 @@ tree-sitter-files = \
         tree-sitter/lib/src/stack.o \
         tree-sitter/lib/src/subtree.o \
         tree-sitter/lib/src/tree_cursor.o \
-        tree-sitter/lib/src/tree.o
+        tree-sitter/lib/src/tree.o \
+        tree-sitter/lib/src/wasm_store.o
 
 lib-files = \
         alloc.o \
