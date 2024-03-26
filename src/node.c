@@ -136,10 +136,17 @@ r_obj* ffi_node_child_by_field_name(r_obj* ffi_x, r_obj* ffi_name) {
 
 r_obj* ffi_node_field_name_for_child(r_obj* ffi_x, r_obj* ffi_i) {
   TSNode* x = ts_node_from_raw(ffi_x);
+
   // Validated on R side to be positive whole double of length 1, 1-indexed
   const uint32_t i = r_dbl_as_uint32(r_dbl_get(ffi_i, 0), "i") - 1;
-  const char* out = ts_node_field_name_for_child(*x, i);
-  return (out == NULL) ? r_null : r_chr(out);
+
+  const char* name = ts_node_field_name_for_child(*x, i);
+
+  r_obj* out = KEEP(r_alloc_character(1));
+  r_chr_poke(out, 0, (name == NULL) ? r_globals.na_str : r_str(name));
+
+  FREE(1);
+  return out;
 }
 
 r_obj* ffi_node_first_child_for_byte(r_obj* ffi_x, r_obj* ffi_byte) {

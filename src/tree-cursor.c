@@ -25,14 +25,22 @@ r_obj* ffi_tree_cursor_node(r_obj* ffi_x) {
 
 r_obj* ffi_tree_cursor_field_name(r_obj* ffi_x) {
   TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
-  const char* out = ts_tree_cursor_current_field_name(x);
-  return (out == NULL) ? r_null : r_chr(out);
+
+  const char* name = ts_tree_cursor_current_field_name(x);
+
+  r_obj* out = KEEP(r_alloc_character(1));
+  r_chr_poke(out, 0, (name == NULL) ? r_globals.na_str : r_str(name));
+
+  FREE(1);
+  return out;
 }
 
 r_obj* ffi_tree_cursor_field_id(r_obj* ffi_x) {
   TSTreeCursor* x = ts_tree_cursor_from_raw(ffi_x);
   const TSFieldId out = ts_tree_cursor_current_field_id(x);
-  return (out == (TSFieldId) 0) ? r_null : r_int(r_TSFieldId_as_int(out));
+  return r_int(
+      (out == (TSFieldId) 0) ? r_globals.na_int : r_TSFieldId_as_int(out)
+  );
 }
 
 r_obj* ffi_tree_cursor_descendent_index(r_obj* ffi_x) {
