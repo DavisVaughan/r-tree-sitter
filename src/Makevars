@@ -16,6 +16,7 @@ tree-sitter-files = \
 
 lib-files = \
         alloc.o \
+        dyn.o \
         external-pointer.o \
         init.o \
         language.o \

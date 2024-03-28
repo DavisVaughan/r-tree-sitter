@@ -80,6 +80,9 @@ extern r_obj* ffi_tree_cursor_goto_first_child_for_byte(r_obj*, r_obj*);
 extern r_obj*
 ffi_tree_cursor_goto_first_child_for_point(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_cursor_finalize(r_obj*);
+extern r_obj* ffi_new_dyn_chr(r_obj*);
+extern r_obj* ffi_dyn_chr_push_back(r_obj*, r_obj*);
+extern r_obj* ffi_dyn_unwrap(r_obj*);
 
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
@@ -191,6 +194,9 @@ static const R_CallMethodDef CallEntries[] = {
      (DL_FUNC) &ffi_tree_cursor_goto_first_child_for_point,
      3},
     {"ffi_tree_cursor_finalize", (DL_FUNC) &ffi_tree_cursor_finalize, 1},
+    {"ffi_new_dyn_chr", (DL_FUNC) &ffi_new_dyn_chr, 1},
+    {"ffi_dyn_chr_push_back", (DL_FUNC) &ffi_dyn_chr_push_back, 2},
+    {"ffi_dyn_unwrap", (DL_FUNC) &ffi_dyn_unwrap, 1},
     {NULL, NULL, 0}};
 
 void R_init_treesitter(DllInfo* dll) {
