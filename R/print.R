@@ -2,6 +2,7 @@
 node_print_s_expression <- function(
   x,
   ...,
+  anonymous = TRUE,
   compact = TRUE,
   locations = TRUE,
   color_parentheses = TRUE,
@@ -11,6 +12,7 @@ node_print_s_expression <- function(
 
   text <- node_format_s_expression(
     x = x,
+    anonymous = anonymous,
     compact = compact,
     locations = locations,
     color_parentheses = color_parentheses,
@@ -25,6 +27,7 @@ node_print_s_expression <- function(
 node_format_s_expression <- function(
   x,
   ...,
+  anonymous = TRUE,
   compact = TRUE,
   locations = TRUE,
   color_parentheses = TRUE,
@@ -33,6 +36,7 @@ node_format_s_expression <- function(
   check_dots_empty0(...)
 
   check_node(x)
+  check_bool(anonymous)
   check_bool(compact)
   check_bool(locations)
   check_bool(color_parentheses)
@@ -40,6 +44,7 @@ node_format_s_expression <- function(
 
   options <- list(
     tabs = 0L,
+    anonymous = anonymous,
     compact = compact,
     locations = locations,
     color_parentheses = color_parentheses,
@@ -85,6 +90,12 @@ node_format_s_expression_named <- function(x, tokens, options) {
   size <- length(children)
 
   for (i in seq_len(size)) {
+    child <- children[[i]]
+
+    if (!options$anonymous && !node_is_named(child)) {
+      next
+    }
+
     dyn_chr_push_back(tokens, "\n")
     dyn_chr_push_back(tokens, tab(options$tabs))
 
@@ -94,7 +105,6 @@ node_format_s_expression_named <- function(x, tokens, options) {
       dyn_chr_push_back(tokens, field_name)
     }
 
-    child <- children[[i]]
     tokens <- node_format_s_expression_recurse(child, tokens, options)
   }
 

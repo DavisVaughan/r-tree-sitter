@@ -18,6 +18,9 @@ test_that("can pretty print `node`s", {
     node_print_s_expression(node)
   })
   expect_snapshot({
+    node_print_s_expression(node, anonymous = FALSE)
+  })
+  expect_snapshot({
     node_print_s_expression(node, compact = FALSE)
   })
   expect_snapshot({
@@ -25,5 +28,8 @@ test_that("can pretty print `node`s", {
   })
   expect_snapshot({
     node_print_s_expression(node, compact = FALSE, locations = FALSE)
+  })
+  expect_snapshot({
+    node_print_s_expression(node, anonymous = FALSE, compact = FALSE, locations = FALSE)
   })
 })
