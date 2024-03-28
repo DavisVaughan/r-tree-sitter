@@ -406,17 +406,21 @@ is_node <- function(x) {
 
 #' @export
 print.tree_sitter_node <- function(x, ...) {
-  cat_line("<tree_sitter_node>")
-
-  sexp <- node_s_expression(x)
-  sexp <- truncate(sexp)
-
   text <- node_text(x)
   text <- truncate(text)
 
+  cat_line("<tree_sitter_node>")
   cat_line()
   cli::cat_rule("S-Expression")
-  cat_line(sexp)
+  node_print_s_expression(
+    x = x,
+    anonymous = TRUE,
+    compact = FALSE,
+    locations = TRUE,
+    color_parentheses = TRUE,
+    color_locations = TRUE,
+    max_lines = 25L,
+  )
   cat_line()
   cli::cat_rule("Text")
   cat_line(text)
