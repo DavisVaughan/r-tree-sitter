@@ -26,10 +26,27 @@ test_that("can pretty print `node`s", {
   expect_snapshot({
     node_print_s_expression(node, locations = FALSE)
   })
+  # With `compact = FALSE` and `anonymous = FALSE`, `parameters` node with only
+  # anonymous children should not move the closing `)` to the next line
+  expect_snapshot({
+    node_print_s_expression(node, compact = FALSE, anonymous = FALSE)
+  })
   expect_snapshot({
     node_print_s_expression(node, compact = FALSE, locations = FALSE)
   })
   expect_snapshot({
     node_print_s_expression(node, anonymous = FALSE, compact = FALSE, locations = FALSE)
+  })
+  expect_snapshot({
+    node_print_s_expression(node, max_lines = 1)
+  })
+  expect_snapshot({
+    node_print_s_expression(node, max_lines = 10)
+  })
+  expect_snapshot({
+    node_print_s_expression(node, max_lines = 10, compact = FALSE)
+  })
+  expect_snapshot({
+    node_print_s_expression(node, max_lines = 10, compact = FALSE, anonymous = FALSE)
   })
 })

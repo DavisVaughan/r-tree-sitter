@@ -161,6 +161,42 @@
 ---
 
     Code
+      node_print_s_expression(node, compact = FALSE, anonymous = FALSE)
+    Output
+      (program [(1, 0), (9, 2)]
+        (left_assignment [(1, 2), (6, 3)]
+          lhs: (identifier [(1, 2), (1, 4)])
+          rhs: (function_definition [(1, 8), (6, 3)]
+            parameters: (parameters [(1, 16), (1, 18)])
+            body: (braces [(1, 19), (6, 3)]
+              body: (left_assignment [(2, 4), (2, 14)]
+                lhs: (identifier [(2, 4), (2, 5)])
+                rhs: (arithmetic_operator [(2, 9), (2, 14)]
+                  lhs: (float [(2, 9), (2, 10)])
+                  rhs: (float [(2, 13), (2, 14)])
+                )
+              )
+              body: (if_statement [(3, 4), (5, 5)]
+                condition: (comparison_operator [(3, 8), (3, 13)]
+                  lhs: (identifier [(3, 8), (3, 9)])
+                  rhs: (float [(3, 12), (3, 13)])
+                )
+                consequence: (braces [(3, 15), (5, 5)]
+                  body: (true [(4, 6), (4, 10)])
+                )
+              )
+            )
+          )
+        )
+        (arithmetic_operator [(8, 2), (8, 7)]
+          lhs: (float [(8, 2), (8, 3)])
+          rhs: (float [(8, 6), (8, 7)])
+        )
+      )
+
+---
+
+    Code
       node_print_s_expression(node, compact = FALSE, locations = FALSE)
     Output
       (program
@@ -219,8 +255,7 @@
         (left_assignment
           lhs: (identifier)
           rhs: (function_definition
-            parameters: (parameters
-            )
+            parameters: (parameters)
             body: (braces
               body: (left_assignment
                 lhs: (identifier)
@@ -246,4 +281,63 @@
           rhs: (float)
         )
       )
+
+---
+
+    Code
+      node_print_s_expression(node, max_lines = 1)
+    Output
+      (program [(1, 0), (9, 2)]
+      <truncated>
+
+---
+
+    Code
+      node_print_s_expression(node, max_lines = 10)
+    Output
+      (program [(1, 0), (9, 2)]
+        (left_assignment [(1, 2), (6, 3)]
+          lhs: (identifier [(1, 2), (1, 4)])
+          operator: "<-" [(1, 5), (1, 7)]
+          rhs: (function_definition [(1, 8), (6, 3)]
+            name: "function" [(1, 8), (1, 16)]
+            parameters: (parameters [(1, 16), (1, 18)]
+              "(" [(1, 16), (1, 17)]
+              ")" [(1, 17), (1, 18)])
+            body: (braces [(1, 19), (6, 3)]))
+      <truncated>
+
+---
+
+    Code
+      node_print_s_expression(node, max_lines = 10, compact = FALSE)
+    Output
+      (program [(1, 0), (9, 2)]
+        (left_assignment [(1, 2), (6, 3)]
+          lhs: (identifier [(1, 2), (1, 4)])
+          operator: "<-" [(1, 5), (1, 7)]
+          rhs: (function_definition [(1, 8), (6, 3)]
+            name: "function" [(1, 8), (1, 16)]
+            parameters: (parameters [(1, 16), (1, 18)]
+              "(" [(1, 16), (1, 17)]
+              ")" [(1, 17), (1, 18)]
+            )
+      <truncated>
+
+---
+
+    Code
+      node_print_s_expression(node, max_lines = 10, compact = FALSE, anonymous = FALSE)
+    Output
+      (program [(1, 0), (9, 2)]
+        (left_assignment [(1, 2), (6, 3)]
+          lhs: (identifier [(1, 2), (1, 4)])
+          rhs: (function_definition [(1, 8), (6, 3)]
+            parameters: (parameters [(1, 16), (1, 18)])
+            body: (braces [(1, 19), (6, 3)]
+              body: (left_assignment [(2, 4), (2, 14)]
+                lhs: (identifier [(2, 4), (2, 5)])
+                rhs: (arithmetic_operator [(2, 9), (2, 14)]
+                  lhs: (float [(2, 9), (2, 10)])
+      <truncated>
 

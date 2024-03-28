@@ -6,7 +6,8 @@ node_print_s_expression <- function(
   compact = TRUE,
   locations = TRUE,
   color_parentheses = TRUE,
-  color_locations = TRUE
+  color_locations = TRUE,
+  max_lines = NULL
 ) {
   check_dots_empty0(...)
 
@@ -16,7 +17,8 @@ node_print_s_expression <- function(
     compact = compact,
     locations = locations,
     color_parentheses = color_parentheses,
-    color_locations = color_locations
+    color_locations = color_locations,
+    max_lines = max_lines
   )
 
   cat_line(text)
@@ -31,7 +33,8 @@ node_format_s_expression <- function(
   compact = TRUE,
   locations = TRUE,
   color_parentheses = TRUE,
-  color_locations = TRUE
+  color_locations = TRUE,
+  max_lines = NULL
 ) {
   check_dots_empty0(...)
 
@@ -41,6 +44,7 @@ node_format_s_expression <- function(
   check_bool(locations)
   check_bool(color_parentheses)
   check_bool(color_locations)
+  check_number_whole(max_lines, min = 1, allow_null = TRUE)
 
   options <- list(
     tabs = 0L,
@@ -48,7 +52,9 @@ node_format_s_expression <- function(
     compact = compact,
     locations = locations,
     color_parentheses = color_parentheses,
-    color_locations = color_locations
+    color_locations = color_locations,
+    n_lines = 1L,
+    max_lines = max_lines
   )
 
   # Rough count of expected size
@@ -58,9 +64,15 @@ node_format_s_expression <- function(
   capacity <- pmax(capacity, 1L)
 
   tokens <- new_dyn_chr(capacity)
-  tokens <- node_format_s_expression_recurse(x, tokens, options)
+  options <- node_format_s_expression_recurse(x, tokens, options)
   tokens <- dyn_unwrap(tokens)
   tokens <- paste0(tokens, collapse = "")
+
+  if (lines_at_max(options)) {
+    footer <- cli::format_inline("<truncated>")
+    footer <- cli::style_italic(footer)
+    tokens <- paste0(tokens, "\n", footer)
+  }
 
   tokens
 }
@@ -87,16 +99,23 @@ node_format_s_expression_named <- function(x, tokens, options) {
   }
 
   children <- node_children(x)
-  size <- length(children)
+  n_visible_children <- 0L
 
-  for (i in seq_len(size)) {
+  for (i in seq_along(children)) {
     child <- children[[i]]
 
     if (!options$anonymous && !node_is_named(child)) {
       next
     }
 
+    n_visible_children <- n_visible_children + 1L
+
+    if (lines_at_max(options)) {
+      return(options)
+    }
     dyn_chr_push_back(tokens, "\n")
+    options <- lines_increment(options)
+
     dyn_chr_push_back(tokens, tab(options$tabs))
 
     field_name <- node_field_name_for_child(x, i)
@@ -105,21 +124,26 @@ node_format_s_expression_named <- function(x, tokens, options) {
       dyn_chr_push_back(tokens, field_name)
     }
 
-    tokens <- node_format_s_expression_recurse(child, tokens, options)
+    options <- node_format_s_expression_recurse(child, tokens, options)
   }
 
   options$tabs <- options$tabs - 1L
 
-  if (!options$compact && size != 0L) {
-    # If the node had any children, put the closing `)`
+  if (!options$compact && n_visible_children != 0L) {
+    # If the node had any visible children, put the closing `)`
     # on its own line aligned with the opening field name or `(`
+    if (lines_at_max(options)) {
+      return(options)
+    }
     dyn_chr_push_back(tokens, "\n")
+    options <- lines_increment(options)
+
     dyn_chr_push_back(tokens, tab(options$tabs))
   }
 
   dyn_chr_push_back(tokens, color(")", options))
 
-  tokens
+  options
 }
 
 node_format_s_expression_anonymous <- function(x, tokens, options) {
@@ -133,7 +157,7 @@ node_format_s_expression_anonymous <- function(x, tokens, options) {
     dyn_chr_push_back(tokens, location)
   }
 
-  tokens
+  options
 }
 
 node_format_location <- function(x, options) {
@@ -159,6 +183,23 @@ node_format_location <- function(x, options) {
   }
 
   location
+}
+
+lines_at_max <- function(options) {
+  max_lines <- options$max_lines
+
+  if (is.null(max_lines)) {
+    return(FALSE)
+  }
+
+  n_lines <- options$n_lines
+
+  n_lines == max_lines
+}
+
+lines_increment <- function(options) {
+  options$n_lines <- options$n_lines + 1L
+  options
 }
 
 tab <- function(n) {
