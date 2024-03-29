@@ -5,3 +5,4 @@
 .cache
 .vscode
 compile_commands.json
+^README\.Rmd$
