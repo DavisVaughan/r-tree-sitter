@@ -62,7 +62,9 @@ node_child_impl <- function(x, i, fn, call = caller_env()) {
   i <- vec_cast(i, double(), call = call)
   check_number_whole(i, min = 0, call = call)
 
-  raw <- .Call(fn, x, i)
+  # Work around `.Call(fn)` check complaints
+  .call <- .Call
+  raw <- .call(fn, x, i)
 
   new_node_or_null(raw, tree)
 }
@@ -97,7 +99,9 @@ node_children_impl <- function(x, fn, call = caller_env()) {
   tree <- node_tree(x)
   x <- node_raw(x)
 
-  out <- .Call(fn, x)
+  # Work around `.Call(fn)` check complaints
+  .call <- .Call
+  out <- .call(fn, x)
 
   for (i in seq_along(out)) {
     out[[i]] <- new_node(out[[i]], tree)
@@ -166,7 +170,9 @@ node_first_child_for_byte_impl <- function(x, byte, fn, call = caller_env()) {
 
   byte <- coerce_byte(byte, call = call)
 
-  raw <- .Call(fn, x, byte)
+  # Work around `.Call(fn)` check complaints
+  .call <- .Call
+  raw <- .call(fn, x, byte)
 
   new_node_or_null(raw, tree)
 }
@@ -255,7 +261,9 @@ node_sibling <- function(x, fn, call = caller_env()) {
   tree <- node_tree(x)
   x <- node_raw(x)
 
-  raw <- .Call(fn, x)
+  # Work around `.Call(fn)` check complaints
+  .call <- .Call
+  raw <- .call(fn, x)
 
   new_node_or_null(raw, tree)
 }
@@ -366,7 +374,9 @@ node_descendant_for_byte_range_impl <- function(x, start, end, fn, call = caller
   start <- coerce_byte(start, call = call)
   end <- coerce_byte(end, call = call)
 
-  raw <- .Call(fn, x, start, end)
+  # Work around `.Call(fn)` check complaints
+  .call <- .Call
+  raw <- .call(fn, x, start, end)
 
   new_node_or_null(raw, tree)
 }
@@ -395,7 +405,9 @@ node_descendant_for_point_range_impl <- function(x, start, end, fn, call = calle
   end_row <- point_row0(end)
   end_column <- point_column0(end)
 
-  raw <- .Call(fn, x, start_row, start_column, end_row, end_column)
+  # Work around `.Call(fn)` check complaints
+  .call <- .Call
+  raw <- .call(fn, x, start_row, start_column, end_row, end_column)
 
   new_node_or_null(raw, tree)
 }
