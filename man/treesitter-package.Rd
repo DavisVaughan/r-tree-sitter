@@ -6,7 +6,7 @@
 \alias{treesitter-package}
 \title{treesitter: R Bindings to tree-sitter}
 \description{
-What the package does (one paragraph).
+Provides bindings to tree-sitter, an incremental parsing system for programming tools. Tree-sitter builds concrete syntax trees for source files of any language, and can efficiently update those syntax trees as the source file is edited. It also includes a robust error recovery system that provides useful parse results even in the presence of syntax errors.
 }
 \author{
 \strong{Maintainer}: Davis Vaughan \email{davis@posit.co}
