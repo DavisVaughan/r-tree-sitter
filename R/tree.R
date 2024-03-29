@@ -155,7 +155,11 @@ is_tree <- function(x) {
 
 #' @export
 print.tree_sitter_tree <- function(x, ...) {
+  x <- tree_root_node(x)
   cat_line("<tree_sitter_tree>")
+  cat_line()
+  node_print_body(x)
+  invisible(x)
 }
 
 tree_pointer <- function(x) {

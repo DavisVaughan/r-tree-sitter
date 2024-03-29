@@ -406,27 +406,39 @@ is_node <- function(x) {
 
 #' @export
 print.tree_sitter_node <- function(x, ...) {
-  text <- node_text(x)
-  text <- truncate(text)
-
   cat_line("<tree_sitter_node>")
   cat_line()
+  node_print_body(x)
+  invisible(x)
+}
+
+node_print_body <- function(x) {
   cli::cat_rule("S-Expression")
   node_show_s_expression(x, max_lines = 25L)
+
   cat_line()
+
   cli::cat_rule("Text")
+  text <- node_text(x)
+  text <- lines_truncate(text)
   cat_line(text)
 
   invisible(x)
 }
 
-truncate <- function(x) {
-  n <- nchar(x)
+lines_truncate <- function(x, n = 25L) {
+  locs <- gregexpr("\\n", x)[[1L]]
+  n_newlines <- length(locs)
 
-  if (n > 200L) {
-    x <- substr(x, 1L, 200L)
-    x <- paste0(x, "\n", cli::style_italic("<truncated>"))
+  if (n_newlines <= n) {
+    return(x)
   }
+
+  start <- 1L
+  stop <- locs[[n]]
+
+  x <- substr(x, start, stop)
+  x <- paste0(x, cli::style_italic("<truncated>"))
 
   x
 }
