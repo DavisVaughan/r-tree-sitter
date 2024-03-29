@@ -1,7 +1,7 @@
 # can pretty print `node`s
 
     Code
-      node_print_s_expression(node)
+      node_show_s_expression(node)
     Output
       (program [(1, 0), (9, 2)]
         (left_assignment [(1, 2), (6, 3)]
@@ -42,7 +42,7 @@
 ---
 
     Code
-      node_print_s_expression(node, anonymous = FALSE)
+      node_show_s_expression(node, anonymous = FALSE)
     Output
       (program [(1, 0), (9, 2)]
         (left_assignment [(1, 2), (6, 3)]
@@ -68,7 +68,7 @@
 ---
 
     Code
-      node_print_s_expression(node, compact = FALSE)
+      node_show_s_expression(node, compact = FALSE)
     Output
       (program [(1, 0), (9, 2)]
         (left_assignment [(1, 2), (6, 3)]
@@ -120,7 +120,7 @@
 ---
 
     Code
-      node_print_s_expression(node, locations = FALSE)
+      node_show_s_expression(node, locations = FALSE)
     Output
       (program
         (left_assignment
@@ -161,7 +161,7 @@
 ---
 
     Code
-      node_print_s_expression(node, compact = FALSE, anonymous = FALSE)
+      node_show_s_expression(node, compact = FALSE, anonymous = FALSE)
     Output
       (program [(1, 0), (9, 2)]
         (left_assignment [(1, 2), (6, 3)]
@@ -197,7 +197,7 @@
 ---
 
     Code
-      node_print_s_expression(node, compact = FALSE, locations = FALSE)
+      node_show_s_expression(node, compact = FALSE, locations = FALSE)
     Output
       (program
         (left_assignment
@@ -249,7 +249,7 @@
 ---
 
     Code
-      node_print_s_expression(node, anonymous = FALSE, compact = FALSE, locations = FALSE)
+      node_show_s_expression(node, anonymous = FALSE, compact = FALSE, locations = FALSE)
     Output
       (program
         (left_assignment
@@ -285,7 +285,7 @@
 ---
 
     Code
-      node_print_s_expression(node, max_lines = 1)
+      node_show_s_expression(node, max_lines = 1)
     Output
       (program [(1, 0), (9, 2)]
       <truncated>
@@ -293,7 +293,7 @@
 ---
 
     Code
-      node_print_s_expression(node, max_lines = 10)
+      node_show_s_expression(node, max_lines = 10)
     Output
       (program [(1, 0), (9, 2)]
         (left_assignment [(1, 2), (6, 3)]
@@ -310,7 +310,7 @@
 ---
 
     Code
-      node_print_s_expression(node, max_lines = 10, compact = FALSE)
+      node_show_s_expression(node, max_lines = 10, compact = FALSE)
     Output
       (program [(1, 0), (9, 2)]
         (left_assignment [(1, 2), (6, 3)]
@@ -327,7 +327,7 @@
 ---
 
     Code
-      node_print_s_expression(node, max_lines = 10, compact = FALSE, anonymous = FALSE)
+      node_show_s_expression(node, max_lines = 10, compact = FALSE, anonymous = FALSE)
     Output
       (program [(1, 0), (9, 2)]
         (left_assignment [(1, 2), (6, 3)]
@@ -340,4 +340,12 @@
                 rhs: (arithmetic_operator [(2, 9), (2, 14)]
                   lhs: (float [(2, 9), (2, 10)])
       <truncated>
+
+# truncation doesn't show if you are exactly at `max_lines`
+
+    Code
+      node_show_s_expression(node, max_lines = 2)
+    Output
+      (program [(0, 0), (0, 1)]
+        (float [(0, 0), (0, 1)]))
 

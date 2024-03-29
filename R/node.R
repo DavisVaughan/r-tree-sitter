@@ -409,10 +409,7 @@ print.tree_sitter_node <- function(x, ...) {
   text <- node_text(x)
   text <- truncate(text)
 
-  cat_line("<tree_sitter_node>")
-  cat_line()
-  cli::cat_rule("S-Expression")
-  node_print_s_expression(
+  info <- node_format_s_expression(
     x = x,
     anonymous = TRUE,
     compact = FALSE,
@@ -421,6 +418,16 @@ print.tree_sitter_node <- function(x, ...) {
     color_locations = TRUE,
     max_lines = 25L,
   )
+  sexp <- info$text
+  truncated <- info$truncated
+
+  cat_line("<tree_sitter_node>")
+  cat_line()
+  cli::cat_rule("S-Expression")
+  cat_line(sexp)
+  if (truncated) {
+    cat_line(cli::style_italic("<truncated>"))
+  }
   cat_line()
   cli::cat_rule("Text")
   cat_line(text)

@@ -1,5 +1,5 @@
 #' @export
-node_print_s_expression <- function(
+node_show_s_expression <- function(
   x,
   ...,
   anonymous = TRUE,
@@ -11,7 +11,7 @@ node_print_s_expression <- function(
 ) {
   check_dots_empty0(...)
 
-  text <- node_format_s_expression(
+  info <- node_format_s_expression(
     x = x,
     anonymous = anonymous,
     compact = compact,
@@ -21,7 +21,14 @@ node_print_s_expression <- function(
     max_lines = max_lines
   )
 
+  text <- info$text
+  truncated <- info$truncated
+
   cat_line(text)
+
+  if (truncated) {
+    cat_line(cli::style_italic("<truncated>"))
+  }
 
   invisible(x)
 }
@@ -54,7 +61,8 @@ node_format_s_expression <- function(
     color_parentheses = color_parentheses,
     color_locations = color_locations,
     n_lines = 1L,
-    max_lines = max_lines
+    max_lines = max_lines,
+    truncated = FALSE
   )
 
   # Rough count of expected size
@@ -66,15 +74,12 @@ node_format_s_expression <- function(
   tokens <- new_dyn_chr(capacity)
   options <- node_format_s_expression_recurse(x, tokens, options)
   tokens <- dyn_unwrap(tokens)
-  tokens <- paste0(tokens, collapse = "")
+  text <- paste0(tokens, collapse = "")
 
-  if (lines_at_max(options)) {
-    footer <- cli::format_inline("<truncated>")
-    footer <- cli::style_italic(footer)
-    tokens <- paste0(tokens, "\n", footer)
-  }
-
-  tokens
+  list(
+    text = text,
+    truncated = options$truncated
+  )
 }
 
 node_format_s_expression_recurse <- function(x, tokens, options) {
@@ -111,6 +116,7 @@ node_format_s_expression_named <- function(x, tokens, options) {
     n_visible_children <- n_visible_children + 1L
 
     if (lines_at_max(options)) {
+      options <- lines_truncated(options)
       return(options)
     }
     dyn_chr_push_back(tokens, "\n")
@@ -133,6 +139,7 @@ node_format_s_expression_named <- function(x, tokens, options) {
     # If the node had any visible children, put the closing `)`
     # on its own line aligned with the opening field name or `(`
     if (lines_at_max(options)) {
+      options <- lines_truncated(options)
       return(options)
     }
     dyn_chr_push_back(tokens, "\n")
@@ -199,6 +206,11 @@ lines_at_max <- function(options) {
 
 lines_increment <- function(options) {
   options$n_lines <- options$n_lines + 1L
+  options
+}
+
+lines_truncated <- function(options) {
+  options$truncated <- TRUE
   options
 }
 
