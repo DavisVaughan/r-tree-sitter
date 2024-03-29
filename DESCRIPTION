@@ -8,6 +8,7 @@ Authors@R: c(
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Imports:
+    cli,
     R6,
     rlang,
     vctrs
