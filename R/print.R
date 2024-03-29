@@ -5,6 +5,7 @@ node_show_s_expression <- function(
   max_lines = NULL,
   show_anonymous = TRUE,
   show_locations = TRUE,
+  show_parentheses = TRUE,
   dangling_parenthesis = TRUE,
   color_parentheses = TRUE,
   color_locations = TRUE
@@ -16,6 +17,7 @@ node_show_s_expression <- function(
     max_lines = max_lines,
     show_anonymous = show_anonymous,
     show_locations = show_locations,
+    show_parentheses = show_parentheses,
     dangling_parenthesis = dangling_parenthesis,
     color_parentheses = color_parentheses,
     color_locations = color_locations
@@ -39,6 +41,7 @@ node_format_s_expression <- function(
   max_lines = NULL,
   show_anonymous = TRUE,
   show_locations = TRUE,
+  show_parentheses = TRUE,
   dangling_parenthesis = TRUE,
   color_parentheses = TRUE,
   color_locations = TRUE
@@ -49,6 +52,7 @@ node_format_s_expression <- function(
   check_number_whole(max_lines, min = 1, allow_null = TRUE)
   check_bool(show_anonymous)
   check_bool(show_locations)
+  check_bool(show_parentheses)
   check_bool(dangling_parenthesis)
   check_bool(color_parentheses)
   check_bool(color_locations)
@@ -60,6 +64,7 @@ node_format_s_expression <- function(
     max_lines = max_lines,
     show_anonymous = show_anonymous,
     show_locations = show_locations,
+    show_parentheses = show_parentheses,
     dangling_parenthesis = dangling_parenthesis,
     color_parentheses = color_parentheses,
     color_locations = color_locations
@@ -91,7 +96,10 @@ node_format_s_expression_recurse <- function(x, tokens, options) {
 }
 
 node_format_s_expression_named <- function(x, tokens, options) {
-  dyn_chr_push_back(tokens, color("(", options))
+  if (options$show_parentheses) {
+    dyn_chr_push_back(tokens, color("(", options))
+  }
+
   options$tabs <- options$tabs + 1L
 
   type <- node_type(x)
@@ -135,20 +143,22 @@ node_format_s_expression_named <- function(x, tokens, options) {
 
   options$tabs <- options$tabs - 1L
 
-  if (options$dangling_parenthesis && n_visible_children != 0L) {
-    # If the node had any visible children, put the closing `)`
-    # on its own line aligned with the opening field name or `(`
-    if (lines_at_max(options)) {
-      options <- lines_truncated(options)
-      return(options)
+  if (options$show_parentheses) {
+    if (options$dangling_parenthesis && n_visible_children != 0L) {
+      # If the node had any visible children, put the closing `)`
+      # on its own line aligned with the opening field name or `(`
+      if (lines_at_max(options)) {
+        options <- lines_truncated(options)
+        return(options)
+      }
+      dyn_chr_push_back(tokens, "\n")
+      options <- lines_increment(options)
+
+      dyn_chr_push_back(tokens, tab(options$tabs))
     }
-    dyn_chr_push_back(tokens, "\n")
-    options <- lines_increment(options)
 
-    dyn_chr_push_back(tokens, tab(options$tabs))
+    dyn_chr_push_back(tokens, color(")", options))
   }
-
-  dyn_chr_push_back(tokens, color(")", options))
 
   options
 }

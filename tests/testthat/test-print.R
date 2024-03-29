@@ -21,6 +21,12 @@ test_that("can pretty print `node`s", {
     node_show_s_expression(node, show_anonymous = FALSE)
   })
   expect_snapshot({
+    node_show_s_expression(node, show_parentheses = FALSE)
+  })
+  expect_snapshot({
+    node_show_s_expression(node, show_parentheses = FALSE, show_anonymous = FALSE, show_locations = FALSE)
+  })
+  expect_snapshot({
     node_show_s_expression(node, dangling_parenthesis = FALSE)
   })
   expect_snapshot({
