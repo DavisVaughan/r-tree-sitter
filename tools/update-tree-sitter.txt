@@ -12,3 +12,4 @@ bumps. In particular:
   allocators anyways.
 - Comment out usage of `stderr` in `stack.c` in `ts_stack_print_dot_graph()`.
   We never expose a way to print the dot graph.
+- Replace all `#pragma` calls with `# pragma` in `array.h`
