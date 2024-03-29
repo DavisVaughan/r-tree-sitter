@@ -409,20 +409,10 @@ print.tree_sitter_node <- function(x, ...) {
   text <- node_text(x)
   text <- truncate(text)
 
-  info <- node_format_s_expression(
-    x = x,
-    max_lines = 25L,
-  )
-  sexp <- info$text
-  truncated <- info$truncated
-
   cat_line("<tree_sitter_node>")
   cat_line()
   cli::cat_rule("S-Expression")
-  cat_line(sexp)
-  if (truncated) {
-    cat_line(cli::style_italic("<truncated>"))
-  }
+  node_show_s_expression(x, max_lines = 25L)
   cat_line()
   cli::cat_rule("Text")
   cat_line(text)
