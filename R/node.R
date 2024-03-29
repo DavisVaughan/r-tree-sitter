@@ -1,5 +1,6 @@
+# TODO: Note that this is very fast, but very simplistic
 #' @export
-node_s_expression <- function(x) {
+node_raw_s_expression <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_s_expression, x)
