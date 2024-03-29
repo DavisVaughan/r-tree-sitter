@@ -12,6 +12,8 @@ Description: Provides bindings to tree-sitter, an incremental parsing
     error recovery system that provides useful parse results even in the
     presence of syntax errors.
 License: MIT + file LICENSE
+Depends:
+    R (>= 4.0.0)
 Imports:
     cli (>= 3.6.2),
     R6 (>= 2.5.1),
