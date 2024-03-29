@@ -53,7 +53,7 @@ language_version <- function(x) {
 #' - `NA` if the node name was not known.
 #'
 #' @export
-#' @seealso [language_node_kind_for_id()]
+#' @seealso [language_symbol_name()]
 language_symbol_for_name <- function(x, name, ..., named = TRUE) {
   check_dots_empty0(...)
   check_language(x)

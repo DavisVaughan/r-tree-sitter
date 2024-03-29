@@ -34,5 +34,5 @@ Get the integer symbol ID for a particular node name. Can be useful
 for exploring the grammar.
 }
 \seealso{
-\code{\link[=language_node_kind_for_id]{language_node_kind_for_id()}}
+\code{\link[=language_symbol_name]{language_symbol_name()}}
 }
