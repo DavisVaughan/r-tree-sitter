@@ -411,11 +411,6 @@ print.tree_sitter_node <- function(x, ...) {
 
   info <- node_format_s_expression(
     x = x,
-    anonymous = TRUE,
-    compact = FALSE,
-    locations = TRUE,
-    color_parentheses = TRUE,
-    color_locations = TRUE,
     max_lines = 25L,
   )
   sexp <- info$text

@@ -2,23 +2,23 @@
 node_show_s_expression <- function(
   x,
   ...,
-  anonymous = TRUE,
-  compact = TRUE,
-  locations = TRUE,
+  max_lines = NULL,
+  show_anonymous = TRUE,
+  show_locations = TRUE,
+  dangling_parenthesis = TRUE,
   color_parentheses = TRUE,
-  color_locations = TRUE,
-  max_lines = NULL
+  color_locations = TRUE
 ) {
   check_dots_empty0(...)
 
   info <- node_format_s_expression(
     x = x,
-    anonymous = anonymous,
-    compact = compact,
-    locations = locations,
+    max_lines = max_lines,
+    show_anonymous = show_anonymous,
+    show_locations = show_locations,
+    dangling_parenthesis = dangling_parenthesis,
     color_parentheses = color_parentheses,
-    color_locations = color_locations,
-    max_lines = max_lines
+    color_locations = color_locations
   )
 
   text <- info$text
@@ -36,33 +36,33 @@ node_show_s_expression <- function(
 node_format_s_expression <- function(
   x,
   ...,
-  anonymous = TRUE,
-  compact = TRUE,
-  locations = TRUE,
+  max_lines = NULL,
+  show_anonymous = TRUE,
+  show_locations = TRUE,
+  dangling_parenthesis = TRUE,
   color_parentheses = TRUE,
-  color_locations = TRUE,
-  max_lines = NULL
+  color_locations = TRUE
 ) {
   check_dots_empty0(...)
 
   check_node(x)
-  check_bool(anonymous)
-  check_bool(compact)
-  check_bool(locations)
+  check_number_whole(max_lines, min = 1, allow_null = TRUE)
+  check_bool(show_anonymous)
+  check_bool(show_locations)
+  check_bool(dangling_parenthesis)
   check_bool(color_parentheses)
   check_bool(color_locations)
-  check_number_whole(max_lines, min = 1, allow_null = TRUE)
 
   options <- list(
     tabs = 0L,
-    anonymous = anonymous,
-    compact = compact,
-    locations = locations,
-    color_parentheses = color_parentheses,
-    color_locations = color_locations,
+    truncated = FALSE,
     n_lines = 1L,
     max_lines = max_lines,
-    truncated = FALSE
+    show_anonymous = show_anonymous,
+    show_locations = show_locations,
+    dangling_parenthesis = dangling_parenthesis,
+    color_parentheses = color_parentheses,
+    color_locations = color_locations
   )
 
   # Rough count of expected size
@@ -97,7 +97,7 @@ node_format_s_expression_named <- function(x, tokens, options) {
   type <- node_type(x)
   dyn_chr_push_back(tokens, type)
 
-  if (options$locations) {
+  if (options$show_locations) {
     location <- node_format_location(x, options)
     dyn_chr_push_back(tokens, " ")
     dyn_chr_push_back(tokens, location)
@@ -109,7 +109,7 @@ node_format_s_expression_named <- function(x, tokens, options) {
   for (i in seq_along(children)) {
     child <- children[[i]]
 
-    if (!options$anonymous && !node_is_named(child)) {
+    if (!options$show_anonymous && !node_is_named(child)) {
       next
     }
 
@@ -135,7 +135,7 @@ node_format_s_expression_named <- function(x, tokens, options) {
 
   options$tabs <- options$tabs - 1L
 
-  if (!options$compact && n_visible_children != 0L) {
+  if (options$dangling_parenthesis && n_visible_children != 0L) {
     # If the node had any visible children, put the closing `)`
     # on its own line aligned with the opening field name or `(`
     if (lines_at_max(options)) {
@@ -158,7 +158,7 @@ node_format_s_expression_anonymous <- function(x, tokens, options) {
   type <- encodeString(type, quote = "\"")
   dyn_chr_push_back(tokens, type)
 
-  if (options$locations) {
+  if (options$show_locations) {
     location <- node_format_location(x, options)
     dyn_chr_push_back(tokens, " ")
     dyn_chr_push_back(tokens, location)
