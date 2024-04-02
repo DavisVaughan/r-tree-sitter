@@ -92,7 +92,26 @@ language_symbol_name <- function(x, symbol) {
   .Call(ffi_language_symbol_name, language_pointer(x), symbol)
 }
 
+#' Language field identifiers
+#'
+#' Get the integer field identifier for a field name. If you are going to be
+#' using a field name repeatedly, it is often a little faster to use the
+#' corresponding field identifier instead.
+#'
+#' @param x `[tree_sitter_language]`
+#'
+#'   A tree-sitter language object.
+#'
+#' @param name `[character]`
+#'
+#'   The language field names to look up field identifiers for.
+#'
 #' @export
+#' @seealso [language_field_name_for_id()]
+#' @returns
+#' An integer vector the same length as `name` containing:
+#' - The field identifier for the field name, if known.
+#' - `NA`, if the field name was not known.
 language_field_id_for_name <- function(x, name) {
   check_language(x)
 
@@ -102,7 +121,24 @@ language_field_id_for_name <- function(x, name) {
   .Call(ffi_language_field_id_for_name, language_pointer(x), name)
 }
 
+#' Language field names
+#'
+#' Get the field name for a field identifier.
+#'
+#' @param x `[tree_sitter_language]`
+#'
+#'   A tree-sitter language object.
+#'
+#' @param id `[integer]`
+#'
+#'   The language field identifiers to look up field names for.
+#'
 #' @export
+#' @seealso [language_field_id_for_name()]
+#' @returns
+#' A character vector the same length as `id` containing:
+#' - The field name for the field identifier, if known.
+#' - `NA`, if the field identifier was not known.
 language_field_name_for_id <- function(x, id) {
   check_language(x)
 
@@ -112,19 +148,49 @@ language_field_name_for_id <- function(x, id) {
   .Call(ffi_language_field_name_for_id, language_pointer(x), id)
 }
 
+#' Language symbol count
+#'
+#' Get the number of symbols contained within a language.
+#'
+#' @param x `[tree_sitter_language]`
+#'
+#'   A tree-sitter language object.
+#'
 #' @export
+#' @returns
+#' A single double value.
 language_symbol_count <- function(x) {
   check_language(x)
   .Call(ffi_language_symbol_count, language_pointer(x))
 }
 
+#' Language state count
+#'
+#' Get the number of states traversable within a language.
+#'
+#' @param x `[tree_sitter_language]`
+#'
+#'   A tree-sitter language object.
+#'
 #' @export
+#' @returns
+#' A single double value.
 language_state_count <- function(x) {
   check_language(x)
   .Call(ffi_language_state_count, language_pointer(x))
 }
 
+#' Language field count
+#'
+#' Get the number of fields contained within a language.
+#'
+#' @param x `[tree_sitter_language]`
+#'
+#'   A tree-sitter language object.
+#'
 #' @export
+#' @returns
+#' A single double value.
 language_field_count <- function(x) {
   check_language(x)
   .Call(ffi_language_field_count, language_pointer(x))
@@ -147,7 +213,19 @@ language_next_state <- function(x, state, symbol) {
   .Call(ffi_language_next_state, language_pointer(x), state, symbol)
 }
 
+#' Is `x` a language?
+#'
+#' Use `is_language()` to determine if an object has a class of
+#' `"tree_sitter_language"`.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
 #' @export
+#' @returns
+#' - `TRUE` if `x` is a `"tree_sitter_language"`.
+#' - `FALSE` otherwise.
 is_language <- function(x) {
   inherits(x, "tree_sitter_language")
 }
