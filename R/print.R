@@ -88,21 +88,18 @@ node_format_s_expression <- function(
 }
 
 node_format_s_expression_recurse <- function(x, tokens, options) {
-  if (node_is_named(x)) {
-    node_format_s_expression_named(x, tokens, options)
-  } else {
-    node_format_s_expression_anonymous(x, tokens, options)
-  }
-}
+  is_named <- node_is_named(x)
 
-node_format_s_expression_named <- function(x, tokens, options) {
-  if (options$show_parentheses) {
+  if (options$show_parentheses && is_named) {
     dyn_chr_push_back(tokens, color("(", options))
   }
 
   options$tabs <- options$tabs + 1L
 
   type <- node_type(x)
+  if (!is_named) {
+    type <- encodeString(type, quote = "\"")
+  }
   dyn_chr_push_back(tokens, type)
 
   if (options$show_locations) {
@@ -143,7 +140,7 @@ node_format_s_expression_named <- function(x, tokens, options) {
 
   options$tabs <- options$tabs - 1L
 
-  if (options$show_parentheses) {
+  if (options$show_parentheses && is_named) {
     if (options$dangling_parenthesis && n_visible_children != 0L) {
       # If the node had any visible children, put the closing `)`
       # on its own line aligned with the opening field name or `(`
@@ -158,20 +155,6 @@ node_format_s_expression_named <- function(x, tokens, options) {
     }
 
     dyn_chr_push_back(tokens, color(")", options))
-  }
-
-  options
-}
-
-node_format_s_expression_anonymous <- function(x, tokens, options) {
-  type <- node_type(x)
-  type <- encodeString(type, quote = "\"")
-  dyn_chr_push_back(tokens, type)
-
-  if (options$show_locations) {
-    location <- node_format_location(x, options)
-    dyn_chr_push_back(tokens, " ")
-    dyn_chr_push_back(tokens, location)
   }
 
   options
