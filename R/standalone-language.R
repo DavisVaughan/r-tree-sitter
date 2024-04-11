@@ -1,7 +1,7 @@
 # ---
 # repo: DavisVaughan/r-tree-sitter
 # file: standalone-language.R
-# last-updated: 2024-03-22
+# last-updated: 2024-04-11
 # license: https://unlicense.org
 # ---
 #
@@ -18,25 +18,38 @@
 #' the language name and an external pointer to the result of their C level
 #' `tree_sitter_{name}()` function.
 #'
+#' @param pointer `[external_pointer]`
+#'
+#'   An external pointer to a `const TSLanguage*`.
+#'
 #' @param name `[string]`
 #'
 #'   The name of the language being wrapped.
 #'
-#' @param pointer `[external_pointer]`
+#'   This will eventually be removed when tree-sitter supports extracting the
+#'   language name from the `pointer`.
 #'
-#'   An external pointer to a `const TSLanguage*`.
+#' @param ... Not used.
 #'
 #' @returns
 #' A `tree_sitter_language` object.
 #'
 #' @noRd
-new_language <- function(name, pointer) {
+new_language <- function(pointer, ..., name = NULL) {
+  if (typeof(pointer) != "externalptr") {
+    stop("`pointer` must be an external pointer.")
+  }
+
   # TODO: Remove `name` argument if name is accessible in language object
   # https://github.com/tree-sitter/tree-sitter/pull/3184
-  stopifnot(is.character(name), length(name) == 1L, !is.na(name))
-  stopifnot(typeof(pointer) == "externalptr")
+  if (is.null(name)) {
+    stop("`name` currently must be supplied.")
+  }
+  if (!is.character(name) || length(name) != 1L || is.na(name)) {
+    stop("`name` must be a string.")
+  }
 
-  out <- list(name = name, pointer = pointer)
+  out <- list(pointer = pointer, name = name)
   class(out) <- "tree_sitter_language"
 
   out
