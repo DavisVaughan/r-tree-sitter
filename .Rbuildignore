@@ -1,5 +1,3 @@
-^r-tree-sitter\.Rproj$
-^\.Rproj\.user$
 ^LICENSE\.md$
 .clang-format
 .cache
