@@ -29,8 +29,7 @@ also need to install a secondary grammar specific R package. Currently,
 there is just one, for R, at:
 
 ``` r
-# https://github.com/r-lib/tree-sitter-r/pull/87
-pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r#87")
+pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r@next")
 ```
 
 ## Example

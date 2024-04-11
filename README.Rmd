@@ -32,8 +32,7 @@ pak::pak("DavisVaughan/r-tree-sitter")
 This package does _not_ provide bindings to a language specific tree-sitter _grammar_. To fully utilize the treesitter package, you will also need to install a secondary grammar specific R package. Currently, there is just one, for R, at:
 
 ``` r
-# https://github.com/r-lib/tree-sitter-r/pull/87
-pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r#87")
+pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r@next")
 ```
 
 ## Example
