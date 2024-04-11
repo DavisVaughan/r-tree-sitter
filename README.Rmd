@@ -33,7 +33,7 @@ This package does _not_ provide bindings to a language specific tree-sitter _gra
 
 ``` r
 # https://github.com/r-lib/tree-sitter-r/pull/87
-pak::pak("treesitterr=r-lib/tree-sitter-r/bindings/r#87")
+pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r#87")
 ```
 
 ## Example
@@ -44,7 +44,7 @@ With treesitter, you can parse a string containing code for any language that yo
 library(treesitter, warn.conflicts = FALSE)
 
 # Language specific grammars come from extension packages
-language <- treesitterr::language()
+language <- treesitter.r::language()
 parser <- parser(language)
 
 # Imagine this is a source document

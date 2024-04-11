@@ -21,10 +21,10 @@ Imports:
     vctrs (>= 0.6.5)
 Suggests:
     testthat (>= 3.0.0),
-    treesitterr
+    treesitter.r
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Remotes:
-    treesitterr=r-lib/tree-sitter-r/bindings/r#87
+    treesitter.r=r-lib/tree-sitter-r/bindings/r#87

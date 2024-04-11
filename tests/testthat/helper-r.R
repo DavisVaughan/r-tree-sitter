@@ -1,6 +1,6 @@
 r <- function() {
-  if (!is_installed("treesitterr")) {
-    skip("treesitterr is not installed.")
+  if (!is_installed("treesitter.r")) {
+    skip("treesitter.r is not installed.")
   }
-  treesitterr::language()
+  treesitter.r::language()
 }

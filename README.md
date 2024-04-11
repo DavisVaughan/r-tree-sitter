@@ -30,7 +30,7 @@ there is just one, for R, at:
 
 ``` r
 # https://github.com/r-lib/tree-sitter-r/pull/87
-pak::pak("treesitterr=r-lib/tree-sitter-r/bindings/r#87")
+pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r#87")
 ```
 
 ## Example
@@ -42,7 +42,7 @@ that you have a grammar for. Here’s an example with R code:
 library(treesitter, warn.conflicts = FALSE)
 
 # Language specific grammars come from extension packages
-language <- treesitterr::language()
+language <- treesitter.r::language()
 parser <- parser(language)
 
 # Imagine this is a source document
