@@ -70,7 +70,7 @@ query_error <- function(info, call = caller_env()) {
 
   message <- c(header, i = bullet)
 
-  cli::cli_abort(message, call = call)
+  abort(message, call = call)
 }
 
 new_query <- function(pointer, source, language) {
