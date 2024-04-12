@@ -60,7 +60,7 @@ node_child_impl <- function(x, i, fn, call = caller_env()) {
   x <- node_raw(x)
 
   i <- vec_cast(i, double(), call = call)
-  check_number_whole(i, min = 0, call = call)
+  check_number_whole(i, min = 1, call = call)
 
   # Work around `.Call(fn)` check complaints
   .call <- .Call
@@ -145,7 +145,7 @@ node_field_name_for_child <- function(x, i) {
   x <- node_raw(x)
 
   i <- vec_cast(i, double())
-  check_number_whole(i, min = 0)
+  check_number_whole(i, min = 1)
 
   .Call(ffi_node_field_name_for_child, x, i)
 }
