@@ -80,6 +80,11 @@ extern r_obj* ffi_tree_cursor_goto_first_child_for_byte(r_obj*, r_obj*);
 extern r_obj*
 ffi_tree_cursor_goto_first_child_for_point(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_cursor_finalize(r_obj*);
+extern r_obj* ffi_query_new(r_obj*, r_obj*);
+extern r_obj* ffi_query_pattern_count(r_obj*);
+extern r_obj* ffi_query_capture_count(r_obj*);
+extern r_obj* ffi_query_string_count(r_obj*);
+extern r_obj* ffi_query_start_byte_for_pattern(r_obj*, r_obj*);
 extern r_obj* ffi_new_dyn_chr(r_obj*);
 extern r_obj* ffi_dyn_chr_push_back(r_obj*, r_obj*);
 extern r_obj* ffi_dyn_unwrap(r_obj*);
@@ -195,6 +200,13 @@ static const R_CallMethodDef CallEntries[] = {
      3},
     {"ffi_tree_cursor_finalize", (DL_FUNC) &ffi_tree_cursor_finalize, 1},
     {"ffi_new_dyn_chr", (DL_FUNC) &ffi_new_dyn_chr, 1},
+    {"ffi_query_new", (DL_FUNC) &ffi_query_new, 2},
+    {"ffi_query_pattern_count", (DL_FUNC) &ffi_query_pattern_count, 1},
+    {"ffi_query_capture_count", (DL_FUNC) &ffi_query_capture_count, 1},
+    {"ffi_query_string_count", (DL_FUNC) &ffi_query_string_count, 1},
+    {"ffi_query_start_byte_for_pattern",
+     (DL_FUNC) &ffi_query_start_byte_for_pattern,
+     2},
     {"ffi_dyn_chr_push_back", (DL_FUNC) &ffi_dyn_chr_push_back, 2},
     {"ffi_dyn_unwrap", (DL_FUNC) &ffi_dyn_unwrap, 1},
     {NULL, NULL, 0}};
