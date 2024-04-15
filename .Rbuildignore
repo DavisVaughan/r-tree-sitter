@@ -1,6 +1,6 @@
 ^LICENSE\.md$
 .clang-format
 .cache
-.vscode
+^\.vscode$
 compile_commands.json
 ^README\.Rmd$
