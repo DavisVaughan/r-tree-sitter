@@ -93,10 +93,14 @@ range_end_point0 <- function(x) {
 check_range <- function(
   x,
   ...,
+  allow_null = FALSE,
   arg = caller_arg(x),
   call = caller_env()
 ) {
   if (is_range(x)) {
+    return(invisible(NULL))
+  }
+  if (allow_null && is.null(x)) {
     return(invisible(NULL))
   }
 
@@ -104,6 +108,7 @@ check_range <- function(
     x,
     "a <tree_sitter_range>",
     ...,
+    allow_null = allow_null,
     arg = arg,
     call = call
   )
