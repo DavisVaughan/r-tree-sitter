@@ -23,6 +23,10 @@ uint32_t r_ssize_as_uint32(r_ssize x) {
   return (uint32_t) x;
 }
 
+r_ssize r_uint32_as_r_ssize(uint32_t x) {
+  return (r_ssize) x;
+}
+
 uint32_t r_dbl_as_uint32(double x, const char* arg) {
   if (isnan(x)) {
     r_abort("`%s` can't be missing", arg);
@@ -103,6 +107,19 @@ int r_TSStateId_as_int(TSStateId x) {
   return (int) x;
 }
 
+int r_uint32_as_int(uint32_t x, const char* arg) {
+  if (x > (uint32_t) INT_MAX || x < 0) {
+    r_abort(
+        "Can't convert `%s` to `int`. `%s` must be within the range of "
+        "`[0, "
+        "INT_MAX]`.",
+        arg,
+        arg
+    );
+  }
+  return (int) x;
+}
+
 bool r_lgl_any_missing(r_obj* x) {
   const r_ssize size = r_length(x);
   const int* v_x = r_lgl_cbegin(x);
@@ -140,4 +157,8 @@ bool r_chr_any_missing(r_obj* x) {
   }
 
   return false;
+}
+
+bool str_equal(const char* x, const char* y) {
+  return strcmp(x, y) == 0;
 }

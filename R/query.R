@@ -1,7 +1,7 @@
 #' @export
-query <- function(source, language) {
-  check_string(source)
+query <- function(language, source) {
   check_language(language)
+  check_string(source)
 
   pointer <- language_pointer(language)
   pointer <- .Call(ffi_query_new, source, pointer)
@@ -11,7 +11,68 @@ query <- function(source, language) {
     query_error(pointer)
   }
 
-  new_query(pointer, source, language)
+  # Collect once, use for multiple query requests
+  capture_names <- .Call(ffi_query_capture_names, pointer)
+  pattern_predicates <- .Call(ffi_query_pattern_predicates, pointer)
+
+  new_query(pointer, capture_names, pattern_predicates, source, language)
+}
+
+query_captures <- function(x, node, ..., range = NULL) {
+  check_dots_empty0(...)
+
+  check_query(x)
+  check_node(node)
+  check_range(range, allow_null = TRUE)
+
+  capture_names <- query_capture_names(x)
+  x <- query_pointer(x)
+
+  tree <- node_tree(node)
+  node <- node_raw(node)
+
+  if (is.null(range)) {
+    start_byte <- NULL
+    start_row <- NULL
+    start_column <- NULL
+    end_byte <- NULL
+    end_row <- NULL
+    end_column <- NULL
+  } else {
+    start_byte <- range_start_byte0(range)
+    start_point <- range_start_point0(range)
+    start_row <- point_row0(start_point)
+    start_column <- point_column0(start_point)
+    end_byte <- range_end_byte0(range)
+    end_point <- range_end_point0(range)
+    end_row <- point_row0(end_point)
+    end_column <- point_column0(end_point)
+  }
+
+  out <- .Call(
+    ffi_query_captures,
+    x,
+    capture_names,
+    node,
+    start_byte,
+    start_row,
+    start_column,
+    end_byte,
+    end_row,
+    end_column
+  )
+
+  for (i in seq_along(out)) {
+    captures <- out[[i]]
+    
+    for (j in seq_along(captures)) {
+      captures[[j]] <- new_node(captures[[j]], tree)
+    }
+
+    out[[i]] <- captures
+  }
+
+  out
 }
 
 #' @export
@@ -55,6 +116,10 @@ query_pointer <- function(x) {
   .subset2(x, "pointer")
 }
 
+query_capture_names <- function(x) {
+  .subset2(x, "capture_names")
+} 
+
 query_error <- function(info, call = caller_env()) {
   offset <- info$offset
   type <- info$type
@@ -73,9 +138,17 @@ query_error <- function(info, call = caller_env()) {
   abort(message, call = call)
 }
 
-new_query <- function(pointer, source, language) {
+new_query <- function(
+  pointer, 
+  capture_names, 
+  pattern_predicates, 
+  source, 
+  language
+) {
   out <- list(
     pointer = pointer,
+    capture_names = capture_names,
+    pattern_predicates = pattern_predicates,
     source = source,
     language = language
   )
