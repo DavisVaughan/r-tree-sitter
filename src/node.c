@@ -21,30 +21,39 @@ r_obj* ffi_node_text(r_obj* ffi_x, r_obj* ffi_text) {
 
   r_obj* c_text = r_chr_get(ffi_text, 0);
   const char* text = r_str_c_string(c_text);
-  r_ssize text_size = r_length(c_text);
+  uint32_t text_size = r_ssize_as_uint32(r_length(c_text));
 
+  uint32_t size = 0;
+  const char* source = node_text(*x, text, text_size, &size);
+
+  r_obj* out = KEEP(r_alloc_character(1));
+  r_chr_poke(
+      out, 0, Rf_mkCharLenCE(source, r_uint32_as_int(size, "size"), CE_UTF8)
+  );
+
+  FREE(1);
+  return out;
+}
+
+const char*
+node_text(TSNode x, const char* text, uint32_t text_size, uint32_t* size) {
   // `[start_byte, end_byte)`
-  uint32_t start_byte = ts_node_start_byte(*x);
-  uint32_t end_byte = ts_node_end_byte(*x);
+  uint32_t start_byte = ts_node_start_byte(x);
+  uint32_t end_byte = ts_node_end_byte(x);
 
-  if ((r_ssize) start_byte > text_size) {
+  if (start_byte > text_size) {
     r_stop_internal("Node `start_byte` exceeds `text` size.");
   }
-  if ((r_ssize) end_byte > text_size) {
+  if (end_byte > text_size) {
     r_stop_internal("Node `end_byte` exceeds `text` size.");
   }
   if (end_byte < start_byte) {
     r_stop_internal("Node `end_byte` is somehow less than the `start_byte`.");
   }
 
-  const char* source = text + start_byte;
-  size_t size = end_byte - start_byte;
+  *size = end_byte - start_byte;
 
-  r_obj* out = KEEP(r_alloc_character(1));
-  r_chr_poke(out, 0, Rf_mkCharLenCE(source, size, CE_UTF8));
-
-  FREE(1);
-  return out;
+  return text + start_byte;
 }
 
 r_obj* ffi_node_parent(r_obj* ffi_x) {

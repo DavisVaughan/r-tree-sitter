@@ -7,4 +7,9 @@
 r_obj* ts_node_as_raw(TSNode x);
 TSNode* ts_node_from_raw(r_obj* x);
 
+// Returns a pointer to the start of `x`'s text representation inside `text`,
+// and updates `size` to be the size of that text.
+const char*
+node_text(TSNode x, const char* text, uint32_t text_size, uint32_t* size);
+
 #endif
