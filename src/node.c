@@ -379,6 +379,33 @@ static r_obj* node_descendant_for_point_range(
   return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
 }
 
+// Call `treesitter:::new_node()`
+r_obj* r_exec_new_node(TSNode x, r_obj* tree) {
+  static r_obj* call = NULL;
+  static r_obj* env = NULL;
+  static r_obj* raw_sym = NULL;
+  static r_obj* tree_sym = NULL;
+
+  if (call == NULL) {
+    raw_sym = r_sym("raw");
+    tree_sym = r_sym("tree");
+
+    r_obj* ns = r_env_find(R_NamespaceRegistry, r_sym("treesitter"));
+
+    r_obj* fn = r_env_find(ns, r_sym("new_node"));
+    call = r_call3(fn, raw_sym, tree_sym);
+    r_preserve(call);
+
+    env = r_alloc_environment(2, ns);
+    r_preserve(env);
+  }
+
+  r_env_poke(env, raw_sym, ts_node_as_raw(x));
+  r_env_poke(env, tree_sym, tree);
+
+  return r_eval(call, env);
+}
+
 r_obj* ts_node_as_raw(TSNode x) {
   // Unlike other tree-sitter objects, these aren't on the heap.
   // We represent nodes with raw vectors.
