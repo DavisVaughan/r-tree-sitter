@@ -20,6 +20,8 @@ query <- function(language, source) {
 
 # TODO: Document that you need to escape `#match?` regex strings with double `\\`
 # and the easiest way is with raw strings, or reading from a query.scm file.
+
+#' @export
 query_matches <- function(x, node, ..., range = NULL) {
   check_dots_empty0(...)
 
@@ -73,6 +75,7 @@ query_matches <- function(x, node, ..., range = NULL) {
   out
 }
 
+#' @export
 query_captures <- function(x, node, ..., range = NULL) {
   check_dots_empty0(...)
 
