@@ -86,9 +86,11 @@ extern r_obj* ffi_query_capture_count(r_obj*);
 extern r_obj* ffi_query_string_count(r_obj*);
 extern r_obj* ffi_query_capture_names(r_obj*);
 extern r_obj* ffi_query_pattern_predicates(r_obj*);
-extern r_obj*
-ffi_query_captures(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_query_start_byte_for_pattern(r_obj*, r_obj*);
+extern r_obj*
+ffi_query_matches(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
+extern r_obj*
+ffi_query_captures(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_new_dyn_chr(r_obj*);
 extern r_obj* ffi_dyn_chr_push_back(r_obj*, r_obj*);
 extern r_obj* ffi_dyn_unwrap(r_obj*);
@@ -212,10 +214,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_query_pattern_predicates",
      (DL_FUNC) &ffi_query_pattern_predicates,
      1},
-    {"ffi_query_captures", (DL_FUNC) &ffi_query_captures, 9},
     {"ffi_query_start_byte_for_pattern",
      (DL_FUNC) &ffi_query_start_byte_for_pattern,
      2},
+    {"ffi_query_matches", (DL_FUNC) &ffi_query_matches, 12},
+    {"ffi_query_captures", (DL_FUNC) &ffi_query_captures, 12},
     {"ffi_dyn_chr_push_back", (DL_FUNC) &ffi_dyn_chr_push_back, 2},
     {"ffi_dyn_unwrap", (DL_FUNC) &ffi_dyn_unwrap, 1},
     {NULL, NULL, 0}};

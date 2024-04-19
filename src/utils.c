@@ -162,3 +162,14 @@ bool r_chr_any_missing(r_obj* x) {
 bool str_equal(const char* x, const char* y) {
   return strcmp(x, y) == 0;
 }
+
+// Compares up to `n` characters of `x` and `y` for equality
+//
+// Checks pairs of `x` and `y` characters for equality until:
+// - A character differs
+// - A nul terminating character is reached
+// - `n` characters have been processed
+// (whichever happens first)
+bool str_equal_up_to(const char* x, const char* y, size_t n) {
+  return strncmp(x, y, n) == 0;
+}
