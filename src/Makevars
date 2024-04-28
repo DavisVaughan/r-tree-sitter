@@ -14,6 +14,11 @@ tree-sitter-files = \
         tree-sitter/lib/src/tree.o \
         tree-sitter/lib/src/wasm_store.o
 
+r-files = \
+        grammars/r/binding.o \
+        grammars/r/parser.o \
+        grammars/r/scanner.o
+
 lib-files = \
         alloc.o \
         dyn.o \
@@ -29,7 +34,10 @@ lib-files = \
         tree.o \
         utils.o
 
-OBJECTS = $(tree-sitter-files) $(lib-files)
+OBJECTS = \
+        $(tree-sitter-files) \
+        $(r-files) \
+        $(lib-files)
 
 all: $(SHLIB)
 

@@ -95,6 +95,9 @@ extern r_obj* ffi_new_dyn_chr(r_obj*);
 extern r_obj* ffi_dyn_chr_push_back(r_obj*, r_obj*);
 extern r_obj* ffi_dyn_unwrap(r_obj*);
 
+// Languages
+extern SEXP ffi_language_r(void);
+
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
     {"ffi_language_version", (DL_FUNC) &ffi_language_version, 1},
@@ -221,6 +224,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_query_captures", (DL_FUNC) &ffi_query_captures, 12},
     {"ffi_dyn_chr_push_back", (DL_FUNC) &ffi_dyn_chr_push_back, 2},
     {"ffi_dyn_unwrap", (DL_FUNC) &ffi_dyn_unwrap, 1},
+    {"ffi_language_r", (DL_FUNC) &ffi_language_r, 0},
     {NULL, NULL, 0}};
 
 void R_init_treesitter(DllInfo* dll) {

@@ -23,15 +23,6 @@ You can install the development version of treesitter from
 pak::pak("DavisVaughan/r-tree-sitter")
 ```
 
-This package does *not* provide bindings to a language specific
-tree-sitter *grammar*. To fully utilize the treesitter package, you will
-also need to install a secondary grammar specific R package. Currently,
-there is just one, for R, at:
-
-``` r
-pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r@next")
-```
-
 ## Example
 
 With treesitter, you can parse a string containing code for any language
@@ -40,8 +31,7 @@ that you have a grammar for. Here’s an example with R code:
 ``` r
 library(treesitter, warn.conflicts = FALSE)
 
-# Language specific grammars come from extension packages
-language <- treesitter.r::language()
+language <- language_r()
 parser <- parser(language)
 
 # Imagine this is a source document

@@ -15,7 +15,7 @@ test_that("can create basic query with correct structure", {
   )
   ]'
 
-  query <- query(r(), source)
+  query <- query(language_r(), source)
   
   expect_identical(query$capture_names, c("id", "id2", "id3"))
   
@@ -48,12 +48,12 @@ test_that("can create basic query with correct structure", {
 
 test_that("can detect `not-` cases", {
   source <- '[((identifier) @id (#not-eq? @id "blah"))]'
-  query <- query(r(), source)
+  query <- query(language_r(), source)
   predicate <- query$pattern_predicates[[1]][[1]]
   expect_identical(predicate$capture_invert, TRUE)
 
   source <- '[((identifier) @id (#not-match? @id "blah"))]'
-  query <- query(r(), source)
+  query <- query(language_r(), source)
   predicate <- query$pattern_predicates[[1]][[1]]
   expect_identical(predicate$capture_invert, TRUE)
 })
@@ -65,7 +65,7 @@ test_that("single quoted strings throw an error", {
 )
   "
 
-  language <- r()
+  language <- language_r()
 
   expect_snapshot(error = TRUE, {
     query(language, source)
@@ -96,7 +96,7 @@ fn <- function() {}
   )
   ]'
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -122,7 +122,7 @@ fn(y)
   )
   ]'
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -154,7 +154,7 @@ test_that("can restrict `range`", {
 
   range <- range(0, point(0, 0), 5, point(1, 4))
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -190,7 +190,7 @@ and(a)
   )
   "
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -217,7 +217,7 @@ test_that("can restrict `range`", {
 
   range <- range(0, point(0, 0), 5, point(1, 4))
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -245,7 +245,7 @@ and(a)
   )
   '
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -273,7 +273,7 @@ and(a)
   )
   "
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -300,7 +300,7 @@ test_that("can repeat capture name across patterns", {
   )
   "
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -345,7 +345,7 @@ fn(x) + y
   )
   '
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -378,7 +378,7 @@ a + b
 xy + xy
   "
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -462,7 +462,7 @@ x = x + match(a, b) # and this
   )
   '
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
@@ -507,7 +507,7 @@ test_that("can use `#match?` and `#not-match?` with capture", {
 #' roxy again
   "
 
-  language <- r()
+  language <- language_r()
   parser <- parser(language)
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)

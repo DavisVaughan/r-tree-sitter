@@ -80,7 +80,6 @@ correctly.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 text <- "
 foo + b + a + ab
 and(a)
@@ -88,7 +87,7 @@ and(a)
 
 source <- "(identifier) @id"
 
-language <- treesitter.r::language()
+language <- language_r()
 
 query <- query(language, source)
 
@@ -101,5 +100,4 @@ node <- language |>
 # we only have 1 pattern!
 captures <- query_captures(query, node)
 captures$node
-\dontshow{\}) # examplesIf}
 }

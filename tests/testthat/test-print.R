@@ -10,7 +10,7 @@ test_that("can pretty print `node`s", {
   3 + 3
   "
 
-  parser <- parser(r())
+  parser <- parser(language_r())
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
 
@@ -60,7 +60,7 @@ test_that("can pretty print `node`s", {
 test_that("truncation doesn't show if you are exactly at `max_lines`", {
   text <- "1"
 
-  parser <- parser(r())
+  parser <- parser(language_r())
   tree <- parser_parse(parser, text)
   node <- tree_root_node(tree)
 

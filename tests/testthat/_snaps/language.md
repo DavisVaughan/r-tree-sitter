@@ -17,7 +17,8 @@
 # recycles `named` to size of `name`
 
     Code
-      language_symbol_for_name(r(), c("program", "else"), named = c(TRUE, FALSE, TRUE))
+      language_symbol_for_name(language_r(), c("program", "else"), named = c(TRUE,
+        FALSE, TRUE))
     Condition
       Error in `language_symbol_for_name()`:
       ! Can't recycle `named` (size 3) to size 2.
@@ -33,7 +34,7 @@
 ---
 
     Code
-      language_symbol_for_name(r(), 1)
+      language_symbol_for_name(language_r(), 1)
     Condition
       Error in `language_symbol_for_name()`:
       ! Can't convert `name` <double> to <character>.
@@ -41,7 +42,7 @@
 ---
 
     Code
-      language_symbol_for_name(r(), "foo", named = "x")
+      language_symbol_for_name(language_r(), "foo", named = "x")
     Condition
       Error in `language_symbol_for_name()`:
       ! Can't convert `named` <character> to <logical>.
@@ -49,7 +50,7 @@
 # errors on bad symbol IDs
 
     Code
-      language_symbol_name(r(), -1L)
+      language_symbol_name(language_r(), -1L)
     Condition
       Error in `language_symbol_name()`:
       ! Can't convert `symbol` to `TSSymbol`. `symbol` must be within the range of `[0, UINT16_MAX]`.
