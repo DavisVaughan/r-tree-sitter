@@ -1,18 +1,10 @@
-PKG_CFLAGS = -I./tree-sitter/lib/include -I./rlang
+PKG_CFLAGS = \
+        -I./tree-sitter/lib/include \
+        -I./tree-sitter/lib/src \
+        -I./rlang
 
 tree-sitter-files = \
-        tree-sitter/lib/src/alloc.o \
-        tree-sitter/lib/src/get_changed_ranges.o \
-        tree-sitter/lib/src/language.o \
-        tree-sitter/lib/src/lexer.o \
-        tree-sitter/lib/src/node.o \
-        tree-sitter/lib/src/parser.o \
-        tree-sitter/lib/src/query.o \
-        tree-sitter/lib/src/stack.o \
-        tree-sitter/lib/src/subtree.o \
-        tree-sitter/lib/src/tree_cursor.o \
-        tree-sitter/lib/src/tree.o \
-        tree-sitter/lib/src/wasm_store.o
+        tree-sitter/lib/src/lib.o
 
 lib-files = \
         alloc.o \
