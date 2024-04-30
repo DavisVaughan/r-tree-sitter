@@ -14,7 +14,11 @@ r_obj* r_arg_as_string(r_obj* x, const char* arg) {
 }
 
 uint32_t r_ssize_as_uint32(r_ssize x) {
-  if (x > (r_ssize) UINT32_MAX || x < 0) {
+  // On 32 bit Windows `r_ssize = int < uint32_t`
+  // On 64 bit Windows `r_ssize = ptrdiff_t > uint32_t`
+  // So we can't use a static directional cast. Instead we try and cast both
+  // "up" to a fixed larger type to compare them.
+  if (x < 0 || (uint64_t) x > (uint64_t) UINT32_MAX) {
     r_abort(
         "Can't convert `x` to `uint32_t`. `x` must be within the range of `[0, "
         "UINT32_MAX]`."
