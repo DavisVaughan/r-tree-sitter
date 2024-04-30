@@ -1,4 +1,7 @@
-PKG_CFLAGS = -I./tree-sitter/lib/include -I./rlang
+PKG_CFLAGS = \
+        -I./tree-sitter/lib/include \
+        -I./tree-sitter/lib/src \
+        -I./rlang
 
 tree-sitter-files = \
         tree-sitter/lib/src/alloc.o \
