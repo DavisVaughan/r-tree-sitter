@@ -2,7 +2,7 @@
 	function: [
 		(identifier) @parent_function
 		(namespace_operator
-			lhs: (identifier) @pkg (#eq? @pkg "testthat")
+			lhs: (identifier) @parent_pkg (#eq? @parent_pkg "testthat")
 			rhs: (identifier) @parent_function
 		)
 	] (#eq? @parent_function "describe")
@@ -16,7 +16,7 @@
 					function: [
 						(identifier) @function
 						(namespace_operator
-							lhs: (identifier) @pkg2 (#eq? @pkg2 "testthat")
+							lhs: (identifier) @pkg (#eq? @pkg "testthat")
 							rhs: (identifier) @function
 						)
 					] (#eq? @function "it")
