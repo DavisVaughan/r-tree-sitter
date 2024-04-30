@@ -1,6 +1,6 @@
 test_that("one-liner test_that() call is matched", {
   code_source <- glue::glue('test_that("desc one-liner", expect_true(TRUE))')
-  captures <- test_that_captures(code_source)
+  captures <- get_captures(code_source, read_file("test_that.scm"))
 
   expect_test_that_captures(
     code_source,
@@ -16,7 +16,7 @@ test_that("test_that() call with braced expression for `code` is matched", {
       x <- 1 + 1
       expect_equal(x, 2)
     })', .open = "<<", .close = ">>")
-  captures <- test_that_captures(code_source)
+  captures <- get_captures(code_source, read_file("test_that.scm"))
 
   expect_test_that_captures(
     code_source,
@@ -28,7 +28,7 @@ test_that("test_that() call with braced expression for `code` is matched", {
 
 test_that("test_that(code, desc = 'desc') is matched", {
   code_source <- glue::glue('test_that(expect_true(TRUE), desc = "desc after code")')
-  captures <- test_that_captures(code_source)
+  captures <- get_captures(code_source, read_file("test_that.scm"))
 
   expect_test_that_captures(
     code_source,
@@ -40,19 +40,19 @@ test_that("test_that(code, desc = 'desc') is matched", {
 
 test_that("test_that() with <2 args does not match", {
   code_source <- glue::glue('test_that("desc only, no code")')
-  captures <- test_that_captures(code_source)
+  captures <- get_captures(code_source, read_file("test_that.scm"))
   expect_length(captures$node, 0)
 })
 
 test_that("test_that() with >2 args does not match", {
   code_source <- glue::glue('test_that("desc", expect_true(TRUE), other_stuff)')
-  captures <- test_that_captures(code_source)
+  captures <- get_captures(code_source, read_file("test_that.scm"))
   expect_length(captures$node, 0)
 })
 
 test_that("testthat::test_that() is matched", {
   code_source <- glue::glue('testthat::test_that("with testthat::", expect_true(TRUE))')
-  captures <- test_that_captures(code_source)
+  captures <- get_captures(code_source, read_file("test_that.scm"))
 
   expect_test_that_captures(
     code_source,
@@ -65,6 +65,6 @@ test_that("testthat::test_that() is matched", {
 
 test_that("OTHERPKG::test_that() does not match", {
   code_source <- glue::glue('OTHERPKG::test_that("with OTHERPKG::", expect_true(TRUE))')
-  captures <- test_that_captures(code_source)
+  captures <- get_captures(code_source, read_file("test_that.scm"))
   expect_length(captures$node, 0)
 })

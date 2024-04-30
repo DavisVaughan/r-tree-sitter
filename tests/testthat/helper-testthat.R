@@ -1,16 +1,3 @@
-read_file <- function(file) {
-  paste(readLines(test_path("fixtures", file)), collapse = '')
-}
-
-test_that_captures <- function(code_source) {
-  language <- r()
-  parser <- parser(language)
-  tree <- parser_parse(parser, code_source)
-  node <- tree_root_node(tree)
-  query <- query(language, read_file("test_that.scm"))
-  query_captures(query, node)
-}
-  
 expect_test_that_captures <-function(code_source, desc, captures) {
   # make sure we captured something
   expect_gt(length(captures$node), 0)
@@ -43,11 +30,4 @@ expect_test_that_captures <-function(code_source, desc, captures) {
       "desc"
     )
   }
-}
-
-expect_top_level <- function(node) {
-  expect_equal(
-    node_type(node_parent(node)),
-    "program"
-  )
 }
