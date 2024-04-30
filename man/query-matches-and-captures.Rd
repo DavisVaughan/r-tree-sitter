@@ -30,13 +30,13 @@ These two functions execute a query on a given \code{node}, and return the
 captures of the query for further use. Both functions return the same
 information, just structured differently depending on your use case.
 \itemize{
-\item \code{query_matches()} returns the captures first grouped by \emph{predicate}, and
-further grouped by \emph{match} within each predicate. This is useful if you
-include multiple predicates in your query or if you expect multiple
+\item \code{query_matches()} returns the captures first grouped by \emph{pattern}, and
+further grouped by \emph{match} within each pattern. This is useful if you
+include multiple patterns in your query or if you expect multiple
 captures per match.
 \item \code{query_captures()} returns a flat list of captures ordered by their node
 location in the original text. This is normally the easiest structure to
-use if you have a single predicate with one capture per match.
+use if you have a single pattern with one capture per match.
 }
 
 Both also return the name of the capture, i.e. the \verb{@name} you specified in
