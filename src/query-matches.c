@@ -384,6 +384,9 @@ static r_obj* predicate_eq(
     case TSQueryPredicateStepTypeDone: {
       r_stop_internal("Unexpected `Done` step.");
     }
+    default: {
+      r_stop_unreachable();
+    }
   }
 }
 
