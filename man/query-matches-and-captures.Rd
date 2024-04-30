@@ -91,11 +91,9 @@ source <- "(identifier) @id"
 language <- treesitter.r::language()
 
 query <- query(language, source)
-
-node <- language |>
-  parser() |>
-  parser_parse(text) |>
-  tree_root_node()
+parser <- parser(language)
+tree <- parser_parse(parser, text)
+node <- tree_root_node(tree)
 
 # A flat ordered list of captures, that's most useful here since
 # we only have 1 pattern!
