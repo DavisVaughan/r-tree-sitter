@@ -13,7 +13,7 @@ Description: Provides bindings to tree-sitter, an incremental parsing
     presence of syntax errors.
 License: MIT + file LICENSE
 Depends:
-    R (>= 4.0.0)
+    R (>= 4.3.0)
 Imports:
     cli (>= 3.6.2),
     R6 (>= 2.5.1),
