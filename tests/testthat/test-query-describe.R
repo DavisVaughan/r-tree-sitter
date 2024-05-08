@@ -10,7 +10,7 @@ describe("matrix()", {
   it("can have not yet tested specs")
 })
   '
-  matches <- get_matches(code_source, read_file("describe.scm"))
+  matches <- get_matches(code_source, read_fixture("describe.scm"))
 
   # there are 2 it() calls
   expect_length(matches, 2)
@@ -53,7 +53,7 @@ describe("math library", {
   })
 })
   '
-  matches <- get_matches(code_source, read_file("describe.scm"))
+  matches <- get_matches(code_source, read_fixture("describe.scm"))
 
   # there are 3 it() calls
   expect_length(matches, 3)

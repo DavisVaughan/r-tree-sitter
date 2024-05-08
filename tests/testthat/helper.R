@@ -1,4 +1,4 @@
-read_file <- function(file) {
+read_fixture <- function(file) {
   paste(readLines(test_path("fixtures", file)), collapse = '')
 }
 
