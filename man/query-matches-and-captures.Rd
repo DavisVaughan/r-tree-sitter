@@ -32,15 +32,15 @@ information, just structured differently depending on your use case.
 \itemize{
 \item \code{query_matches()} returns the captures first grouped by \emph{pattern}, and
 further grouped by \emph{match} within each pattern. This is useful if you
-include multiple patterns in your query or if you expect multiple
-captures per match.
+include multiple patterns in your query.
 \item \code{query_captures()} returns a flat list of captures ordered by their node
 location in the original text. This is normally the easiest structure to
-use if you have a single pattern with one capture per match.
+use if you have a single pattern without any alternations that would
+benefit from having individual captures split by match.
 }
 
-Both also return the name of the capture, i.e. the \verb{@name} you specified in
-your query.
+Both also return the capture name, i.e. the \verb{@name} you specified in your
+query.
 }
 \section{Predicates}{
 
