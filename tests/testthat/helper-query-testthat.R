@@ -1,4 +1,4 @@
-expect_test_that_captures <-function(code_source, desc, captures) {
+expect_test_that_captures <- function(code_source, desc, captures) {
   # make sure we captured something
   expect_gt(length(captures$node), 0)
 
@@ -8,7 +8,7 @@ expect_test_that_captures <-function(code_source, desc, captures) {
 
   expect_equal(
     node_text(captures[["node"]][[which(captures$name == "call")]]),
-    code_source
+    trimws(code_source)
   )
   expect_equal(
     node_text(captures[["node"]][[which(captures$name == "function")]]),

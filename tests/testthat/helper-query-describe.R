@@ -1,4 +1,4 @@
-expect_describe_it_captures <-function(code_source, parent_desc, desc, captures) {
+expect_describe_it_captures <- function(parent_desc, desc, captures) {
   # make sure we captured something
   expect_gt(length(captures$node), 0)
 
