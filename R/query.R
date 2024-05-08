@@ -25,17 +25,17 @@ query <- function(language, source) {
 #' captures of the query for further use. Both functions return the same
 #' information, just structured differently depending on your use case. 
 #' 
-#' - `query_matches()` returns the captures first grouped by _predicate_, and
-#'   further grouped by _match_ within each predicate. This is useful if you
-#'   include multiple predicates in your query or if you expect multiple
-#'   captures per match.
+#' - `query_matches()` returns the captures first grouped by _pattern_, and
+#'   further grouped by _match_ within each pattern. This is useful if you
+#'   include multiple patterns in your query.
 #' 
 #' - `query_captures()` returns a flat list of captures ordered by their node
 #'   location in the original text. This is normally the easiest structure to
-#'   use if you have a single predicate with one capture per match.
+#'   use if you have a single pattern without any alternations that would
+#'   benefit from having individual captures split by match.
 #' 
-#' Both also return the name of the capture, i.e. the `@name` you specified in
-#' your query.
+#' Both also return the capture name, i.e. the `@name` you specified in your
+#' query.
 #' 
 #' @section Predicates: 
 #' 
