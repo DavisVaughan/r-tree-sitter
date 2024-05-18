@@ -80,7 +80,7 @@ correctly.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (treesitter:::has_r_grammar()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 text <- "
 foo + b + a + ab
 and(a)

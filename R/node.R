@@ -470,13 +470,55 @@ node_field_name_for_child <- function(x, i) {
   .Call(ffi_node_field_name_for_child, x, i)
 }
 
-# TODO: Document that this is 0-indexed, like `tree_edit()` and other
-# byte related functions
+#' Get the first child that extends beyond the given byte offset
+#' 
+#' @description
+#' These functions return the first child of `x` that extends beyond the given
+#' `byte` offset. Note that `byte` is a 0-indexed offset.
+#' 
+#' - `node_first_child_for_byte()` considers both named and anonymous nodes.
+#' 
+#' - `node_first_named_child_for_byte()` considers only named nodes.
+#' 
+#' @inheritParams x_tree_sitter_node
+#' 
+#' @param byte `[integer(1)]`
+#' 
+#'   The byte to start the search from.
+#' 
+#'   Note that `byte` is 0-indexed!
+#' 
+#' @returns
+#' A new node, or `NULL` if there is no node past the `byte` offset.
+#' 
+#' @name node-first-child-byte
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' 
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#' 
+#' # Navigate to first child
+#' node <- node_child(node, 1)
+#' node
+#' 
+#' # `fn {here}<- function()`
+#' node_first_child_for_byte(node, 3)
+#' node_first_named_child_for_byte(node, 3)
+#' 
+#' # Past any node
+#' node_first_child_for_byte(node, 100)
+NULL
+
+#' @rdname node-first-child-byte
 #' @export
 node_first_child_for_byte <- function(x, byte) {
   node_first_child_for_byte_impl(x, byte, ffi_node_first_child_for_byte)
 }
 
+#' @rdname node-first-child-byte
 #' @export
 node_first_named_child_for_byte <- function(x, byte) {
   node_first_child_for_byte_impl(x, byte, ffi_node_first_named_child_for_byte)
@@ -497,6 +539,63 @@ node_first_child_for_byte_impl <- function(x, byte, fn, call = caller_env()) {
   new_node_or_null(raw, tree)
 }
 
+#' Node byte and point accessors
+#' 
+#' @description
+#' These functions return information about the location of `x` in the document.
+#' The byte, row, and column locations are all 0-indexed.
+#' 
+#' - `node_start_byte()` returns the start byte.
+#' 
+#' - `node_end_byte()` returns the end byte.
+#' 
+#' - `node_start_point()` returns the start point, containing a row and column
+#'   location within the document. Use accessors like [point_row()] to extract
+#'   the row and column positions.
+#' 
+#' - `node_end_point()` returns the end point, containing a row and column
+#'   location within the document. Use accessors like [point_row()] to extract
+#'   the row and column positions.
+#' 
+#' - `node_range()` returns a range object that contains all of the above
+#'   information. Use accessors like [range_start_point()] to extract
+#'   individual pieces from the range.
+#' 
+#' @inheritParams x_tree_sitter_node
+#' 
+#' @returns
+#' - `node_start_byte()` and `node_end_byte()` return a single numeric value.
+#' 
+#' - `node_start_point()` and `node_end_point()` return single points.
+#' 
+#' - `node_range()` returns a range.
+#' 
+#' @name node-location
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' 
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#' 
+#' # Navigate to first child
+#' node <- node_child(node, 1)
+#' 
+#' # Navigate to function definition node
+#' node <- node_child(node, 3)
+#' node
+#' 
+#' node_start_byte(node)
+#' node_end_byte(node)
+#' 
+#' node_start_point(node)
+#' node_end_point(node)
+#' 
+#' node_range(node)
+NULL
+
+#' @rdname node-location
 #' @export
 node_start_byte <- function(x) {
   check_node(x)
@@ -504,6 +603,7 @@ node_start_byte <- function(x) {
   .Call(ffi_node_start_byte, x)
 }
 
+#' @rdname node-location
 #' @export
 node_end_byte <- function(x) {
   check_node(x)
@@ -511,6 +611,7 @@ node_end_byte <- function(x) {
   .Call(ffi_node_end_byte, x)
 }
 
+#' @rdname node-location
 #' @export
 node_start_point <- function(x) {
   check_node(x)
@@ -524,6 +625,7 @@ node_start_point <- function(x) {
   new_point(row, column)
 }
 
+#' @rdname node-location
 #' @export
 node_end_point <- function(x) {
   check_node(x)
@@ -537,6 +639,7 @@ node_end_point <- function(x) {
   new_point(row, column)
 }
 
+#' @rdname node-location
 #' @export
 node_range <- function(x) {
   check_node(x)
@@ -555,21 +658,68 @@ node_range <- function(x) {
   )
 }
 
+#' Node sibling accessors
+#' 
+#' @description
+#' These functions return siblings of the current node, i.e. if you looked
+#' "left" or "right" from the current node rather "up" (parent) or "down"
+#' (child).
+#' 
+#' - `node_next_sibling()` and `node_next_named_sibling()` return the next
+#'   sibling.
+#' 
+#' - `node_previous_sibling()` and `node_previous_named_sibling()` return the
+#'   previous sibling.
+#' 
+#' @inheritParams x_tree_sitter_node
+#' 
+#' @returns
+#' A sibling node, or `NULL` if there is no sibling node.
+#' 
+#' @name node-sibling
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' 
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#' 
+#' # Navigate to first child
+#' node <- node_child(node, 1)
+#' 
+#' # Navigate to function definition node
+#' node <- node_child(node, 3)
+#' node
+#' 
+#' node_previous_sibling(node)
+#' 
+#' # Skip anonymous operator node
+#' node_previous_named_sibling(node)
+#' 
+#' # There isn't one!
+#' node_next_sibling(node)
+NULL
+
+#' @rdname node-sibling
 #' @export
 node_next_sibling <- function(x) {
   node_sibling(x, ffi_node_next_sibling)
 }
 
-#' @export
-node_previous_sibling <- function(x) {
-  node_sibling(x, ffi_node_previous_sibling)
-}
-
+#' @rdname node-sibling
 #' @export
 node_next_named_sibling <- function(x) {
   node_sibling(x, ffi_node_next_named_sibling)
 }
 
+#' @rdname node-sibling
+#' @export
+node_previous_sibling <- function(x) {
+  node_sibling(x, ffi_node_previous_sibling)
+}
+
+#' @rdname node-sibling
 #' @export
 node_previous_named_sibling <- function(x) {
   node_sibling(x, ffi_node_previous_named_sibling)
@@ -588,6 +738,65 @@ node_sibling <- function(x, fn, call = caller_env()) {
   new_node_or_null(raw, tree)
 }
 
+#' Node metadata
+#' 
+#' @description
+#' These functions return metadata about the current node.
+#' 
+#' - `node_is_named()` reports if the current node is named or anonymous.
+#' 
+#' - `node_is_missing()` reports if the current node is `MISSING`, i.e.
+#'   if it was implied through error recovery.
+#' 
+#' - `node_is_extra()` reports if the current node is an "extra" from the
+#'   grammar.
+#' 
+#' - `node_is_error()` reports if the current node is an `ERROR` node.
+#' 
+#' - `node_has_error()` reports if the current node is an `ERROR` node, or if
+#'   any descendants of the current node are `ERROR` or `MISSING` nodes.
+#' 
+#' @inheritParams x_tree_sitter_node
+#' 
+#' @returns
+#' `TRUE` or `FALSE`.
+#' 
+#' @name node-metadata
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' 
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#' 
+#' node <- node_child(node, 1)
+#' 
+#' fn <- node_child(node, 1)
+#' operator <- node_child(node, 2)
+#'
+#' fn 
+#' node_is_named(fn)
+#' 
+#' operator
+#' node_is_named(operator)
+#' 
+#' # Examples of `TRUE` cases for these are a bit hard to come up with, because
+#' # they are dependent on the exact state of the grammar and the error recovery
+#' # algorithm
+#' node_is_missing(node)
+#' node_is_extra(node)
+NULL
+
+#' @rdname node-metadata
+#' @export
+node_is_named <- function(x) {
+  check_node(x)
+  x <- node_raw(x)
+  .Call(ffi_node_is_named, x)
+}
+
+#' @rdname node-metadata
 #' @export
 node_is_missing <- function(x) {
   check_node(x)
@@ -595,6 +804,7 @@ node_is_missing <- function(x) {
   .Call(ffi_node_is_missing, x)
 }
 
+#' @rdname node-metadata
 #' @export
 node_is_extra <- function(x) {
   check_node(x)
@@ -602,6 +812,7 @@ node_is_extra <- function(x) {
   .Call(ffi_node_is_extra, x)
 }
 
+#' @rdname node-metadata
 #' @export
 node_is_error <- function(x) {
   check_node(x)
@@ -609,7 +820,7 @@ node_is_error <- function(x) {
   .Call(ffi_node_is_error, x)
 }
 
-# TODO: Document that MISSING is considered a syntax error here
+#' @rdname node-metadata
 #' @export
 node_has_error <- function(x) {
   check_node(x)
@@ -617,6 +828,40 @@ node_has_error <- function(x) {
   .Call(ffi_node_has_error, x)
 }
 
+#' Node parse states
+#' 
+#' @description
+#' These are advanced functions that return information about the internal parse
+#' states.
+#' 
+#' - `node_parse_state()` returns the parse state of the current node.
+#' 
+#' - `node_next_parse_state()` returns the parse state after this node.
+#' 
+#' See [language_next_state()] for more information.
+#' 
+#' @inheritParams x_tree_sitter_node
+#' 
+#' @returns
+#' A single integer representing a parse state.
+#' 
+#' @name node-parse-state
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' 
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#' 
+#' node <- node_child(node, 1)
+#' 
+#' # Parse states are grammar dependent
+#' node_parse_state(node)
+#' node_next_parse_state(node)
+NULL
+
+#' @rdname node-parse-state
 #' @export
 node_parse_state <- function(x) {
   check_node(x)
@@ -624,6 +869,7 @@ node_parse_state <- function(x) {
   .Call(ffi_node_parse_state, x)
 }
 
+#' @rdname node-parse-state
 #' @export
 node_next_parse_state <- function(x) {
   check_node(x)
@@ -631,7 +877,40 @@ node_next_parse_state <- function(x) {
   .Call(ffi_node_next_parse_state, x)
 }
 
+#' Node type
+#' 
+#' @description
+#' `node_type()` returns the "type" of the current node as a string.
+#' 
+#' This is a very useful function for making decisions about how to handle
+#' the current node.
+#' 
+#' @inheritParams x_tree_sitter_node
+#' 
+#' @returns
+#' A single string.
+#' 
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' 
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#' 
+#' # Top level program node
+#' node_type(node)
+#' 
+#' # The whole `<-` binary operator node
+#' node <- node_child(node, 1)
+#' node
+#' node_type(node)
+#' 
+#' # Just the literal `<-` operator itself
+#' node <- node_child_by_field_name(node, "operator")
+#' node
+#' node_type(node)
 node_type <- function(x) {
   check_node(x)
   x <- node_raw(x)
@@ -657,13 +936,6 @@ node_grammar_symbol <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_grammar_symbol, x)
-}
-
-#' @export
-node_is_named <- function(x) {
-  check_node(x)
-  x <- node_raw(x)
-  .Call(ffi_node_is_named, x)
 }
 
 #' @export
