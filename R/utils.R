@@ -37,3 +37,7 @@ check_no_missing <- function(
 
   cli::cli_abort(message, arg = arg, call = call)
 }
+
+has_r_grammar <- function() {
+  rlang::is_installed("treesitter.r")
+}
