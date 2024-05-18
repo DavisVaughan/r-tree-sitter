@@ -203,35 +203,35 @@ language_field_count <- function(x) {
 #' @param x `[tree_sitter_language]`
 #'
 #'   A tree-sitter language object.
-#' 
+#'
 #' @param state,symbol `[integer]`
-#' 
+#'
 #'   Vectors of equal length containing the current state and symbol
 #'   information.
-#' 
+#'
 #' @returns
 #' A single integer representing the next state.
-#' 
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to function definition
 #' node <- node_child(node, 1)
 #' node <- node_child(node, 3)
 #' node
-#' 
+#'
 #' state <- node_parse_state(node)
 #' symbol <- node_grammar_symbol(node)
-#' 
+#'
 #' # Function definition symbol
 #' language_symbol_name(language, 85)
-#' 
+#'
 #' # Next state (this is all grammar dependent)
 #' language_next_state(language, state, symbol)
 language_next_state <- function(x, state, symbol) {

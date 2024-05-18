@@ -54,7 +54,7 @@ node <- node_child(node, 1)
 fn <- node_child(node, 1)
 operator <- node_child(node, 2)
 
-fn 
+fn
 node_is_named(fn)
 
 operator

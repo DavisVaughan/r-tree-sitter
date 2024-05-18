@@ -26,8 +26,8 @@ text <- "1 + foo"
 tree <- parser_parse(parser, text)
 node <- tree_root_node(tree)
 
-node |> 
-  node_child(1) |> 
+node |>
+  node_child(1) |>
   node_child_by_field_name("rhs") |>
   node_text()
 \dontshow{\}) # examplesIf}

@@ -1,24 +1,24 @@
 #' "Raw" S-expression
-#' 
+#'
 #' `node_raw_s_expression()` returns the "raw" s-expression as seen by
 #' tree-sitter. Most of the time, [node_show_s_expression()] provides a better
 #' view of the tree, but occasionally it can be useful to see exactly what the
 #' underlying C library is using.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A single string containing the raw s-expression.
-#'  
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "1 + foo"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' node_raw_s_expression(node)
 node_raw_s_expression <- function(x) {
   check_node(x)
@@ -27,25 +27,25 @@ node_raw_s_expression <- function(x) {
 }
 
 #' Get a node's underlying text
-#' 
+#'
 #' `node_text()` returns the document text underlying a node.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A single string containing the node's text.
-#'  
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "1 + foo"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
-#' node |> 
-#'   node_child(1) |> 
+#'
+#' node |>
+#'   node_child(1) |>
 #'   node_child_by_field_name("rhs") |>
 #'   node_text()
 node_text <- function(x) {
@@ -60,23 +60,23 @@ node_text <- function(x) {
 }
 
 #' Get a node's underlying language
-#' 
+#'
 #' `node_language()` returns the document text underlying a node.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A `tree_sitter_language` object.
-#'  
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "1 + foo"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' node_language(node)
 node_language <- function(x) {
   check_node(x)
@@ -85,27 +85,27 @@ node_language <- function(x) {
 }
 
 #' Generate a `TreeCursor` iterator
-#' 
+#'
 #' `node_walk()` creates a [TreeCursor] starting at the current node. You can
 #' use it to "walk" the tree more efficiently than using [node_child()] and
 #' other similar node functions.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A `TreeCursor` object.
-#'  
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "1 + foo"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' cursor <- node_walk(node)
-#' 
+#'
 #' cursor$goto_first_child()
 #' cursor$goto_first_child()
 #' cursor$node()
@@ -117,32 +117,32 @@ node_walk <- function(x) {
 }
 
 #' Get a node's parent
-#' 
+#'
 #' `node_parent()` looks up the tree and returns the current node's parent.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' The parent node of `x` or `NULL` if there is no parent.
-#'  
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Parent of a root node is `NULL`
 #' node_parent(node)
-#' 
+#'
 #' node_function <- node |>
 #'   node_child(1) |>
 #'   node_child(3)
-#' 
+#'
 #' node_function
-#' 
+#'
 #' node_parent(node_function)
 node_parent <- function(x) {
   check_node(x)
@@ -156,43 +156,43 @@ node_parent <- function(x) {
 }
 
 #' Get a node's child by index
-#' 
+#'
 #' @description
 #' These functions return the `i`th child of `x`.
-#' 
+#'
 #' - `node_child()` considers both named and anonymous children.
-#' 
+#'
 #' - `node_named_child()` considers only named children.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @param i `[integer(1)]`
-#' 
+#'
 #'   The index of the child to return.
-#' 
+#'
 #' @returns
 #' The `i`th child node of `x` or `NULL` if there is no child at that index.
-#'  
+#'
 #' @name node-child
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Starts with `program` node for the whole document
 #' node
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
 #' node
-#' 
+#'
 #' # Note how the named variant skips the anonymous operator node
 #' node_child(node, 2)
 #' node_named_child(node, 2)
-#' 
+#'
 #' # OOB indices return `NULL`
 #' node_child(node, 5)
 NULL
@@ -226,32 +226,32 @@ node_child_impl <- function(x, i, fn, call = caller_env()) {
 }
 
 #' Get a node's child count
-#' 
+#'
 #' @description
 #' These functions return the number of children of `x`.
-#' 
+#'
 #' - `node_child_count()` considers both named and anonymous children.
-#' 
+#'
 #' - `node_named_child_count()` considers only named children.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A single integer, the number of children of `x`.
-#'  
+#'
 #' @name node-child-count
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
 #' node
-#' 
+#'
 #' # Note how the named variant doesn't count the anonymous operator node
 #' node_child_count(node)
 #' node_named_child_count(node)
@@ -274,32 +274,32 @@ node_named_child_count <- function(x) {
 }
 
 #' Get a node's children
-#' 
+#'
 #' @description
 #' These functions return the children of `x` within a list.
-#' 
+#'
 #' - `node_children()` considers both named and anonymous children.
-#' 
+#'
 #' - `node_named_children()` considers only named children.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' The children of `x` as a list.
-#'  
+#'
 #' @name node-children
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
 #' node
-#' 
+#'
 #' # Note how the named variant doesn't include the anonymous operator node
 #' node_children(node)
 #' node_named_children(node)
@@ -335,56 +335,56 @@ node_children_impl <- function(x, fn, call = caller_env()) {
 }
 
 #' Get a node's child by field id or name
-#' 
+#'
 #' @description
 #' These functions return children of `x` by field id or name.
-#' 
+#'
 #' - `node_child_by_field_id()` retrieves a child by field id.
-#' 
+#'
 #' - `node_child_by_field_name()` retrieves a child by field name.
-#' 
+#'
 #' Use [language_field_id_for_name()] to get the field id for a field name.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @param id `[integer(1)]`
-#' 
+#'
 #'   The field id of the child to return.
-#' 
+#'
 #' @param name `[character(1)]`
-#' 
+#'
 #'   The field name of the child to return.
-#' 
+#'
 #' @returns
 #' A child of `x`, or `NULL` if no matching child can be found.
-#'  
+#'
 #' @name node-child-by-field
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
 #' node
-#' 
+#'
 #' # Get the field name of the first child
 #' name <- node_field_name_for_child(node, 1)
 #' name
-#' 
+#'
 #' # Now get the child again by that field name
 #' node_child_by_field_name(node, name)
-#' 
+#'
 #' # If you need to look up by field name many times, you can look up the
 #' # more direct field id first and use that instead
 #' id <- language_field_id_for_name(language, name)
 #' id
-#' 
+#'
 #' node_child_by_field_id(node, id)
-#' 
+#'
 #' # Returns `NULL` if no matching child
 #' node_child_by_field_id(node, 10000)
 NULL
@@ -421,43 +421,43 @@ node_child_by_field_name <- function(x, name) {
 }
 
 #' Get a child's field name by index
-#' 
+#'
 #' @description
 #' `node_field_name_for_child()` returns the field name for the `i`th child,
 #' considering both named and anonymous nodes.
-#' 
+#'
 #' Nodes themselves don't know their own field names, because they don't know
 #' if they are fields or not. You must have access to their parents to query
 #' their field names.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @param i `[integer(1)]`
-#' 
+#'
 #'   The index of the child to get the field name for.
-#' 
+#'
 #' @returns
 #' The field name for the `i`th child of `x`, or `NA_character_` if that child
 #' doesn't exist.
-#' 
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
 #' node
-#' 
+#'
 #' # Get the field name of the first few children (note that anonymous children
 #' # are considered)
 #' node_field_name_for_child(node, 1)
 #' node_field_name_for_child(node, 2)
-#' 
+#'
 #' # 10th child doesn't exist, this returns `NA_character_`
 #' node_field_name_for_child(node, 10)
 node_field_name_for_child <- function(x, i) {
@@ -471,43 +471,43 @@ node_field_name_for_child <- function(x, i) {
 }
 
 #' Get the first child that extends beyond the given byte offset
-#' 
+#'
 #' @description
 #' These functions return the first child of `x` that extends beyond the given
 #' `byte` offset. Note that `byte` is a 0-indexed offset.
-#' 
+#'
 #' - `node_first_child_for_byte()` considers both named and anonymous nodes.
-#' 
+#'
 #' - `node_first_named_child_for_byte()` considers only named nodes.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @param byte `[integer(1)]`
-#' 
+#'
 #'   The byte to start the search from.
-#' 
+#'
 #'   Note that `byte` is 0-indexed!
-#' 
+#'
 #' @returns
 #' A new node, or `NULL` if there is no node past the `byte` offset.
-#' 
+#'
 #' @name node-first-child-byte
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
 #' node
-#' 
+#'
 #' # `fn {here}<- function()`
 #' node_first_child_for_byte(node, 3)
 #' node_first_named_child_for_byte(node, 3)
-#' 
+#'
 #' # Past any node
 #' node_first_child_for_byte(node, 100)
 NULL
@@ -540,58 +540,58 @@ node_first_child_for_byte_impl <- function(x, byte, fn, call = caller_env()) {
 }
 
 #' Node byte and point accessors
-#' 
+#'
 #' @description
 #' These functions return information about the location of `x` in the document.
 #' The byte, row, and column locations are all 0-indexed.
-#' 
+#'
 #' - `node_start_byte()` returns the start byte.
-#' 
+#'
 #' - `node_end_byte()` returns the end byte.
-#' 
+#'
 #' - `node_start_point()` returns the start point, containing a row and column
 #'   location within the document. Use accessors like [point_row()] to extract
 #'   the row and column positions.
-#' 
+#'
 #' - `node_end_point()` returns the end point, containing a row and column
 #'   location within the document. Use accessors like [point_row()] to extract
 #'   the row and column positions.
-#' 
+#'
 #' - `node_range()` returns a range object that contains all of the above
 #'   information. Use accessors like [range_start_point()] to extract
 #'   individual pieces from the range.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' - `node_start_byte()` and `node_end_byte()` return a single numeric value.
-#' 
+#'
 #' - `node_start_point()` and `node_end_point()` return single points.
-#' 
+#'
 #' - `node_range()` returns a range.
-#' 
+#'
 #' @name node-location
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
-#' 
+#'
 #' # Navigate to function definition node
 #' node <- node_child(node, 3)
 #' node
-#' 
+#'
 #' node_start_byte(node)
 #' node_end_byte(node)
-#' 
+#'
 #' node_start_point(node)
 #' node_end_point(node)
-#' 
+#'
 #' node_range(node)
 NULL
 
@@ -659,44 +659,44 @@ node_range <- function(x) {
 }
 
 #' Node sibling accessors
-#' 
+#'
 #' @description
 #' These functions return siblings of the current node, i.e. if you looked
 #' "left" or "right" from the current node rather "up" (parent) or "down"
 #' (child).
-#' 
+#'
 #' - `node_next_sibling()` and `node_next_named_sibling()` return the next
 #'   sibling.
-#' 
+#'
 #' - `node_previous_sibling()` and `node_previous_named_sibling()` return the
 #'   previous sibling.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A sibling node, or `NULL` if there is no sibling node.
-#' 
+#'
 #' @name node-sibling
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Navigate to first child
 #' node <- node_child(node, 1)
-#' 
+#'
 #' # Navigate to function definition node
 #' node <- node_child(node, 3)
 #' node
-#' 
+#'
 #' node_previous_sibling(node)
-#' 
+#'
 #' # Skip anonymous operator node
 #' node_previous_named_sibling(node)
-#' 
+#'
 #' # There isn't one!
 #' node_next_sibling(node)
 NULL
@@ -739,48 +739,48 @@ node_sibling <- function(x, fn, call = caller_env()) {
 }
 
 #' Node metadata
-#' 
+#'
 #' @description
 #' These functions return metadata about the current node.
-#' 
+#'
 #' - `node_is_named()` reports if the current node is named or anonymous.
-#' 
+#'
 #' - `node_is_missing()` reports if the current node is `MISSING`, i.e.
 #'   if it was implied through error recovery.
-#' 
+#'
 #' - `node_is_extra()` reports if the current node is an "extra" from the
 #'   grammar.
-#' 
+#'
 #' - `node_is_error()` reports if the current node is an `ERROR` node.
-#' 
+#'
 #' - `node_has_error()` reports if the current node is an `ERROR` node, or if
 #'   any descendants of the current node are `ERROR` or `MISSING` nodes.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' `TRUE` or `FALSE`.
-#' 
+#'
 #' @name node-metadata
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' node <- node_child(node, 1)
-#' 
+#'
 #' fn <- node_child(node, 1)
 #' operator <- node_child(node, 2)
 #'
-#' fn 
+#' fn
 #' node_is_named(fn)
-#' 
+#'
 #' operator
 #' node_is_named(operator)
-#' 
+#'
 #' # Examples of `TRUE` cases for these are a bit hard to come up with, because
 #' # they are dependent on the exact state of the grammar and the error recovery
 #' # algorithm
@@ -829,33 +829,33 @@ node_has_error <- function(x) {
 }
 
 #' Node parse states
-#' 
+#'
 #' @description
 #' These are advanced functions that return information about the internal parse
 #' states.
-#' 
+#'
 #' - `node_parse_state()` returns the parse state of the current node.
-#' 
+#'
 #' - `node_next_parse_state()` returns the parse state after this node.
-#' 
+#'
 #' See [language_next_state()] for more information.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A single integer representing a parse state.
-#' 
+#'
 #' @name node-parse-state
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' node <- node_child(node, 1)
-#' 
+#'
 #' # Parse states are grammar dependent
 #' node_parse_state(node)
 #' node_next_parse_state(node)
@@ -878,35 +878,35 @@ node_next_parse_state <- function(x) {
 }
 
 #' Node type
-#' 
+#'
 #' @description
 #' `node_type()` returns the "type" of the current node as a string.
-#' 
+#'
 #' This is a very useful function for making decisions about how to handle
 #' the current node.
-#' 
+#'
 #' @inheritParams x_tree_sitter_node
-#' 
+#'
 #' @returns
 #' A single string.
-#' 
+#'
 #' @export
 #' @examplesIf treesitter:::has_r_grammar()
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
-#' 
+#'
 #' text <- "fn <- function() { 1 + 1 }"
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # Top level program node
 #' node_type(node)
-#' 
+#'
 #' # The whole `<-` binary operator node
 #' node <- node_child(node, 1)
 #' node
 #' node_type(node)
-#' 
+#'
 #' # Just the literal `<-` operator itself
 #' node <- node_child_by_field_name(node, "operator")
 #' node

@@ -19,45 +19,45 @@ query <- function(language, source) {
 }
 
 #' Query matches and captures
-#' 
+#'
 #' @description
 #' These two functions execute a query on a given `node`, and return the
 #' captures of the query for further use. Both functions return the same
-#' information, just structured differently depending on your use case. 
-#' 
+#' information, just structured differently depending on your use case.
+#'
 #' - `query_matches()` returns the captures first grouped by _pattern_, and
 #'   further grouped by _match_ within each pattern. This is useful if you
 #'   include multiple patterns in your query.
-#' 
+#'
 #' - `query_captures()` returns a flat list of captures ordered by their node
 #'   location in the original text. This is normally the easiest structure to
 #'   use if you have a single pattern without any alternations that would
 #'   benefit from having individual captures split by match.
-#' 
+#'
 #' Both also return the capture name, i.e. the `@name` you specified in your
 #' query.
-#' 
-#' @section Predicates: 
-#' 
+#'
+#' @section Predicates:
+#'
 #' There are 3 core types of predicates supported:
-#' 
+#'
 #' - `#eq? @capture "string"`
 #' - `#eq? @capture1 @capture2`
 #' - `#match? @capture "regex"`
-#' 
+#'
 #' Each of these predicates can also be inverted with a `not-` prefix, i.e.
 #' `#not-eq?` and `#not-match?`.
-#' 
+#'
 #' ### String double quotes
-#' 
+#'
 #' The underlying tree-sitter predicate parser requires that strings supplied
 #' in a query must use double quotes, i.e. `"string"` not `'string'`. If you
 #' try and use single quotes, you will get a query error.
-#' 
+#'
 #' ### `#match?` regex
-#' 
+#'
 #' The regex support provided by `#match?` is powered by [grepl()].
-#' 
+#'
 #' Escapes are a little tricky to get right within these match regex strings.
 #' To use something like `\s` in the regex string, you need the literal text
 #' `\\s` to appear in the string to tell the tree-sitter regex engine to escape
@@ -69,38 +69,38 @@ query <- function(language, source) {
 #' into R, which is also a little more straightforward because you can just
 #' write something like `(#match? @id "^\\s$")` and that will be read in
 #' correctly.
-#' 
+#'
 #' @inheritParams rlang::args_dots_empty
-#' 
+#'
 #' @param x `[tree_sitter_query]`
-#' 
+#'
 #'   A query.
-#' 
+#'
 #' @param node `[tree_sitter_node]`
-#' 
+#'
 #'   A node to run the query over.
-#' 
+#'
 #' @param range `[tree_sitter_range / NULL]`
-#' 
+#'
 #'   An optional range to restrict the query to.
-#' 
+#'
 #' @name query-matches-and-captures
-#' 
+#'
 #' @examplesIf treesitter:::has_r_grammar()
 #' text <- "
 #' foo + b + a + ab
 #' and(a)
 #' "
-#' 
+#'
 #' source <- "(identifier) @id"
-#' 
+#'
 #' language <- treesitter.r::language()
-#' 
+#'
 #' query <- query(language, source)
 #' parser <- parser(language)
 #' tree <- parser_parse(parser, text)
 #' node <- tree_root_node(tree)
-#' 
+#'
 #' # A flat ordered list of captures, that's most useful here since
 #' # we only have 1 pattern!
 #' captures <- query_captures(query, node)
@@ -260,7 +260,7 @@ query_pointer <- function(x) {
 
 query_capture_names <- function(x) {
   .subset2(x, "capture_names")
-} 
+}
 
 query_pattern_predicates <- function(x) {
   .subset2(x, "pattern_predicates")
@@ -298,10 +298,10 @@ query_error <- function(info, source, call = caller_env()) {
 }
 
 new_query <- function(
-  pointer, 
-  capture_names, 
-  pattern_predicates, 
-  source, 
+  pointer,
+  capture_names,
+  pattern_predicates,
+  source,
   language
 ) {
   out <- list(
@@ -342,13 +342,13 @@ check_query <- function(
 }
 
 is_predicate_eq_capture <- function(x) {
-  inherits(x, "tree_sitter_predicate_eq_capture") 
+  inherits(x, "tree_sitter_predicate_eq_capture")
 }
 
 is_predicate_eq_string <- function(x) {
-  inherits(x, "tree_sitter_predicate_eq_string") 
+  inherits(x, "tree_sitter_predicate_eq_string")
 }
 
 is_predicate_match_string <- function(x) {
-  inherits(x, "tree_sitter_predicate_match_string") 
+  inherits(x, "tree_sitter_predicate_match_string")
 }
