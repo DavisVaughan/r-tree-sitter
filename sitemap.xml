@@ -34,6 +34,9 @@
     <loc>/reference/language_name.html</loc>
   </url>
   <url>
+    <loc>/reference/language_next_state.html</loc>
+  </url>
+  <url>
     <loc>/reference/language_state_count.html</loc>
   </url>
   <url>
@@ -61,6 +64,21 @@
     <loc>/reference/node-children.html</loc>
   </url>
   <url>
+    <loc>/reference/node-first-child-byte.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node-location.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node-metadata.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node-parse-state.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node-sibling.html</loc>
+  </url>
+  <url>
     <loc>/reference/node_field_name_for_child.html</loc>
   </url>
   <url>
@@ -74,6 +92,9 @@
   </url>
   <url>
     <loc>/reference/node_text.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node_type.html</loc>
   </url>
   <url>
     <loc>/reference/node_walk.html</loc>
