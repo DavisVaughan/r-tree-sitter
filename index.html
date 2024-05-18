@@ -118,10 +118,10 @@
 <code class="sourceCode R"><span><span class="co"># The right hand side of the pipe</span></span>
 <span><span class="va">node</span> <span class="op">&lt;-</span> <span class="va">tree</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tree_root_node</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">node_child</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">node_child_by_field_name</span><span class="op">(</span><span class="st">"rhs"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/node-child.html">node_child</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/node-child-by-field.html">node_child_by_field_name</a></span><span class="op">(</span><span class="st">"rhs"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">node_text</span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/node_text.html">node_text</a></span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "mutate(y = x + 1)"</span></span></code></pre></div>
 <p>By default, printing a node in the tree will show both the <em>anonymous</em> nodes and the <em>named</em> nodes. Anonymous nodes help you see the full “concrete” syntax tree that tree-sitter builds. If you want to see something more akin to an abstract syntax tree, you can use <code>node_show_s_expression()</code>, which has a number of options for customizing the tree view:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">

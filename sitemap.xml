@@ -49,9 +49,42 @@
     <loc>/reference/language_version.html</loc>
   </url>
   <url>
+    <loc>/reference/node-child-by-field.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node-child-count.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node-child.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node-children.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node_field_name_for_child.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node_language.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node_parent.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node_raw_s_expression.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node_text.html</loc>
+  </url>
+  <url>
+    <loc>/reference/node_walk.html</loc>
+  </url>
+  <url>
     <loc>/reference/query-matches-and-captures.html</loc>
   </url>
   <url>
     <loc>/reference/treesitter-package.html</loc>
+  </url>
+  <url>
+    <loc>/reference/x_tree_sitter_node.html</loc>
   </url>
 </urlset>
