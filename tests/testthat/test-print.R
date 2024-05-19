@@ -68,3 +68,31 @@ test_that("truncation doesn't show if you are exactly at `max_lines`", {
     node_show_s_expression(node, max_lines = 2, dangling_parenthesis = FALSE)
   })
 })
+
+test_that("Named `MISSING` nodes are shown", {
+  # Missing RHS - The newline seems to matter
+  text <- "1 +
+
+  ;"
+
+  parser <- parser(r())
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+
+  expect_snapshot({
+    node_show_s_expression(node)
+  })
+})
+
+test_that("Anonymous `MISSING` nodes are shown", {
+  # Missing `)`
+  text <- "for (i in seq"
+
+  parser <- parser(r())
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+
+  expect_snapshot({
+    node_show_s_expression(node)
+  })
+})

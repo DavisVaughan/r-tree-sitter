@@ -89,6 +89,7 @@ node_format_s_expression <- function(
 
 node_format_s_expression_recurse <- function(x, tokens, options) {
   is_named <- node_is_named(x)
+  is_missing <- node_is_missing(x)
 
   if (options$show_parentheses && is_named) {
     dyn_chr_push_back(tokens, color("(", options))
@@ -99,6 +100,9 @@ node_format_s_expression_recurse <- function(x, tokens, options) {
   type <- node_type(x)
   if (!is_named) {
     type <- encodeString(type, quote = "\"")
+  }
+  if (is_missing) {
+    type <- paste0(type, " MISSING")
   }
   dyn_chr_push_back(tokens, type)
 
