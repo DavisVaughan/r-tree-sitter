@@ -311,7 +311,7 @@ r_obj* ffi_node_descendant_for_byte_range(
   const uint32_t start = r_dbl_as_uint32(r_dbl_get(ffi_start, 0), "start");
   const uint32_t end = r_dbl_as_uint32(r_dbl_get(ffi_end, 0), "end");
   const TSNode out = ts_node_descendant_for_byte_range(*x, start, end);
-  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+  return ts_node_as_raw(out);
 }
 
 r_obj* ffi_node_named_descendant_for_byte_range(
@@ -323,7 +323,7 @@ r_obj* ffi_node_named_descendant_for_byte_range(
   const uint32_t start = r_dbl_as_uint32(r_dbl_get(ffi_start, 0), "start");
   const uint32_t end = r_dbl_as_uint32(r_dbl_get(ffi_end, 0), "end");
   const TSNode out = ts_node_named_descendant_for_byte_range(*x, start, end);
-  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+  return ts_node_as_raw(out);
 }
 
 r_obj* ffi_node_descendant_for_point_range(
@@ -376,7 +376,7 @@ static r_obj* node_descendant_for_point_range(
       named ? ts_node_named_descendant_for_point_range(*x, start, end)
             : ts_node_descendant_for_point_range(*x, start, end);
 
-  return ts_node_is_null(out) ? r_null : ts_node_as_raw(out);
+  return ts_node_as_raw(out);
 }
 
 // Call `treesitter:::new_node()`

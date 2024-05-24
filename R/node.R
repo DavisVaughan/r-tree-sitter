@@ -917,7 +917,35 @@ node_type <- function(x) {
   .Call(ffi_node_type, x)
 }
 
+#' Node symbol
+#'
+#' @description
+#' `node_symbol()` returns the symbol id of the current node as an integer.
+#'
+#' @inheritParams x_tree_sitter_node
+#'
+#' @returns
+#' A single integer.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # Top level program node
+#' node_symbol(node)
+#'
+#' # The whole `<-` binary operator node
+#' node <- node_child(node, 1)
+#' node_symbol(node)
+#'
+#' # Just the literal `<-` operator itself
+#' node <- node_child_by_field_name(node, "operator")
+#' node_symbol(node)
 node_symbol <- function(x) {
   check_node(x)
   x <- node_raw(x)
@@ -938,20 +966,95 @@ node_grammar_symbol <- function(x) {
   .Call(ffi_node_grammar_symbol, x)
 }
 
+#' Node descendant count
+#'
+#' @description
+#' Returns the number of descendants of this node, including this node in the
+#' count.
+#'
+#' @inheritParams x_tree_sitter_node
+#'
+#' @returns
+#' A single double.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # Top level program node
+#' node_descendant_count(node)
+#'
+#' # The whole `<-` binary operator node
+#' node <- node_child(node, 1)
+#' node_descendant_count(node)
+#'
+#' # Just the literal `<-` operator itself
+#' node <- node_child_by_field_name(node, "operator")
+#' node_descendant_count(node)
 node_descendant_count <- function(x) {
   check_node(x)
   x <- node_raw(x)
   .Call(ffi_node_descendant_count, x)
 }
 
-# TODO: Document that it does not seem like this returns `NULL` even
-# with OOB byte ranges
+#' Node descendants
+#'
+#' @description
+#' These functions return the smallest node within this node that spans the
+#' given range of bytes or points. If the ranges are out of bounds, or no
+#' smaller node can be determined, the input is returned.
+#'
+#' @inheritParams x_tree_sitter_node
+#'
+#' @param start,end `[integer(1) / tree_sitter_point]`
+#'
+#'   For the byte range functions, start and end bytes to search within.
+#'
+#'   For the point range functions, start and end points created by [point()] to
+#'   search within.
+#'
+#' @returns
+#' A node.
+#'
+#' @name node-descendant
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # The whole `<-` binary operator node
+#' node <- node_child(node, 1)
+#' node
+#'
+#' # The byte range points to a location in the word `function`
+#' node_descendant_for_byte_range(node, 7, 9)
+#' node_named_descendant_for_byte_range(node, 7, 9)
+#'
+#' start <- point(0, 14)
+#' end <- point(0, 15)
+#'
+#' node_descendant_for_point_range(node, start, end)
+#' node_named_descendant_for_point_range(node, start, end)
+#'
+#' # OOB returns the input
+#' node_descendant_for_byte_range(node, 25, 29)
+NULL
+
+#' @rdname node-descendant
 #' @export
 node_descendant_for_byte_range <- function(x, start, end) {
   node_descendant_for_byte_range_impl(x, start, end, ffi_node_descendant_for_byte_range)
 }
 
+#' @rdname node-descendant
 #' @export
 node_named_descendant_for_byte_range <- function(x, start, end) {
   node_descendant_for_byte_range_impl(x, start, end, ffi_node_named_descendant_for_byte_range)
@@ -970,14 +1073,16 @@ node_descendant_for_byte_range_impl <- function(x, start, end, fn, call = caller
   .call <- .Call
   raw <- .call(fn, x, start, end)
 
-  new_node_or_null(raw, tree)
+  new_node(raw, tree)
 }
 
+#' @rdname node-descendant
 #' @export
 node_descendant_for_point_range <- function(x, start, end) {
   node_descendant_for_point_range_impl(x, start, end, ffi_node_descendant_for_point_range)
 }
 
+#' @rdname node-descendant
 #' @export
 node_named_descendant_for_point_range <- function(x, start, end) {
   node_descendant_for_point_range_impl(x, start, end, ffi_node_named_descendant_for_point_range)
@@ -1001,10 +1106,33 @@ node_descendant_for_point_range_impl <- function(x, start, end, fn, call = calle
   .call <- .Call
   raw <- .call(fn, x, start_row, start_column, end_row, end_column)
 
-  new_node_or_null(raw, tree)
+  new_node(raw, tree)
 }
 
+#' Is `x` a node?
+#'
+#' @description
+#' Checks if `x` is a `tree_sitter_node` or not.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @returns
+#' `TRUE` if `x` is a `tree_sitter_node`, otherwise `FALSE`.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' is_node(node)
+#'
+#' is_node(1)
 is_node <- function(x) {
   inherits(x, "tree_sitter_node")
 }
