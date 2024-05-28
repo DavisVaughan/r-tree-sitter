@@ -74,7 +74,7 @@ underlying C library is using.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">"1 + foo"</span></span></span>
 <span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">parser_parse</span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">node</span> <span class="op">&lt;-</span> <span class="fu">tree_root_node</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">node</span> <span class="op">&lt;-</span> <span class="fu"><a href="tree_root_node.html">tree_root_node</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">node_raw_s_expression</span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "(program (binary_operator lhs: (float) rhs: (identifier)))"</span>
