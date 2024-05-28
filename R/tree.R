@@ -1,4 +1,32 @@
+#' Retrieve the root node of the tree
+#'
+#' @description
+#' `tree_root_node()` is the entry point for accessing nodes within
+#' a specific tree. It returns the "root" of the tree, from which you
+#' can use other `node_*()` functions to navigate around.
+#'
+#' @inheritParams x_tree_sitter_tree
+#'
+#' @returns
+#' A node.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # Trees and nodes have a similar print method, but you can
+#' # only use other `node_*()` functions on nodes.
+#' tree
+#' node
+#'
+#' node |>
+#'   node_child(1) |>
+#'   node_children()
 tree_root_node <- function(x) {
   check_tree(x)
   pointer <- tree_pointer(x)
@@ -34,14 +62,89 @@ tree_root_node_with_offset <- function(x, byte, point) {
   new_node(raw, x)
 }
 
+#' Generate a `TreeCursor` iterator
+#'
+#' `tree_walk()` creates a [TreeCursor] starting at the root node. You can
+#' use it to "walk" the tree more efficiently than using [node_child()] and
+#' other similar node functions.
+#'
+#' @inheritParams x_tree_sitter_tree
+#'
+#' @returns
+#' A `TreeCursor` object.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "1 + foo"
+#' tree <- parser_parse(parser, text)
+#'
+#' cursor <- tree_walk(tree)
+#'
+#' cursor$goto_first_child()
+#' cursor$goto_first_child()
+#' cursor$node()
+#' cursor$goto_next_sibling()
+#' cursor$node()
 tree_walk <- function(x) {
   check_tree(x)
   node <- tree_root_node(x)
   node_walk(node)
 }
 
+#' Edit a tree in preparation for an incremental parse
+#'
+#' @description
+#' Before calling [parser_parse()] with an existing `tree`, you must first
+#' edit the existing tree using `tree_edit()` to prepare the tree for the
+#' updated `text`.
+#'
+#' All bytes and points are 0-indexed.
+#'
+#' Note that editing a tree is likely to put it into a state where the print
+#' method no longer works, because the tree's start and end boundaries will
+#' be out of sync with its existing text.
+#'
+#' @inheritParams x_tree_sitter_tree
+#'
+#' @param start_byte,start_point `[double(1) / tree_sitter_point]`
+#'
+#'   The starting byte and starting point of the edit location.
+#'
+#' @param old_end_byte,old_end_point `[double(1) / tree_sitter_point]`
+#'
+#'   The old ending byte and old ending point of the edit location.
+#'
+#' @param new_end_byte,new_end_point `[double(1) / tree_sitter_point]`
+#'
+#'   The new ending byte and new ending point of the edit location.
+#'
+#' @returns
+#' A new `tree` that can now be used with [parser_parse()].
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "1 + foo"
+#' tree <- parser_parse(parser, text)
+#' tree
+#'
+#' text <- "1 + bar(foo)"
+#' tree <- tree_edit(
+#'   tree,
+#'   start_byte = 4,
+#'   start_point = point(0, 4),
+#'   old_end_byte = 7,
+#'   old_end_point = point(0, 7),
+#'   new_end_byte = 12,
+#'   new_end_point = point(0, 12)
+#' )
+#'
+#' parser_parse(parser, text, tree = tree)
 tree_edit <- function(
   x,
   start_byte,
