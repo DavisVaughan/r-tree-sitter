@@ -439,3 +439,32 @@
       (program [(0, 0), (0, 1)]
         (float [(0, 0), (0, 1)]))
 
+# Named `MISSING` nodes are shown
+
+    Code
+      node_show_s_expression(node)
+    Output
+      (program [(0, 0), (2, 3)]
+        (binary_operator [(0, 0), (2, 0)]
+          lhs: (float [(0, 0), (0, 1)])
+          operator: "+" [(0, 2), (0, 3)]
+          rhs: (identifier MISSING [(2, 0), (2, 0)])
+        )
+      )
+
+# Anonymous `MISSING` nodes are shown
+
+    Code
+      node_show_s_expression(node)
+    Output
+      (program [(0, 0), (0, 13)]
+        (for_statement [(0, 0), (0, 13)]
+          "for" [(0, 0), (0, 3)]
+          "(" [(0, 4), (0, 5)]
+          variable: (identifier [(0, 5), (0, 6)])
+          "in" [(0, 7), (0, 9)]
+          sequence: (identifier [(0, 10), (0, 13)])
+          ")" MISSING [(0, 13), (0, 13)]
+        )
+      )
+
