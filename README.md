@@ -33,7 +33,7 @@ also need to install a secondary grammar specific R package. Currently,
 there is just one, for R, at:
 
 ``` r
-pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r@next")
+pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r")
 ```
 
 ## Example
@@ -114,7 +114,7 @@ node_show_s_expression(node)
 #> (call [(2, 2), (2, 19)]
 #>   function: (identifier [(2, 2), (2, 8)])
 #>   arguments: (arguments [(2, 8), (2, 19)]
-#>     "(" [(2, 8), (2, 9)]
+#>     open: "(" [(2, 8), (2, 9)]
 #>     argument: (argument [(2, 9), (2, 18)]
 #>       name: (identifier [(2, 9), (2, 10)])
 #>       "=" [(2, 11), (2, 12)]
@@ -124,9 +124,12 @@ node_show_s_expression(node)
 #>         rhs: (float [(2, 17), (2, 18)])
 #>       )
 #>     )
-#>     ")" [(2, 18), (2, 19)]
+#>     close: ")" [(2, 18), (2, 19)]
 #>   )
 #> )
+```
+
+``` r
 
 # Compact view, more like an AST
 node_show_s_expression(
