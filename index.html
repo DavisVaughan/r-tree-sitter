@@ -70,7 +70,7 @@
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"DavisVaughan/r-tree-sitter"</span><span class="op">)</span></span></code></pre></div>
 <p>This package does <em>not</em> provide bindings to a language specific tree-sitter <em>grammar</em>. To fully utilize the treesitter package, you will also need to install a secondary grammar specific R package. Currently, there is just one, for R, at:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"treesitter.r=r-lib/tree-sitter-r/bindings/r@next"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"treesitter.r=r-lib/tree-sitter-r/bindings/r"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -130,7 +130,7 @@
 <span><span class="co">#&gt; (call [(2, 2), (2, 19)]</span></span>
 <span><span class="co">#&gt;   function: (identifier [(2, 2), (2, 8)])</span></span>
 <span><span class="co">#&gt;   arguments: (arguments [(2, 8), (2, 19)]</span></span>
-<span><span class="co">#&gt;     "(" [(2, 8), (2, 9)]</span></span>
+<span><span class="co">#&gt;     open: "(" [(2, 8), (2, 9)]</span></span>
 <span><span class="co">#&gt;     argument: (argument [(2, 9), (2, 18)]</span></span>
 <span><span class="co">#&gt;       name: (identifier [(2, 9), (2, 10)])</span></span>
 <span><span class="co">#&gt;       "=" [(2, 11), (2, 12)]</span></span>
@@ -140,10 +140,11 @@
 <span><span class="co">#&gt;         rhs: (float [(2, 17), (2, 18)])</span></span>
 <span><span class="co">#&gt;       )</span></span>
 <span><span class="co">#&gt;     )</span></span>
-<span><span class="co">#&gt;     ")" [(2, 18), (2, 19)]</span></span>
+<span><span class="co">#&gt;     close: ")" [(2, 18), (2, 19)]</span></span>
 <span><span class="co">#&gt;   )</span></span>
-<span><span class="co">#&gt; )</span></span>
-<span></span>
+<span><span class="co">#&gt; )</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Compact view, more like an AST</span></span>
 <span><span class="fu">node_show_s_expression</span><span class="op">(</span></span>
 <span>  <span class="va">node</span>,</span>
