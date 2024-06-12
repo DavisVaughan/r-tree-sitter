@@ -10,11 +10,11 @@
           rhs: (function_definition [(1, 8), (6, 3)]
             name: "function" [(1, 8), (1, 16)]
             parameters: (parameters [(1, 16), (1, 18)]
-              "(" [(1, 16), (1, 17)]
-              ")" [(1, 17), (1, 18)]
+              open: "(" [(1, 16), (1, 17)]
+              close: ")" [(1, 17), (1, 18)]
             )
             body: (braced_expression [(1, 19), (6, 3)]
-              "{" [(1, 19), (1, 20)]
+              open: "{" [(1, 19), (1, 20)]
               body: (binary_operator [(2, 4), (2, 14)]
                 lhs: (identifier [(2, 4), (2, 5)])
                 operator: "<-" [(2, 6), (2, 8)]
@@ -26,20 +26,20 @@
               )
               body: (if_statement [(3, 4), (5, 5)]
                 "if" [(3, 4), (3, 6)]
-                "(" [(3, 7), (3, 8)]
+                open: "(" [(3, 7), (3, 8)]
                 condition: (binary_operator [(3, 8), (3, 13)]
                   lhs: (identifier [(3, 8), (3, 9)])
                   operator: ">" [(3, 10), (3, 11)]
                   rhs: (float [(3, 12), (3, 13)])
                 )
-                ")" [(3, 13), (3, 14)]
+                close: ")" [(3, 13), (3, 14)]
                 consequence: (braced_expression [(3, 15), (5, 5)]
-                  "{" [(3, 15), (3, 16)]
+                  open: "{" [(3, 15), (3, 16)]
                   body: (true [(4, 6), (4, 10)])
-                  "}" [(5, 4), (5, 5)]
+                  close: "}" [(5, 4), (5, 5)]
                 )
               )
-              "}" [(6, 2), (6, 3)]
+              close: "}" [(6, 2), (6, 3)]
             )
           )
         )
@@ -98,10 +98,10 @@
           rhs: function_definition [(1, 8), (6, 3)]
             name: "function" [(1, 8), (1, 16)]
             parameters: parameters [(1, 16), (1, 18)]
-              "(" [(1, 16), (1, 17)]
-              ")" [(1, 17), (1, 18)]
+              open: "(" [(1, 16), (1, 17)]
+              close: ")" [(1, 17), (1, 18)]
             body: braced_expression [(1, 19), (6, 3)]
-              "{" [(1, 19), (1, 20)]
+              open: "{" [(1, 19), (1, 20)]
               body: binary_operator [(2, 4), (2, 14)]
                 lhs: identifier [(2, 4), (2, 5)]
                 operator: "<-" [(2, 6), (2, 8)]
@@ -111,17 +111,17 @@
                   rhs: float [(2, 13), (2, 14)]
               body: if_statement [(3, 4), (5, 5)]
                 "if" [(3, 4), (3, 6)]
-                "(" [(3, 7), (3, 8)]
+                open: "(" [(3, 7), (3, 8)]
                 condition: binary_operator [(3, 8), (3, 13)]
                   lhs: identifier [(3, 8), (3, 9)]
                   operator: ">" [(3, 10), (3, 11)]
                   rhs: float [(3, 12), (3, 13)]
-                ")" [(3, 13), (3, 14)]
+                close: ")" [(3, 13), (3, 14)]
                 consequence: braced_expression [(3, 15), (5, 5)]
-                  "{" [(3, 15), (3, 16)]
+                  open: "{" [(3, 15), (3, 16)]
                   body: true [(4, 6), (4, 10)]
-                  "}" [(5, 4), (5, 5)]
-              "}" [(6, 2), (6, 3)]
+                  close: "}" [(5, 4), (5, 5)]
+              close: "}" [(6, 2), (6, 3)]
         binary_operator [(8, 2), (8, 7)]
           lhs: float [(8, 2), (8, 3)]
           operator: "+" [(8, 4), (8, 5)]
@@ -166,10 +166,10 @@
           rhs: (function_definition [(1, 8), (6, 3)]
             name: "function" [(1, 8), (1, 16)]
             parameters: (parameters [(1, 16), (1, 18)]
-              "(" [(1, 16), (1, 17)]
-              ")" [(1, 17), (1, 18)])
+              open: "(" [(1, 16), (1, 17)]
+              close: ")" [(1, 17), (1, 18)])
             body: (braced_expression [(1, 19), (6, 3)]
-              "{" [(1, 19), (1, 20)]
+              open: "{" [(1, 19), (1, 20)]
               body: (binary_operator [(2, 4), (2, 14)]
                 lhs: (identifier [(2, 4), (2, 5)])
                 operator: "<-" [(2, 6), (2, 8)]
@@ -179,17 +179,17 @@
                   rhs: (float [(2, 13), (2, 14)])))
               body: (if_statement [(3, 4), (5, 5)]
                 "if" [(3, 4), (3, 6)]
-                "(" [(3, 7), (3, 8)]
+                open: "(" [(3, 7), (3, 8)]
                 condition: (binary_operator [(3, 8), (3, 13)]
                   lhs: (identifier [(3, 8), (3, 9)])
                   operator: ">" [(3, 10), (3, 11)]
                   rhs: (float [(3, 12), (3, 13)]))
-                ")" [(3, 13), (3, 14)]
+                close: ")" [(3, 13), (3, 14)]
                 consequence: (braced_expression [(3, 15), (5, 5)]
-                  "{" [(3, 15), (3, 16)]
+                  open: "{" [(3, 15), (3, 16)]
                   body: (true [(4, 6), (4, 10)])
-                  "}" [(5, 4), (5, 5)]))
-              "}" [(6, 2), (6, 3)])))
+                  close: "}" [(5, 4), (5, 5)]))
+              close: "}" [(6, 2), (6, 3)])))
         (binary_operator [(8, 2), (8, 7)]
           lhs: (float [(8, 2), (8, 3)])
           operator: "+" [(8, 4), (8, 5)]
@@ -207,11 +207,11 @@
           rhs: (function_definition
             name: "function"
             parameters: (parameters
-              "("
-              ")"
+              open: "("
+              close: ")"
             )
             body: (braced_expression
-              "{"
+              open: "{"
               body: (binary_operator
                 lhs: (identifier)
                 operator: "<-"
@@ -223,20 +223,20 @@
               )
               body: (if_statement
                 "if"
-                "("
+                open: "("
                 condition: (binary_operator
                   lhs: (identifier)
                   operator: ">"
                   rhs: (float)
                 )
-                ")"
+                close: ")"
                 consequence: (braced_expression
-                  "{"
+                  open: "{"
                   body: (true)
-                  "}"
+                  close: "}"
                 )
               )
-              "}"
+              close: "}"
             )
           )
         )
@@ -295,11 +295,11 @@
           rhs: (function_definition
             name: "function"
             parameters: (parameters
-              "("
-              ")"
+              open: "("
+              close: ")"
             )
             body: (braced_expression
-              "{"
+              open: "{"
               body: (binary_operator
                 lhs: (identifier)
                 operator: "<-"
@@ -311,20 +311,20 @@
               )
               body: (if_statement
                 "if"
-                "("
+                open: "("
                 condition: (binary_operator
                   lhs: (identifier)
                   operator: ">"
                   rhs: (float)
                 )
-                ")"
+                close: ")"
                 consequence: (braced_expression
-                  "{"
+                  open: "{"
                   body: (true)
-                  "}"
+                  close: "}"
                 )
               )
-              "}"
+              close: "}"
             )
           )
         )
@@ -391,8 +391,8 @@
           rhs: (function_definition [(1, 8), (6, 3)]
             name: "function" [(1, 8), (1, 16)]
             parameters: (parameters [(1, 16), (1, 18)]
-              "(" [(1, 16), (1, 17)]
-              ")" [(1, 17), (1, 18)]
+              open: "(" [(1, 16), (1, 17)]
+              close: ")" [(1, 17), (1, 18)]
             )
       <truncated>
 
@@ -408,8 +408,8 @@
           rhs: (function_definition [(1, 8), (6, 3)]
             name: "function" [(1, 8), (1, 16)]
             parameters: (parameters [(1, 16), (1, 18)]
-              "(" [(1, 16), (1, 17)]
-              ")" [(1, 17), (1, 18)])
+              open: "(" [(1, 16), (1, 17)]
+              close: ")" [(1, 17), (1, 18)])
             body: (braced_expression [(1, 19), (6, 3)]))
       <truncated>
 
@@ -460,11 +460,11 @@
       (program [(0, 0), (0, 13)]
         (for_statement [(0, 0), (0, 13)]
           "for" [(0, 0), (0, 3)]
-          "(" [(0, 4), (0, 5)]
+          open: "(" [(0, 4), (0, 5)]
           variable: (identifier [(0, 5), (0, 6)])
           "in" [(0, 7), (0, 9)]
           sequence: (identifier [(0, 10), (0, 13)])
-          ")" MISSING [(0, 13), (0, 13)]
+          close: ")" MISSING [(0, 13), (0, 13)]
         )
       )
 

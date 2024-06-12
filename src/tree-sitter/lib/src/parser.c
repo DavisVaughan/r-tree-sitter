@@ -397,10 +397,12 @@ static unsigned ts_parser__external_scanner_serialize(
       self->lexer.debug_buffer
     );
   } else {
-    return self->language->external_scanner.serialize(
+    uint32_t length = self->language->external_scanner.serialize(
       self->external_scanner_payload,
       self->lexer.debug_buffer
     );
+    assert(length <= TREE_SITTER_SERIALIZATION_BUFFER_SIZE);
+    return length;
   }
 }
 
@@ -835,14 +837,14 @@ static bool ts_parser__select_tree(TSParser *self, Subtree left, Subtree right) 
   }
 
   if (ts_subtree_dynamic_precedence(right) > ts_subtree_dynamic_precedence(left)) {
-    LOG("select_higher_precedence symbol:%s, prec:%" PRId32 ", over_symbol:%s, other_prec:%u",
+    LOG("select_higher_precedence symbol:%s, prec:%" PRId32 ", over_symbol:%s, other_prec:%" PRId32,
         TREE_NAME(right), ts_subtree_dynamic_precedence(right), TREE_NAME(left),
         ts_subtree_dynamic_precedence(left));
     return true;
   }
 
   if (ts_subtree_dynamic_precedence(left) > ts_subtree_dynamic_precedence(right)) {
-    LOG("select_higher_precedence symbol:%s, prec:%" PRId32 ", over_symbol:%s, other_prec:%u",
+    LOG("select_higher_precedence symbol:%s, prec:%" PRId32 ", over_symbol:%s, other_prec:%" PRId32,
         TREE_NAME(left), ts_subtree_dynamic_precedence(left), TREE_NAME(right),
         ts_subtree_dynamic_precedence(right));
     return false;
