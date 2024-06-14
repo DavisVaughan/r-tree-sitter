@@ -278,21 +278,68 @@ language_pointer <- function(x) {
   x$pointer
 }
 
+language_abi <- function(x) {
+  x$abi
+}
+
 check_language <- function(
   x,
   ...,
   arg = caller_arg(x),
   call = caller_env()
 ) {
-  if (is_language(x)) {
-    return(invisible(NULL))
+  if (!is_language(x)) {
+    stop_input_type(
+      x,
+      "a <tree_sitter_language>",
+      ...,
+      arg = arg,
+      call = call
+    )
   }
 
-  stop_input_type(
-    x,
-    "a <tree_sitter_language>",
-    ...,
-    arg = arg,
-    call = call
-  )
+  check_language_abi(x, arg = arg, call = call)
+
+  invisible(NULL)
+}
+
+check_language_abi <- function(
+  x,
+  ...,
+  min = tree_sitter_minimum_compatible_abi(),
+  max = tree_sitter_abi(),
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  abi <- language_abi(x)
+  check_number_whole(abi, .internal = TRUE)
+
+  if (abi > max) {
+    message <- c(
+      "{.arg {arg}} is an incompatible tree-sitter language object.",
+      i = "{.arg {arg}} has an ABI version of {abi}.",
+      i = "Maximum allowed ABI version is {max}.",
+      i = paste0(
+        "This typically means you should update the {.pkg treesitter} R package. ",
+        "If that doesn't work, please open an issue on GitHub."
+      )
+    )
+    cli::cli_abort(message, call = call)
+  }
+
+  if (abi < min) {
+    message <- c(
+      "{.arg {arg}} is an incompatible tree-sitter language object.",
+      i = "{.arg {arg}} has an ABI version of {abi}.",
+      i = "Minimum allowed ABI version is {min}.",
+      i = paste0(
+        "This typically means you should update the grammar R package associated ",
+        "with this language object, i.e. {.pkg treesitter.{{language}}}. ",
+        "If that doesn't work, please open an issue on GitHub."
+      )
+    )
+    cli::cli_abort(message, call = call)
+  }
+
+  invisible(NULL)
 }

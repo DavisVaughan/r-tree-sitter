@@ -91,3 +91,22 @@ test_that("checks language type", {
     language_symbol_name(1, 1L)
   })
 })
+
+# ------------------------------------------------------------------------------
+# check_language_abi()
+
+test_that("Language objects that are too old can be caught", {
+  x <- list(abi = 12L)
+
+  expect_snapshot(error = TRUE, {
+    check_language_abi(x, min = 13L, max = 14L)
+  })
+})
+
+test_that("Language objects that are too new can be caught", {
+  x <- list(abi = 12L)
+
+  expect_snapshot(error = TRUE, {
+    check_language_abi(x, min = 10L, max = 11L)
+  })
+})
