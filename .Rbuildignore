@@ -7,3 +7,4 @@ compile_commands.json
 ^debug$
 ^\.github$
 ^codecov\.yml$
+^tools$
