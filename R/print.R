@@ -1,4 +1,67 @@
+#' Pretty print a `node`'s s-expression
+#'
+#' `node_show_s_expression()` prints a nicely formatted s-expression to the
+#' console. It powers the print methods of nodes and trees.
+#'
+#' @inheritParams x_tree_sitter_node
+#' @inheritParams rlang::args_dots_empty
+#'
+#' @param max_lines `[double(1) / NULL]`
+#'
+#'   An optional maximum number of lines to print. If the maximum is hit, then
+#'   `<truncated>` will be printed at the end.
+#'
+#' @param show_anonymous `[bool]`
+#'
+#'   Should anonymous nodes be shown? If `FALSE`, only named nodes are shown.
+#'
+#' @param show_locations `[bool]`
+#'
+#'   Should node locations be shown?
+#'
+#' @param show_parentheses `[bool]`
+#'
+#'   Should parentheses around each node be shown?
+#'
+#' @param dangling_parenthesis `[bool]`
+#'
+#'   Should the `)` parenthesis "dangle" on its own line? If `FALSE`, it is
+#'   appended to the line containing the last child. This can be useful for
+#'   conserving space.
+#'
+#' @param color_parentheses `[bool]`
+#'
+#'   Should parentheses be colored? Printing large s-expressions is faster if
+#'   this is set to `FALSE`.
+#'
+#' @param color_locations `[bool]`
+#'
+#'   Should locations be colored? Printing large s-expressions is faster if
+#'   this is set to `FALSE`.
+#'
+#' @returns
+#' `x` invisibly.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function(a, b = 2) { a + b + 2 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' node_show_s_expression(node)
+#'
+#' node_show_s_expression(node, max_lines = 5)
+#'
+#' # This is more like a typical abstract syntax tree
+#' node_show_s_expression(
+#'   node,
+#'   show_anonymous = FALSE,
+#'   show_locations = FALSE,
+#'   dangling_parenthesis = FALSE
+#' )
 node_show_s_expression <- function(
   x,
   ...,
