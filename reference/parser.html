@@ -68,19 +68,8 @@ use <code><a href="parser-parse.html">parser_parse()</a></code> to parse languag
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">language</span> <span class="op">&lt;-</span> <span class="fu">treesitter.r</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/treesitter.r/man/language.html" class="external-link">language</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">parser</span> <span class="op">&lt;-</span> <span class="fu">parser</span><span class="op">(</span><span class="va">language</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">parser</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $language</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> language&lt;r&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $timeout</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $included_ranges</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $pointer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;pointer: 0x558e351630f0&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "tree_sitter_parser"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_parser&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Language: r</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">"1 + foo"</span></span></span>
 <span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser-parse.html">parser_parse</a></span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></span>
