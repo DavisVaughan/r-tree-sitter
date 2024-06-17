@@ -62,3 +62,25 @@
       Error in `language_symbol_name()`:
       ! `x` must be a <tree_sitter_language>, not the number 1.
 
+# Language objects that are too old can be caught
+
+    Code
+      check_language_abi(x, min = 13L, max = 14L)
+    Condition
+      Error:
+      ! `x` is an incompatible tree-sitter language object.
+      i `x` has an ABI version of 12.
+      i Minimum allowed ABI version is 13.
+      i This typically means you should update the grammar R package associated with this language object, i.e. treesitter.{language}. If that doesn't work, please open an issue on GitHub.
+
+# Language objects that are too new can be caught
+
+    Code
+      check_language_abi(x, min = 10L, max = 11L)
+    Condition
+      Error:
+      ! `x` is an incompatible tree-sitter language object.
+      i `x` has an ABI version of 12.
+      i Maximum allowed ABI version is 11.
+      i This typically means you should update the treesitter R package. If that doesn't work, please open an issue on GitHub.
+
