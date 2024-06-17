@@ -1146,15 +1146,15 @@ print.tree_sitter_node <- function(x, ...) {
 }
 
 node_print_body <- function(x) {
-  cli::cat_rule("S-Expression")
-  node_show_s_expression(x, max_lines = 25L)
-
-  cat_line()
-
   cli::cat_rule("Text")
   text <- node_text(x)
   text <- lines_truncate(text)
   cat_line(text)
+
+  cat_line()
+
+  cli::cat_rule("S-Expression")
+  node_show_s_expression(x, max_lines = 25L)
 
   invisible(x)
 }
