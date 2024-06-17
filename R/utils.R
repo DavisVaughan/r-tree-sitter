@@ -13,6 +13,19 @@ coerce_byte <- function(
   x
 }
 
+arg_match_encoding <- function(
+  x,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  arg_match0(
+    arg = x,
+    values = c("UTF-8", "UTF-16"),
+    arg_nm = arg,
+    error_call = call
+  )
+}
+
 check_no_missing <- function(
   x,
   ...,

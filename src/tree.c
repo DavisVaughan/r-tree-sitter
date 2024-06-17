@@ -31,6 +31,59 @@ r_obj* ffi_tree_root_node_with_offset(
   return ts_node_as_raw(node);
 }
 
+r_obj* ffi_tree_included_ranges(r_obj* ffi_x) {
+  TSTree* x = ts_tree_from_external_pointer(ffi_x);
+
+  uint32_t ts_size = 0;
+  TSRange* v_ranges = ts_tree_included_ranges(x, &ts_size);
+
+  const r_ssize size = (r_ssize) ts_size;
+
+  r_obj* out = KEEP(r_alloc_list(6));
+
+  r_obj* start_bytes = r_alloc_double(size);
+  r_list_poke(out, 0, start_bytes);
+  double* v_start_bytes = r_dbl_begin(start_bytes);
+
+  r_obj* start_rows = r_alloc_double(size);
+  r_list_poke(out, 1, start_rows);
+  double* v_start_rows = r_dbl_begin(start_rows);
+
+  r_obj* start_columns = r_alloc_double(size);
+  r_list_poke(out, 2, start_columns);
+  double* v_start_columns = r_dbl_begin(start_columns);
+
+  r_obj* end_bytes = r_alloc_double(size);
+  r_list_poke(out, 3, end_bytes);
+  double* v_end_bytes = r_dbl_begin(end_bytes);
+
+  r_obj* end_rows = r_alloc_double(size);
+  r_list_poke(out, 4, end_rows);
+  double* v_end_rows = r_dbl_begin(end_rows);
+
+  r_obj* end_columns = r_alloc_double(size);
+  r_list_poke(out, 5, end_columns);
+  double* v_end_columns = r_dbl_begin(end_columns);
+
+  for (r_ssize i = 0; i < size; ++i) {
+    TSRange range = v_ranges[i];
+
+    v_start_bytes[i] = r_uint32_as_dbl(range.start_byte);
+    v_start_rows[i] = r_uint32_as_dbl(range.start_point.row);
+    v_start_columns[i] = r_uint32_as_dbl(range.start_point.column);
+
+    v_end_bytes[i] = r_uint32_as_dbl(range.end_byte);
+    v_end_rows[i] = r_uint32_as_dbl(range.end_point.row);
+    v_end_columns[i] = r_uint32_as_dbl(range.end_point.column);
+  }
+
+  free(v_ranges);
+  FREE(1);
+  return out;
+}
+
+// Only used from C level by `tree_reparse()`, because this produces
+// a tree that no longer aligns with the `text` saved in the R object.
 r_obj* ffi_tree_edit(
     r_obj* ffi_x,
     r_obj* ffi_start_byte,
@@ -87,57 +140,6 @@ r_obj* ffi_tree_edit(
   ts_tree_edit(x, &edit);
 
   return ts_tree_as_external_pointer(x);
-}
-
-r_obj* ffi_tree_included_ranges(r_obj* ffi_x) {
-  TSTree* x = ts_tree_from_external_pointer(ffi_x);
-
-  uint32_t ts_size = 0;
-  TSRange* v_ranges = ts_tree_included_ranges(x, &ts_size);
-
-  const r_ssize size = (r_ssize) ts_size;
-
-  r_obj* out = KEEP(r_alloc_list(6));
-
-  r_obj* start_bytes = r_alloc_double(size);
-  r_list_poke(out, 0, start_bytes);
-  double* v_start_bytes = r_dbl_begin(start_bytes);
-
-  r_obj* start_rows = r_alloc_double(size);
-  r_list_poke(out, 1, start_rows);
-  double* v_start_rows = r_dbl_begin(start_rows);
-
-  r_obj* start_columns = r_alloc_double(size);
-  r_list_poke(out, 2, start_columns);
-  double* v_start_columns = r_dbl_begin(start_columns);
-
-  r_obj* end_bytes = r_alloc_double(size);
-  r_list_poke(out, 3, end_bytes);
-  double* v_end_bytes = r_dbl_begin(end_bytes);
-
-  r_obj* end_rows = r_alloc_double(size);
-  r_list_poke(out, 4, end_rows);
-  double* v_end_rows = r_dbl_begin(end_rows);
-
-  r_obj* end_columns = r_alloc_double(size);
-  r_list_poke(out, 5, end_columns);
-  double* v_end_columns = r_dbl_begin(end_columns);
-
-  for (r_ssize i = 0; i < size; ++i) {
-    TSRange range = v_ranges[i];
-
-    v_start_bytes[i] = r_uint32_as_dbl(range.start_byte);
-    v_start_rows[i] = r_uint32_as_dbl(range.start_point.row);
-    v_start_columns[i] = r_uint32_as_dbl(range.start_point.column);
-
-    v_end_bytes[i] = r_uint32_as_dbl(range.end_byte);
-    v_end_rows[i] = r_uint32_as_dbl(range.end_point.row);
-    v_end_columns[i] = r_uint32_as_dbl(range.end_point.column);
-  }
-
-  free(v_ranges);
-  FREE(1);
-  return out;
 }
 
 r_obj* ts_tree_as_external_pointer(TSTree* x) {

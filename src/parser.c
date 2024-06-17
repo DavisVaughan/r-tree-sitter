@@ -93,20 +93,17 @@ parser_set_included_ranges(TSParser* x, r_obj* included_range_vectors) {
   return out;
 }
 
-r_obj* ffi_parser_parse(
+static r_obj* parser_parse(
     r_obj* ffi_x,
     r_obj* ffi_text,
     r_obj* ffi_encoding,
-    r_obj* ffi_tree
+    const TSTree* old_tree
 ) {
   TSParser* x = ts_parser_from_external_pointer(ffi_x);
 
   r_obj* c_text = r_chr_get(ffi_text, 0);
   const char* text = r_str_c_string(c_text);
   const uint32_t size = (uint32_t) r_length(c_text);
-
-  const TSTree* old_tree =
-      ffi_tree == r_null ? NULL : ts_tree_from_external_pointer(ffi_tree);
 
   const TSInputEncoding encoding = as_encoding(ffi_encoding);
 
@@ -118,6 +115,49 @@ r_obj* ffi_parser_parse(
   }
 
   return ts_tree_as_external_pointer(tree);
+}
+
+r_obj* ffi_parser_parse(r_obj* ffi_x, r_obj* ffi_text, r_obj* ffi_encoding) {
+  const TSTree* old_tree = NULL;
+  return parser_parse(ffi_x, ffi_text, ffi_encoding, old_tree);
+}
+
+r_obj* ffi_parser_reparse(
+    r_obj* ffi_x,
+    r_obj* ffi_text,
+    r_obj* ffi_encoding,
+    r_obj* ffi_tree,
+    r_obj* ffi_start_byte,
+    r_obj* ffi_start_row,
+    r_obj* ffi_start_column,
+    r_obj* ffi_old_end_byte,
+    r_obj* ffi_old_end_row,
+    r_obj* ffi_old_end_column,
+    r_obj* ffi_new_end_byte,
+    r_obj* ffi_new_end_row,
+    r_obj* ffi_new_end_column
+) {
+  // Prepare the old tree by applying the edit in a non-destructive way
+  // (i.e. this makes a cheap copy of the tree)
+  r_obj* ffi_old_tree = KEEP(ffi_tree_edit(
+      ffi_tree,
+      ffi_start_byte,
+      ffi_start_row,
+      ffi_start_column,
+      ffi_old_end_byte,
+      ffi_old_end_row,
+      ffi_old_end_column,
+      ffi_new_end_byte,
+      ffi_new_end_row,
+      ffi_new_end_column
+  ));
+
+  const TSTree* old_tree = ts_tree_from_external_pointer(ffi_old_tree);
+
+  r_obj* out = parser_parse(ffi_x, ffi_text, ffi_encoding, old_tree);
+
+  FREE(1);
+  return out;
 }
 
 r_obj* ts_parser_as_external_pointer(TSParser* x) {
