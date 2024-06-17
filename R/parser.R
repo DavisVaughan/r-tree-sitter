@@ -1,4 +1,24 @@
+#' Create a new parser
+#'
+#' `parser()` constructs a parser from a tree-sitter `language` object. You can
+#' use [parser_parse()] to parse language specific text with it.
+#'
+#' @param language `[tree_sitter_language]`
+#'
+#'   A language object.
+#'
+#' @returns
+#' A new parser.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' parser
+#'
+#' text <- "1 + foo"
+#' tree <- parser_parse(parser, text)
+#' tree
 parser <- function(language) {
   check_language(language)
   new_parser(language)
