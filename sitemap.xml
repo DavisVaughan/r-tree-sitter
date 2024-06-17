@@ -25,6 +25,9 @@
     <loc>/reference/is_node.html</loc>
   </url>
   <url>
+    <loc>/reference/is_parser.html</loc>
+  </url>
+  <url>
     <loc>/reference/language_field_count.html</loc>
   </url>
   <url>
@@ -110,6 +113,9 @@
   </url>
   <url>
     <loc>/reference/node_walk.html</loc>
+  </url>
+  <url>
+    <loc>/reference/parser-adjustments.html</loc>
   </url>
   <url>
     <loc>/reference/parser-parse.html</loc>
