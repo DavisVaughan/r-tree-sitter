@@ -14,6 +14,7 @@ Provides bindings to tree-sitter, an incremental parsing system for programming 
 Other contributors:
 \itemize{
   \item Posit Software, PBC [copyright holder, funder]
+  \item tree-sitter authors (tree-sitter C library) [copyright holder]
 }
 
 }
