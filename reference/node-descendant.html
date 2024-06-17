@@ -92,6 +92,9 @@ search within.</p></dd>
 <span class="r-in"><span><span class="va">node</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>binary_operator <span style="color: #555555;">[(0, 0), (0, 26)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   lhs: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #00BB00;">)</span></span>
@@ -113,21 +116,21 @@ search within.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The byte range points to a location in the word `function`</span></span></span>
 <span class="r-in"><span><span class="fu">node_descendant_for_byte_range</span><span class="op">(</span><span class="va">node</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "function" <span style="color: #555555;">[(0, 6), (0, 14)]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "function" <span style="color: #555555;">[(0, 6), (0, 14)]</span></span>
 <span class="r-in"><span><span class="fu">node_named_descendant_for_byte_range</span><span class="op">(</span><span class="va">node</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function() { 1 + 1 }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>function_definition <span style="color: #555555;">[(0, 6), (0, 26)]</span></span>
@@ -146,9 +149,6 @@ search within.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     close: "}" <span style="color: #555555;">[(0, 25), (0, 26)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> function() { 1 + 1 }</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">start</span> <span class="op">&lt;-</span> <span class="fu">point</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">14</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">end</span> <span class="op">&lt;-</span> <span class="fu">point</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span></span></span>
@@ -156,26 +156,29 @@ search within.</p></dd>
 <span class="r-in"><span><span class="fu">node_descendant_for_point_range</span><span class="op">(</span><span class="va">node</span>, <span class="va">start</span>, <span class="va">end</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "(" <span style="color: #555555;">[(0, 14), (0, 15)]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "(" <span style="color: #555555;">[(0, 14), (0, 15)]</span></span>
 <span class="r-in"><span><span class="fu">node_named_descendant_for_point_range</span><span class="op">(</span><span class="va">node</span>, <span class="va">start</span>, <span class="va">end</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>parameters <span style="color: #555555;">[(0, 14), (0, 16)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   open: "(" <span style="color: #555555;">[(0, 14), (0, 15)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   close: ")" <span style="color: #555555;">[(0, 15), (0, 16)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ()</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># OOB returns the input</span></span></span>
 <span class="r-in"><span><span class="fu">node_descendant_for_byte_range</span><span class="op">(</span><span class="va">node</span>, <span class="fl">25</span>, <span class="fl">29</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>binary_operator <span style="color: #555555;">[(0, 0), (0, 26)]</span></span>
@@ -198,9 +201,6 @@ search within.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
 </code></pre></div>
     </div>
   </div>

@@ -94,6 +94,9 @@ Use language_field_id_for_name() to get the field id for a field name."><!-- mat
 <span class="r-in"><span><span class="va">node</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>binary_operator <span style="color: #555555;">[(0, 0), (0, 26)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   lhs: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #00BB00;">)</span></span>
@@ -115,9 +118,6 @@ Use language_field_id_for_name() to get the field id for a field name."><!-- mat
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get the field name of the first child</span></span></span>
 <span class="r-in"><span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="node_field_name_for_child.html">node_field_name_for_child</a></span><span class="op">(</span><span class="va">node</span>, <span class="fl">1</span><span class="op">)</span></span></span>
@@ -128,11 +128,11 @@ Use language_field_id_for_name() to get the field id for a field name."><!-- mat
 <span class="r-in"><span><span class="fu">node_child_by_field_name</span><span class="op">(</span><span class="va">node</span>, <span class="va">name</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you need to look up by field name many times, you can look up the</span></span></span>
 <span class="r-in"><span><span class="co"># more direct field id first and use that instead</span></span></span>
@@ -143,11 +143,11 @@ Use language_field_id_for_name() to get the field id for a field name."><!-- mat
 <span class="r-in"><span><span class="fu">node_child_by_field_id</span><span class="op">(</span><span class="va">node</span>, <span class="va">id</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Returns `NULL` if no matching child</span></span></span>
 <span class="r-in"><span><span class="fu">node_child_by_field_id</span><span class="op">(</span><span class="va">node</span>, <span class="fl">10000</span><span class="op">)</span></span></span>

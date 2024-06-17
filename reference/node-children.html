@@ -82,6 +82,9 @@ node_named_children() considers only named children.
 <span class="r-in"><span><span class="va">node</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>binary_operator <span style="color: #555555;">[(0, 0), (0, 26)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   lhs: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #00BB00;">)</span></span>
@@ -103,32 +106,32 @@ node_named_children() considers only named children.
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fn &lt;- function() { 1 + 1 }</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Note how the named variant doesn't include the anonymous operator node</span></span></span>
 <span class="r-in"><span><span class="fu">node_children</span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "&lt;-" <span style="color: #555555;">[(0, 3), (0, 5)]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;-</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "&lt;-" <span style="color: #555555;">[(0, 3), (0, 5)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function() { 1 + 1 }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>function_definition <span style="color: #555555;">[(0, 6), (0, 26)]</span></span>
@@ -147,22 +150,22 @@ node_named_children() considers only named children.
 <span class="r-out co"><span class="r-pr">#&gt;</span>     close: "}" <span style="color: #555555;">[(0, 25), (0, 26)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> function() { 1 + 1 }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">node_named_children</span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fn</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(0, 0), (0, 2)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function() { 1 + 1 }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>function_definition <span style="color: #555555;">[(0, 6), (0, 26)]</span></span>
@@ -181,9 +184,6 @@ node_named_children() considers only named children.
 <span class="r-out co"><span class="r-pr">#&gt;</span>     close: "}" <span style="color: #555555;">[(0, 25), (0, 26)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> function() { 1 + 1 }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

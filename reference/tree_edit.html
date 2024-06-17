@@ -106,6 +106,9 @@ be out of sync with its existing text.</p>
 <span class="r-in"><span><span class="va">tree</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_tree&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 + foo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>program <span style="color: #555555;">[(0, 0), (0, 7)]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">(</span>binary_operator <span style="color: #555555;">[(0, 0), (0, 7)]</span></span>
@@ -114,9 +117,6 @@ be out of sync with its existing text.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     rhs: <span style="color: #BB0000;">(</span>identifier <span style="color: #555555;">[(0, 4), (0, 7)]</span><span style="color: #BB0000;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 + foo</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">"1 + bar(foo)"</span></span></span>
 <span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">tree_edit</span><span class="op">(</span></span></span>
@@ -131,6 +131,9 @@ be out of sync with its existing text.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">parser_parse</span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span>, tree <span class="op">=</span> <span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_tree&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 + bar(foo)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ────────────────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>program <span style="color: #555555;">[(0, 0), (0, 12)]</span></span>
@@ -149,9 +152,6 @@ be out of sync with its existing text.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 + bar(foo)</span>
 </code></pre></div>
     </div>
   </div>
