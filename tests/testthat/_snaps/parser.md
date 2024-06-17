@@ -36,3 +36,11 @@
         )
       )
 
+# expected print method
+
+    Code
+      parser(r())
+    Output
+      <tree_sitter_parser>
+      Language: r
+

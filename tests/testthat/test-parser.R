@@ -34,3 +34,10 @@ test_that("can parse and reparse non-destructively", {
   expect_snapshot(tree)
   expect_snapshot(new_tree)
 })
+
+# ------------------------------------------------------------------------------
+# print()
+
+test_that("expected print method", {
+  expect_snapshot(parser(r()))
+})

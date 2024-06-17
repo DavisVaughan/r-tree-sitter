@@ -155,8 +155,8 @@ parser_parse <- function(
 
   encoding <- arg_match_encoding(encoding)
 
-  language <- parser_language(x)
-  pointer <- parser_pointer(x)
+  language <- parser_language0(x)
+  pointer <- parser_pointer0(x)
 
   pointer <- .Call(
     ffi_parser_parse,
@@ -206,8 +206,8 @@ parser_reparse <- function(
 
   encoding <- arg_match_encoding(encoding)
 
-  language <- parser_language(x)
-  pointer <- parser_pointer(x)
+  language <- parser_language0(x)
+  pointer <- parser_pointer0(x)
 
   tree <- tree_pointer(tree)
 
@@ -236,11 +236,20 @@ is_parser <- function(x) {
   inherits(x, "tree_sitter_parser")
 }
 
-parser_language <- function(x) {
+#' @export
+print.tree_sitter_parser <- function(x, ...) {
+  language <- parser_language0(x)
+  name <- language_name(language)
+  cat_line("<tree_sitter_parser>")
+  cat_line(sprintf("Language: %s", name))
+  invisible(x)
+}
+
+parser_language0 <- function(x) {
   .subset2(x, "language")
 }
 
-parser_pointer <- function(x) {
+parser_pointer0 <- function(x) {
   .subset2(x, "pointer")
 }
 

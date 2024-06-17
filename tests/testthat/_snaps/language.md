@@ -84,3 +84,11 @@
       i Maximum allowed ABI version is 11.
       i This typically means you should update the treesitter R package. If that doesn't work, please open an issue on GitHub.
 
+# expected print method
+
+    Code
+      r()
+    Output
+      <tree_sitter_language>
+      Language: r
+

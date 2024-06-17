@@ -270,7 +270,8 @@ is_language <- function(x) {
 #' @export
 print.tree_sitter_language <- function(x, ...) {
   name <- language_name(x)
-  cat(sprintf("language<%s>", name))
+  cat_line("<tree_sitter_language>")
+  cat_line(sprintf("Language: %s", name))
   invisible(x)
 }
 

@@ -110,3 +110,10 @@ test_that("Language objects that are too new can be caught", {
     check_language_abi(x, min = 10L, max = 11L)
   })
 })
+
+# ------------------------------------------------------------------------------
+# print()
+
+test_that("expected print method", {
+  expect_snapshot(r())
+})

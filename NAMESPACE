@@ -2,6 +2,7 @@
 
 S3method(print,tree_sitter_language)
 S3method(print,tree_sitter_node)
+S3method(print,tree_sitter_parser)
 S3method(print,tree_sitter_point)
 S3method(print,tree_sitter_range)
 S3method(print,tree_sitter_tree)
