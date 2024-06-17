@@ -123,10 +123,10 @@
 <span></span>
 <span><span class="fu"><a href="reference/node_text.html">node_text</a></span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "mutate(y = x + 1)"</span></span></code></pre></div>
-<p>By default, printing a node in the tree will show both the <em>anonymous</em> nodes and the <em>named</em> nodes. Anonymous nodes help you see the full “concrete” syntax tree that tree-sitter builds. If you want to see something more akin to an abstract syntax tree, you can use <code>node_show_s_expression()</code>, which has a number of options for customizing the tree view:</p>
+<p>By default, printing a node in the tree will show both the <em>anonymous</em> nodes and the <em>named</em> nodes. Anonymous nodes help you see the full “concrete” syntax tree that tree-sitter builds. If you want to see something more akin to an abstract syntax tree, you can use <code><a href="reference/node_show_s_expression.html">node_show_s_expression()</a></code>, which has a number of options for customizing the tree view:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Full detail</span></span>
-<span><span class="fu">node_show_s_expression</span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/node_show_s_expression.html">node_show_s_expression</a></span><span class="op">(</span><span class="va">node</span><span class="op">)</span></span>
 <span><span class="co">#&gt; (call [(2, 2), (2, 19)]</span></span>
 <span><span class="co">#&gt;   function: (identifier [(2, 2), (2, 8)])</span></span>
 <span><span class="co">#&gt;   arguments: (arguments [(2, 8), (2, 19)]</span></span>
@@ -146,7 +146,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Compact view, more like an AST</span></span>
-<span><span class="fu">node_show_s_expression</span><span class="op">(</span></span>
+<span><span class="fu"><a href="reference/node_show_s_expression.html">node_show_s_expression</a></span><span class="op">(</span></span>
 <span>  <span class="va">node</span>,</span>
 <span>  show_anonymous <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_locations <span class="op">=</span> <span class="cn">FALSE</span>,</span>
