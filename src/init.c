@@ -18,11 +18,11 @@ extern r_obj* ffi_language_state_count(r_obj*);
 extern r_obj* ffi_language_field_count(r_obj*);
 extern r_obj* ffi_language_next_state(r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_parser_new(r_obj*, r_obj*, r_obj*);
-extern r_obj* ffi_parser_parse(r_obj*, r_obj*, r_obj*, r_obj*);
+extern r_obj* ffi_parser_parse(r_obj*, r_obj*, r_obj*);
+extern r_obj*
+ffi_parser_reparse(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_root_node(r_obj*);
 extern r_obj* ffi_tree_root_node_with_offset(r_obj*, r_obj*, r_obj*, r_obj*);
-extern r_obj*
-ffi_tree_edit(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj* ffi_tree_included_ranges(r_obj*);
 extern r_obj* ffi_node_s_expression(r_obj*);
 extern r_obj* ffi_node_parent(r_obj*);
@@ -113,12 +113,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_language_field_count", (DL_FUNC) &ffi_language_field_count, 1},
     {"ffi_language_next_state", (DL_FUNC) &ffi_language_next_state, 3},
     {"ffi_parser_new", (DL_FUNC) &ffi_parser_new, 3},
-    {"ffi_parser_parse", (DL_FUNC) &ffi_parser_parse, 4},
+    {"ffi_parser_parse", (DL_FUNC) &ffi_parser_parse, 3},
+    {"ffi_parser_reparse", (DL_FUNC) &ffi_parser_reparse, 13},
     {"ffi_tree_root_node", (DL_FUNC) &ffi_tree_root_node, 1},
     {"ffi_tree_root_node_with_offset",
      (DL_FUNC) &ffi_tree_root_node_with_offset,
      4},
-    {"ffi_tree_edit", (DL_FUNC) &ffi_tree_edit, 10},
     {"ffi_tree_included_ranges", (DL_FUNC) &ffi_tree_included_ranges, 1},
     {"ffi_node_s_expression", (DL_FUNC) &ffi_node_s_expression, 1},
     {"ffi_node_parent", (DL_FUNC) &ffi_node_parent, 1},

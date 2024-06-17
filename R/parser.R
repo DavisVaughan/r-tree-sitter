@@ -52,28 +52,88 @@ parser_set_included_ranges <- function(x, included_ranges) {
   )
 }
 
+#' Parse or reparse text
+#'
+#' @description
+#' - `parser_parse()` performs an initial parse of `text`, a string typically
+#'   containing contents of a file. It returns a `tree` for further
+#'   manipulations.
+#'
+#' - `parser_reparse()` performs a fast incremental reparse. `text` is typically
+#'   a slightly modified version of the original `text` with a new "edit"
+#'   applied. The position of the edit is described by the byte and point
+#'   arguments to this function. The `tree` argument corresponds to the original
+#'   `tree` returned by `parser_parse()`.
+#'
+#' All bytes and points should be 0-indexed.
+#'
+#' @inheritParams x_tree_sitter_parser
+#' @inheritParams rlang::args_dots_empty
+#'
+#' @param text `[string]`
+#'
+#'   The text to parse.
+#'
+#' @param encoding `[string]`
+#'
+#'   The expected encoding of the `text`. Either `"UTF-8"` or `"UTF-16"`.
+#'
+#' @param tree `[tree_sitter_tree]`
+#'
+#'   The original tree returned by `parser_parse()`. Components of the tree
+#'   will be reused to perform the incremental reparse.
+#'
+#' @param start_byte,start_point `[double(1) / tree_sitter_point]`
+#'
+#'   The starting byte and starting point of the edit location.
+#'
+#' @param old_end_byte,old_end_point `[double(1) / tree_sitter_point]`
+#'
+#'   The old ending byte and old ending point of the edit location.
+#'
+#' @param new_end_byte,new_end_point `[double(1) / tree_sitter_point]`
+#'
+#'   The new ending byte and new ending point of the edit location.
+#'
+#' @returns
+#' A new `tree`.
+#'
+#' @name parser-parse
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "1 + foo"
+#' tree <- parser_parse(parser, text)
+#' tree
+#'
+#' text <- "1 + bar(foo)"
+#' parser_reparse(
+#'   parser,
+#'   text,
+#'   tree,
+#'   start_byte = 4,
+#'   start_point = point(0, 4),
+#'   old_end_byte = 7,
+#'   old_end_point = point(0, 7),
+#'   new_end_byte = 12,
+#'   new_end_point = point(0, 12)
+#' )
+NULL
+
 #' @export
+#' @rdname parser-parse
 parser_parse <- function(
   x,
   text,
   ...,
-  encoding = "UTF-8",
-  tree = NULL
+  encoding = "UTF-8"
 ) {
   check_dots_empty0(...)
   check_parser(x)
   check_string(text)
-  check_tree(tree, allow_null = TRUE)
 
-  encoding <- arg_match0(
-    arg = encoding,
-    values = c("UTF-8", "UTF-16"),
-    arg_nm = "encoding"
-  )
-
-  if (!is.null(tree)) {
-    tree <- tree_pointer(tree)
-  }
+  encoding <- arg_match_encoding(encoding)
 
   language <- parser_language(x)
   pointer <- parser_pointer(x)
@@ -82,8 +142,70 @@ parser_parse <- function(
     ffi_parser_parse,
     pointer,
     text,
+    encoding
+  )
+
+  new_tree(pointer, text, language)
+}
+
+#' @export
+#' @rdname parser-parse
+parser_reparse <- function(
+  x,
+  text,
+  tree,
+  start_byte,
+  start_point,
+  old_end_byte,
+  old_end_point,
+  new_end_byte,
+  new_end_point,
+  ...,
+  encoding = "UTF-8"
+) {
+  check_dots_empty0(...)
+  check_parser(x)
+  check_string(text)
+  check_tree(tree)
+
+  start_byte <- coerce_byte(start_byte)
+  old_end_byte <- coerce_byte(old_end_byte)
+  new_end_byte <- coerce_byte(new_end_byte)
+
+  check_point(start_point)
+  start_row <- point_row0(start_point)
+  start_column <- point_row0(start_point)
+
+  check_point(old_end_point)
+  old_end_row <- point_row0(old_end_point)
+  old_end_column <- point_row0(old_end_point)
+
+  check_point(new_end_point)
+  new_end_row <- point_row0(new_end_point)
+  new_end_column <- point_row0(new_end_point)
+
+  encoding <- arg_match_encoding(encoding)
+
+  language <- parser_language(x)
+  pointer <- parser_pointer(x)
+
+  tree <- tree_pointer(tree)
+
+  pointer <- .Call(
+    ffi_parser_reparse,
+    pointer,
+    text,
     encoding,
-    tree
+    tree,
+    start_byte,
+    start_row,
+    start_column,
+    old_end_byte,
+    old_end_row,
+    old_end_column,
+    new_end_byte,
+    new_end_row,
+    new_end_column
   )
 
   new_tree(pointer, text, language)

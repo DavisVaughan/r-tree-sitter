@@ -94,108 +94,6 @@ tree_walk <- function(x) {
   node_walk(node)
 }
 
-#' Edit a tree in preparation for an incremental parse
-#'
-#' @description
-#' Before calling [parser_parse()] with an existing `tree`, you must first
-#' edit the existing tree using `tree_edit()` to prepare the tree for the
-#' updated `text`.
-#'
-#' All bytes and points are 0-indexed.
-#'
-#' Note that editing a tree is likely to put it into a state where the print
-#' method no longer works, because the tree's start and end boundaries will
-#' be out of sync with its existing text.
-#'
-#' @inheritParams x_tree_sitter_tree
-#'
-#' @param start_byte,start_point `[double(1) / tree_sitter_point]`
-#'
-#'   The starting byte and starting point of the edit location.
-#'
-#' @param old_end_byte,old_end_point `[double(1) / tree_sitter_point]`
-#'
-#'   The old ending byte and old ending point of the edit location.
-#'
-#' @param new_end_byte,new_end_point `[double(1) / tree_sitter_point]`
-#'
-#'   The new ending byte and new ending point of the edit location.
-#'
-#' @returns
-#' A new `tree` that can now be used with [parser_parse()].
-#'
-#' @export
-#' @examplesIf treesitter:::has_r_grammar()
-#' language <- treesitter.r::language()
-#' parser <- parser(language)
-#'
-#' text <- "1 + foo"
-#' tree <- parser_parse(parser, text)
-#' tree
-#'
-#' text <- "1 + bar(foo)"
-#' tree <- tree_edit(
-#'   tree,
-#'   start_byte = 4,
-#'   start_point = point(0, 4),
-#'   old_end_byte = 7,
-#'   old_end_point = point(0, 7),
-#'   new_end_byte = 12,
-#'   new_end_point = point(0, 12)
-#' )
-#'
-#' parser_parse(parser, text, tree = tree)
-tree_edit <- function(
-  x,
-  start_byte,
-  start_point,
-  old_end_byte,
-  old_end_point,
-  new_end_byte,
-  new_end_point
-) {
-  check_tree(x)
-  pointer <- tree_pointer(x)
-  text <- tree_text0(x)
-  language <- tree_language0(x)
-
-  check_point(start_point)
-  start_row <- point_row0(start_point)
-  start_column <- point_row0(start_point)
-
-  check_point(old_end_point)
-  old_end_row <- point_row0(old_end_point)
-  old_end_column <- point_row0(old_end_point)
-
-  check_point(new_end_point)
-  new_end_row <- point_row0(new_end_point)
-  new_end_column <- point_row0(new_end_point)
-
-  start_byte <- coerce_byte(start_byte)
-  old_end_byte <- coerce_byte(old_end_byte)
-  new_end_byte <- coerce_byte(new_end_byte)
-
-  pointer <- .Call(
-    ffi_tree_edit,
-    pointer,
-    start_byte,
-    start_row,
-    start_column,
-    old_end_byte,
-    old_end_row,
-    old_end_column,
-    new_end_byte,
-    new_end_row,
-    new_end_column
-  )
-
-  new_tree(
-    pointer = pointer,
-    text = text,
-    language = language
-  )
-}
-
 # TODO: Document that the default includes a range that covers the
 # whole document
 #' @export
@@ -292,14 +190,10 @@ new_tree <- function(pointer, text, language) {
 check_tree <- function(
   x,
   ...,
-  allow_null = FALSE,
   arg = caller_arg(x),
   call = caller_env()
 ) {
   if (is_tree(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
     return(invisible(NULL))
   }
 
@@ -307,7 +201,6 @@ check_tree <- function(
     x,
     "a <tree_sitter_tree>",
     ...,
-    allow_null = allow_null,
     arg = arg,
     call = call
   )
