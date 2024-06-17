@@ -112,10 +112,10 @@
     <loc>/reference/node_walk.html</loc>
   </url>
   <url>
-    <loc>/reference/query-matches-and-captures.html</loc>
+    <loc>/reference/parser-parse.html</loc>
   </url>
   <url>
-    <loc>/reference/tree_edit.html</loc>
+    <loc>/reference/query-matches-and-captures.html</loc>
   </url>
   <url>
     <loc>/reference/tree_root_node.html</loc>
@@ -128,6 +128,9 @@
   </url>
   <url>
     <loc>/reference/x_tree_sitter_node.html</loc>
+  </url>
+  <url>
+    <loc>/reference/x_tree_sitter_parser.html</loc>
   </url>
   <url>
     <loc>/reference/x_tree_sitter_tree.html</loc>

@@ -89,7 +89,7 @@
 <span><span class="st">"</span></span>
 <span></span>
 <span><span class="co"># Parse the text and display the resulting syntax tree</span></span>
-<span><span class="fu">parser_parse</span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/parser-parse.html">parser_parse</a></span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;tree_sitter_tree&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── S-Expression ────────────────────────────────────────────────────────────────</span></span>
@@ -110,7 +110,7 @@
 <span><span class="st">  mutate(y = x + 1)</span></span>
 <span><span class="st">"</span></span>
 <span></span>
-<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">parser_parse</span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parser-parse.html">parser_parse</a></span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></code></pre></div>
 <p>Trees and nodes have a pretty nice print method that colors matching parentheses and dims the locations. If you were to print out <code>tree</code> in your R console, here’s what you’d see:</p>
 <p><img src="reference/figures/README-dplyr-tree.png"></p>
 <p>treesitter has a number of tools for navigating around and walking the tree:</p>
