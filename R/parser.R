@@ -24,6 +24,50 @@ parser <- function(language) {
   new_parser(language)
 }
 
+#' Parser adjustments
+#'
+#' @description
+#' - `parser_set_language()` sets the language of the parser. This is usually
+#'   done by [parser()] though.
+#'
+#' - `parser_set_timeout()` sets an optional timeout used when calling
+#'   [parser_parse()] or [parser_reparse()]. If the timeout is hit, an error
+#'   occurs.
+#'
+#' - `parser_set_included_ranges()` sets an optional list of ranges that are
+#'   the only locations considered when parsing. The ranges are created by
+#'   [range()].
+#'
+#' @inheritParams x_tree_sitter_parser
+#'
+#' @param language `[tree_sitter_language]`
+#'
+#'   A language.
+#'
+#' @param timeout `[double(1)]`
+#'
+#'   A single whole number corresponding to a timeout in microseconds to use
+#'   when parsing.
+#'
+#' @param included_ranges `[list_of<tree_sitter_range>]`
+#'
+#'   A list of ranges constructed by [range()]. These are the only locations
+#'   that will be considered when parsing.
+#'
+#'   An empty list can be used to clear any existing ranges so that the parser
+#'   will again parse the entire document.
+#'
+#' @returns
+#' A new parser.
+#'
+#' @name parser-adjustments
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' parser_set_timeout(parser, 10000)
+NULL
+
+#' @rdname parser-adjustments
 #' @export
 parser_set_language <- function(x, language) {
   check_parser(x)
@@ -36,6 +80,7 @@ parser_set_language <- function(x, language) {
   )
 }
 
+#' @rdname parser-adjustments
 #' @export
 parser_set_timeout <- function(x, timeout) {
   check_parser(x)
@@ -58,6 +103,7 @@ parser_set_timeout <- function(x, timeout) {
 
 # TODO: Document that an empty list is a valid way to clear the included ranges
 # so that it again parses the whole document
+#' @rdname parser-adjustments
 #' @export
 parser_set_included_ranges <- function(x, included_ranges) {
   check_parser(x)
@@ -231,7 +277,26 @@ parser_reparse <- function(
   new_tree(pointer, text, language)
 }
 
+#' Is `x` a parser?
+#'
+#' @description
+#' Checks if `x` is a `tree_sitter_parser` or not.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @returns
+#' `TRUE` if `x` is a `tree_sitter_parser`, otherwise `FALSE`.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' is_parser(parser)
+#'
+#' is_parser(1)
 is_parser <- function(x) {
   inherits(x, "tree_sitter_parser")
 }
