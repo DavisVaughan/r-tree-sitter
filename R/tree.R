@@ -11,7 +11,7 @@
 #' A node.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -61,7 +61,7 @@ tree_root_node <- function(x) {
 #' An offset root node.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -129,7 +129,7 @@ tree_root_node_with_offset <- function(x, byte, point) {
 #' A `TreeCursor` object.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -171,7 +171,7 @@ tree_walk <- function(x) {
 #' - `tree_included_ranges()` returns a list of [range()] objects.
 #'
 #' @name tree-accessors
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -252,7 +252,7 @@ tree_language <- function(x) {
 #' `TRUE` if `x` is a `tree_sitter_tree`, otherwise `FALSE`.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'

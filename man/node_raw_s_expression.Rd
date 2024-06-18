@@ -21,7 +21,7 @@ view of the tree, but occasionally it can be useful to see exactly what the
 underlying C library is using.
 }
 \examples{
-\dontshow{if (treesitter:::has_r_grammar()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

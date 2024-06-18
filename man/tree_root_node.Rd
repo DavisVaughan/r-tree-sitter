@@ -20,7 +20,7 @@ a specific tree. It returns the "root" of the tree, from which you
 can use other \verb{node_*()} functions to navigate around.
 }
 \examples{
-\dontshow{if (treesitter:::has_r_grammar()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

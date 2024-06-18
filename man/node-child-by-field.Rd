@@ -36,7 +36,7 @@ These functions return children of \code{x} by field id or name.
 Use \code{\link[=language_field_id_for_name]{language_field_id_for_name()}} to get the field id for a field name.
 }
 \examples{
-\dontshow{if (treesitter:::has_r_grammar()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

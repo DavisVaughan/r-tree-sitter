@@ -11,7 +11,7 @@
 #' A single string containing the raw s-expression.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -36,7 +36,7 @@ node_raw_s_expression <- function(x) {
 #' A single string containing the node's text.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -69,7 +69,7 @@ node_text <- function(x) {
 #' A `tree_sitter_language` object.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -96,7 +96,7 @@ node_language <- function(x) {
 #' A `TreeCursor` object.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -126,7 +126,7 @@ node_walk <- function(x) {
 #' The parent node of `x` or `NULL` if there is no parent.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -174,7 +174,7 @@ node_parent <- function(x) {
 #' The `i`th child node of `x` or `NULL` if there is no child at that index.
 #'
 #' @name node-child
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -240,7 +240,7 @@ node_child_impl <- function(x, i, fn, call = caller_env()) {
 #' A single integer, the number of children of `x`.
 #'
 #' @name node-child-count
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -288,7 +288,7 @@ node_named_child_count <- function(x) {
 #' The children of `x` as a list.
 #'
 #' @name node-children
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -359,7 +359,7 @@ node_children_impl <- function(x, fn, call = caller_env()) {
 #' A child of `x`, or `NULL` if no matching child can be found.
 #'
 #' @name node-child-by-field
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -441,7 +441,7 @@ node_child_by_field_name <- function(x, name) {
 #' doesn't exist.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -492,7 +492,7 @@ node_field_name_for_child <- function(x, i) {
 #' A new node, or `NULL` if there is no node past the `byte` offset.
 #'
 #' @name node-first-child-byte
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -571,7 +571,7 @@ node_first_child_for_byte_impl <- function(x, byte, fn, call = caller_env()) {
 #' - `node_range()` returns a range.
 #'
 #' @name node-location
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -677,7 +677,7 @@ node_range <- function(x) {
 #' A sibling node, or `NULL` if there is no sibling node.
 #'
 #' @name node-sibling
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -762,7 +762,7 @@ node_sibling <- function(x, fn, call = caller_env()) {
 #' `TRUE` or `FALSE`.
 #'
 #' @name node-metadata
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -846,7 +846,7 @@ node_has_error <- function(x) {
 #' A single integer representing a parse state.
 #'
 #' @name node-parse-state
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -891,7 +891,7 @@ node_next_parse_state <- function(x) {
 #' A single string.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -928,7 +928,7 @@ node_type <- function(x) {
 #' A single integer.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -967,7 +967,7 @@ node_symbol <- function(x) {
 #' @seealso [node_type()], [node_symbol()]
 #'
 #' @name node-grammar
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -1009,7 +1009,7 @@ node_grammar_symbol <- function(x) {
 #' A single double.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -1053,7 +1053,7 @@ node_descendant_count <- function(x) {
 #' A node.
 #'
 #' @name node-descendant
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -1153,7 +1153,7 @@ node_descendant_for_point_range_impl <- function(x, start, end, fn, call = calle
 #' `TRUE` if `x` is a `tree_sitter_node`, otherwise `FALSE`.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'

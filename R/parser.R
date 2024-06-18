@@ -11,7 +11,7 @@
 #' A new parser.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #' parser
@@ -61,7 +61,7 @@ parser <- function(language) {
 #' A new parser.
 #'
 #' @name parser-adjustments
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #' parser_set_timeout(parser, 10000)
@@ -165,7 +165,7 @@ parser_set_included_ranges <- function(x, included_ranges) {
 #' A new `tree`.
 #'
 #' @name parser-parse
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'
@@ -290,7 +290,7 @@ parser_reparse <- function(
 #' `TRUE` if `x` is a `tree_sitter_parser`, otherwise `FALSE`.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'

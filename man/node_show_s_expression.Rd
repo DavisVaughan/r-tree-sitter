@@ -64,7 +64,7 @@ this is set to \code{FALSE}.}
 console. It powers the print methods of nodes and trees.
 }
 \examples{
-\dontshow{if (treesitter:::has_r_grammar()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

@@ -213,7 +213,7 @@ language_field_count <- function(x) {
 #' A single integer representing the next state.
 #'
 #' @export
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
 #'

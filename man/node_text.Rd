@@ -18,7 +18,7 @@ A single string containing the node's text.
 \code{node_text()} returns the document text underlying a node.
 }
 \examples{
-\dontshow{if (treesitter:::has_r_grammar()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

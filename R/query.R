@@ -86,7 +86,7 @@ query <- function(language, source) {
 #'
 #' @name query-matches-and-captures
 #'
-#' @examplesIf treesitter:::has_r_grammar()
+#' @examplesIf rlang::is_installed("treesitter.r")
 #' text <- "
 #' foo + b + a + ab
 #' and(a)
