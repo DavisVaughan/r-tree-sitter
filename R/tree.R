@@ -105,6 +105,11 @@ tree_root_node_with_offset <- function(x, byte, point) {
   padding <- strrep(" ", byte)
   text <- paste0(padding, text)
 
+  # SAFETY: We don't currently export `node_tree()` to get the tree out of
+  # a node object. If we provided that, then we'd have to document that it is
+  # not safe to get the tree out of an offset root node. The `text` has been
+  # shifted to align with the offset root node, but the tree itself doesn't
+  # contain this shift, so to extract out the tree on its own would be unsafe.
   x <- new_tree(pointer, text, language)
 
   raw <- .Call(ffi_tree_root_node_with_offset, pointer, byte, row, column)
@@ -144,8 +149,41 @@ tree_walk <- function(x) {
   node_walk(node)
 }
 
-# TODO: Document that the default includes a range that covers the
-# whole document
+#' Tree accessors
+#'
+#' @description
+#' - `tree_text()` retrieves the tree's `text` that it was parsed with.
+#'
+#' - `tree_language()` retrieves the tree's `language` that it was parsed with.
+#'
+#' - `tree_included_ranges()` retrieves the tree's `included_ranges` that were
+#'   provided to [parser_set_included_ranges()]. Note that if no ranges were
+#'   provided originally, then this still returns a default that always covers
+#'   the entire document.
+#'
+#' @inheritParams x_tree_sitter_tree
+#'
+#' @returns
+#' - `tree_text()` returns a string.
+#'
+#' - `tree_language()` returns a `tree_sitter_language`.
+#'
+#' - `tree_included_ranges()` returns a list of [range()] objects.
+#'
+#' @name tree-accessors
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "1 + foo"
+#' tree <- parser_parse(parser, text)
+#'
+#' tree_text(tree)
+#' tree_language(tree)
+#' tree_included_ranges(tree)
+NULL
+
+#' @rdname tree-accessors
 #' @export
 tree_included_ranges <- function(x) {
   check_tree(x)
@@ -187,19 +225,43 @@ tree_included_ranges <- function(x) {
   out
 }
 
+#' @rdname tree-accessors
 #' @export
 tree_text <- function(x) {
   check_tree(x)
   tree_text0(x)
 }
 
+#' @rdname tree-accessors
 #' @export
 tree_language <- function(x) {
   check_tree(x)
   tree_language0(x)
 }
 
+#' Is `x` a tree?
+#'
+#' @description
+#' Checks if `x` is a `tree_sitter_tree` or not.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @returns
+#' `TRUE` if `x` is a `tree_sitter_tree`, otherwise `FALSE`.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#'
+#' is_tree(tree)
+#'
+#' is_tree(1)
 is_tree <- function(x) {
   inherits(x, "tree_sitter_tree")
 }
