@@ -34,9 +34,59 @@ tree_root_node <- function(x) {
   new_node(raw, x)
 }
 
-# TODO: When documenting, pull from this PR to talk about potential use cases
-# for this https://github.com/tree-sitter/tree-sitter/pull/1845
+#' Retrieve an offset root node
+#'
+#' @description
+#' `tree_root_node_with_offset()` is similar to [tree_root_node()],
+#' but the returned root node's position has been shifted by the given number of
+#' bytes, rows, and columns.
+#'
+#' This function allows you to parse a subset of a document with
+#' [parser_parse()] as if it were a self-contained document, but then later
+#' access the syntax tree in the coordinate space of the larger document.
+#'
+#' Note that the underlying `text` within `x` is not what you are offsetting
+#' into. Instead, you should assume that the `text` you provided to
+#' [parser_parse()] already contained the entire subset of the document you care
+#' about, and the offset you are providing is how far into the document the
+#' beginning of `text` is.
+#'
+#' @inheritParams x_tree_sitter_tree
+#'
+#' @param byte,point `[double(1), tree_sitter_point]`
+#'
+#'   A byte and point offset combination.
+#'
+#' @returns
+#' An offset root node.
+#'
 #' @export
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#'
+#' # If `text` was the whole document, you can just use `tree_root_node()`
+#' node <- tree_root_node(tree)
+#'
+#' # If `text` represents a subset of the document, use
+#' # `tree_root_node_with_offset()` to be able to get positions in the
+#' # coordinate space of the original document.
+#' byte <- 5
+#' point <- point(5, 0)
+#' node_offset <- tree_root_node_with_offset(tree, byte, point)
+#'
+#' # The position of `fn` if you treat `text` as the whole document
+#' node |>
+#'   node_child(1) |>
+#'   node_child(1)
+#'
+#' # The position of `fn` if you treat `text` as a subset of a larger document
+#' node_offset |>
+#'   node_child(1) |>
+#'   node_child(1)
 tree_root_node_with_offset <- function(x, byte, point) {
   check_tree(x)
   check_point(point)
