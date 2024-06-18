@@ -952,6 +952,36 @@ node_symbol <- function(x) {
   .Call(ffi_node_symbol, x)
 }
 
+#' Node grammar types and symbols
+#'
+#' @description
+#' - `node_grammar_type()` gets the node's type as it appears in the grammar,
+#'   _ignoring aliases_.
+#'
+#' - `node_grammar_symbol()` gets the node's symbol (the type as a numeric id)
+#'   as it appears in the grammar, _ignoring aliases_. This should be used in
+#'   [language_next_state()] rather than [node_symbol()].
+#'
+#' @inheritParams x_tree_sitter_node
+#'
+#' @seealso [node_type()], [node_symbol()]
+#'
+#' @name node-grammar
+#' @examplesIf treesitter:::has_r_grammar()
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#'
+#' text <- "fn <- function() { 1 + 1 }"
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # Examples for these functions are highly specific to the grammar,
+#' # because they relies on the placement of `alias()` calls in the grammar.
+#' node_grammar_type(node)
+#' node_grammar_symbol(node)
+NULL
+
+#' @rdname node-grammar
 #' @export
 node_grammar_type <- function(x) {
   check_node(x)
@@ -959,6 +989,7 @@ node_grammar_type <- function(x) {
   .Call(ffi_node_grammar_type, x)
 }
 
+#' @rdname node-grammar
 #' @export
 node_grammar_symbol <- function(x) {
   check_node(x)
