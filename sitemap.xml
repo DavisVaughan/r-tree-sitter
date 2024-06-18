@@ -16,6 +16,9 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/TreeCursor.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -26,6 +29,12 @@
   </url>
   <url>
     <loc>/reference/is_parser.html</loc>
+  </url>
+  <url>
+    <loc>/reference/is_query.html</loc>
+  </url>
+  <url>
+    <loc>/reference/is_tree.html</loc>
   </url>
   <url>
     <loc>/reference/language_field_count.html</loc>
@@ -130,7 +139,16 @@
     <loc>/reference/parser.html</loc>
   </url>
   <url>
+    <loc>/reference/query-accessors.html</loc>
+  </url>
+  <url>
     <loc>/reference/query-matches-and-captures.html</loc>
+  </url>
+  <url>
+    <loc>/reference/query.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tree-accessors.html</loc>
   </url>
   <url>
     <loc>/reference/tree-sitter-point.html</loc>
@@ -155,6 +173,9 @@
   </url>
   <url>
     <loc>/reference/x_tree_sitter_parser.html</loc>
+  </url>
+  <url>
+    <loc>/reference/x_tree_sitter_query.html</loc>
   </url>
   <url>
     <loc>/reference/x_tree_sitter_tree.html</loc>
