@@ -1,3 +1,49 @@
+#' Points
+#'
+#' @description
+#' - `point()` creates a new tree-sitter point.
+#'
+#' - `point_row()` and `point_column()` access a point's row and column value,
+#'   respectively.
+#'
+#' - `is_point()` determines whether or not an object is a point.
+#'
+#' Note that points are 0-indexed. This is typically the easiest form to work
+#' with them in, since most of the time when you are provided row and column
+#' information from third party libraries, they will already be 0-indexed. It
+#' is also consistent with bytes, which are also 0-indexed and are often
+#' provided alongside their corresponding points.
+#'
+#' @param row `[double(1)]`
+#'
+#'   A 0-indexed row to place the point at.
+#'
+#' @param column `[double(1)]`
+#'
+#'   A 0-indexed column to place the point at.
+#'
+#' @param x `[tree_sitter_point]`
+#'
+#'   A point.
+#'
+#' @returns
+#' - `point()` returns a new point.
+#'
+#' - `point_row()` and `point_column()` return a single double.
+#'
+#' - `is_point()` returns `TRUE` or `FALSE`.
+#'
+#' @name tree-sitter-point
+#' @examples
+#' x <- point(1, 2)
+#'
+#' point_row(x)
+#' point_column(x)
+#'
+#' is_point(x)
+NULL
+
+#' @rdname tree-sitter-point
 #' @export
 point <- function(row, column) {
   row <- vec_cast(row, double())
@@ -9,18 +55,21 @@ point <- function(row, column) {
   new_point(row, column)
 }
 
+#' @rdname tree-sitter-point
 #' @export
 point_row <- function(x) {
   check_point(x)
   point_row0(x)
 }
 
+#' @rdname tree-sitter-point
 #' @export
 point_column <- function(x) {
   check_point(x)
   point_column0(x)
 }
 
+#' @rdname tree-sitter-point
 #' @export
 is_point <- function(x) {
   inherits(x, "tree_sitter_point")
