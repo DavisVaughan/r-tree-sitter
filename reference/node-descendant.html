@@ -67,7 +67,7 @@ smaller node can be determined, the input is returned.</p>
 <dt>start, end</dt>
 <dd><p><code>[integer(1) / tree_sitter_point]</code></p>
 <p>For the byte range functions, start and end bytes to search within.</p>
-<p>For the point range functions, start and end points created by <code>point()</code> to
+<p>For the point range functions, start and end points created by <code><a href="tree-sitter-point.html">point()</a></code> to
 search within.</p></dd>
 
 </dl></div>
@@ -150,8 +150,8 @@ search within.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">start</span> <span class="op">&lt;-</span> <span class="fu">point</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">14</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">end</span> <span class="op">&lt;-</span> <span class="fu">point</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">start</span> <span class="op">&lt;-</span> <span class="fu"><a href="tree-sitter-point.html">point</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">14</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">end</span> <span class="op">&lt;-</span> <span class="fu"><a href="tree-sitter-point.html">point</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">node_descendant_for_point_range</span><span class="op">(</span><span class="va">node</span>, <span class="va">start</span>, <span class="va">end</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>

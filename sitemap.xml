@@ -76,6 +76,9 @@
     <loc>/reference/node-first-child-byte.html</loc>
   </url>
   <url>
+    <loc>/reference/node-grammar.html</loc>
+  </url>
+  <url>
     <loc>/reference/node-location.html</loc>
   </url>
   <url>
@@ -130,7 +133,16 @@
     <loc>/reference/query-matches-and-captures.html</loc>
   </url>
   <url>
+    <loc>/reference/tree-sitter-point.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tree-sitter-range.html</loc>
+  </url>
+  <url>
     <loc>/reference/tree_root_node.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tree_root_node_with_offset.html</loc>
   </url>
   <url>
     <loc>/reference/tree_walk.html</loc>

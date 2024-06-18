@@ -59,7 +59,7 @@ done by <code><a href="parser.html">parser()</a></code> though.</p></li>
 occurs.</p></li>
 <li><p><code>parser_set_included_ranges()</code> sets an optional list of ranges that are
 the only locations considered when parsing. The ranges are created by
-<code><a href="https://rdrr.io/r/base/range.html" class="external-link">range()</a></code>.</p></li>
+<code><a href="tree-sitter-range.html">range()</a></code>.</p></li>
 </ul></div>
 
     <div id="ref-usage">
@@ -90,7 +90,7 @@ when parsing.</p></dd>
 
 <dt>included_ranges</dt>
 <dd><p><code>[list_of&lt;tree_sitter_range&gt;]</code></p>
-<p>A list of ranges constructed by <code><a href="https://rdrr.io/r/base/range.html" class="external-link">range()</a></code>. These are the only locations
+<p>A list of ranges constructed by <code><a href="tree-sitter-range.html">range()</a></code>. These are the only locations
 that will be considered when parsing.</p>
 <p>An empty list can be used to clear any existing ranges so that the parser
 will again parse the entire document.</p></dd>
