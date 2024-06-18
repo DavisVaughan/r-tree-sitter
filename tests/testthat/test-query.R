@@ -4,10 +4,10 @@
 test_that("can create basic query with correct structure", {
   source <- r'[
   (
-    (identifier) @id 
-    (identifier) @id2 
-    (#eq? @id "blah") 
-    (#eq? @id @id2) 
+    (identifier) @id
+    (identifier) @id2
+    (#eq? @id "blah")
+    (#eq? @id @id2)
   )
   (
     (identifier) @id3
@@ -16,12 +16,12 @@ test_that("can create basic query with correct structure", {
   ]'
 
   query <- query(r(), source)
-  
+
   expect_identical(query$capture_names, c("id", "id2", "id3"))
-  
+
   # First pattern
   predicates <- query$pattern_predicates[[1]]
-  
+
   eq_string <- predicates[[1]]
   expect_true(is_predicate_eq_string(eq_string))
   expect_identical(eq_string$capture_name_value_id, 0)
@@ -82,7 +82,7 @@ test_that("using `*` always results in a match, even if its capture count is 0",
 # hi2
 fn <- function() {}
   "
-  
+
   # Must get an escaped `\\s` into the string itself (so, two literal `\`
   # characters followed by an `s`, which tree-sitter then reinterprets), easiest
   # way is a raw string.
@@ -115,7 +115,7 @@ test_that("using `*` with no other restricting condition results in 1 match per 
 1 + x
 fn(y)
   "
-  
+
   source <- R'[
   (
     (comment)* @comment
@@ -145,7 +145,7 @@ test_that("can restrict `range`", {
 # hi
 # hi again
   "
-  
+
   source <- "
   (
     (comment) @comment
@@ -181,7 +181,7 @@ and(a)
 
   source <- "
   (
-    (identifier) @id 
+    (identifier) @id
     (#eq? @id a)
   )
   (
@@ -199,7 +199,7 @@ and(a)
 
   # Returns ordered list of captures, regardless of pattern
   expect_identical(captures$name, c("id", "id2", "id", "id"))
-  
+
   expect_snapshot(captures$node)
 })
 
@@ -208,7 +208,7 @@ test_that("can restrict `range`", {
 # hi
 # hi again
   "
-  
+
   source <- "
   (
     (comment) @comment
@@ -240,7 +240,7 @@ and(a)
 
   source <- '
   (
-    (identifier) @id 
+    (identifier) @id
     (#eq? @id "a")
   )
   '
@@ -254,7 +254,7 @@ and(a)
 
   # Returns ordered list of captures, regardless of pattern
   expect_length(captures$name, 3)
-  
+
   expect_identical(node_range(captures$node[[1]]), range(1, point(1, 0), 2, point(1, 1)))
   expect_identical(node_range(captures$node[[2]]), range(9, point(1, 8), 10, point(1, 9)))
   expect_identical(node_range(captures$node[[3]]), range(20, point(2, 4), 21, point(2, 5)))
@@ -268,7 +268,7 @@ and(a)
 
   source <- "
   (
-    (identifier) @id 
+    (identifier) @id
     (#not-eq? @id a)
   )
   "
@@ -279,7 +279,7 @@ and(a)
   node <- tree_root_node(tree)
   query <- query(language, source)
   captures <- query_captures(query, node)
-  
+
   expect_identical(
     vapply(captures$node, node_text, character(1)),
     c("b", "ab", "and")
@@ -536,11 +536,28 @@ test_that("can use `#match?` and `#not-match?` with capture", {
     ]'
     query <- query(language, source)
     captures <- query_captures(query, node)
-  
+
     expect_length(captures$node, 2)
-  
+
     expect_identical(
       vapply(captures$node, node_text, character(1)),
       c("# comment", "# comment2")
     )
+})
+
+# ------------------------------------------------------------------------------
+# query_start_byte_for_pattern()
+
+test_that("has OOB handling built in", {
+  source <- "(identifier) @id"
+  language <- r()
+  query <- query(language, source)
+
+  expect_snapshot(error = TRUE, {
+    query_start_byte_for_pattern(query, 0)
+  })
+
+  expect_identical(query_start_byte_for_pattern(query, 1), 0)
+  expect_identical(query_start_byte_for_pattern(query, 2), NA_real_)
+  expect_identical(query_start_byte_for_pattern(query, 3), NA_real_)
 })

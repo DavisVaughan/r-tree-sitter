@@ -1,4 +1,57 @@
+#' Queries
+#'
+#' @description
+#' `query()` lets you specify a query `source` string for use with
+#' [query_captures()] and [query_matches()]. The `source` string is written
+#' in a way that is somewhat similar to the idea of capture groups in regular
+#' expressions. You write out a pattern that matches a node in a tree, and then
+#' you "capture" parts of that pattern with `@name` tags. The captures are
+#' the values returned by [query_captures()] and [query_matches()]. There are
+#' also a series of _predicates_ that can be used to further refine the
+#' query. Those are described in the [query_matches()] help page.
+#'
+#' Read the [tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax)
+#' to learn more about the query syntax.
+#'
+#' @param language `[tree_sitter_language]`
+#'
+#'   A language.
+#'
+#' @param source `[string]`
+#'
+#'   A query source string.
+#'
+#' @returns
+#' A query.
+#'
 #' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' # This query looks for binary operators where the left hand side is an
+#' # identifier named `fn`, and the right hand side is a function definition.
+#' # The operator can be `<-` or `=` (technically it can also be things like
+#' # `+` as well in this example).
+#' source <- '(binary_operator
+#'   lhs: (identifier) @lhs
+#'   operator: _ @operator
+#'   rhs: (function_definition) @rhs
+#'   (#eq? @lhs "fn")
+#' )'
+#'
+#' language <- treesitter.r::language()
+#'
+#' query <- query(language, source)
+#'
+#' text <- "
+#'   fn <- function() {}
+#'   fn2 <- function() {}
+#'   fn <- 5
+#'   fn = function(a, b, c) { a + b + c }
+#' "
+#' parser <- parser(language)
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' query_matches(query, node)
 query <- function(language, source) {
   check_language(language)
   check_string(source)
@@ -70,11 +123,8 @@ query <- function(language, source) {
 #' write something like `(#match? @id "^\\s$")` and that will be read in
 #' correctly.
 #'
+#' @inheritParams x_tree_sitter_query
 #' @inheritParams rlang::args_dots_empty
-#'
-#' @param x `[tree_sitter_query]`
-#'
-#'   A query.
 #'
 #' @param node `[tree_sitter_node]`
 #'
@@ -217,6 +267,61 @@ query_captures <- function(x, node, ..., range = NULL) {
   out
 }
 
+#' Query accessors
+#'
+#' @description
+#' - `query_pattern_count()` returns the number of patterns in a query.
+#'
+#' - `query_capture_count()` returns the number of captures in a query.
+#'
+#' - `query_string_count()` returns the number of string literals in a query.
+#'
+#' - `query_start_byte_for_pattern()` returns the byte where the `i`th pattern
+#'   starts in the query `source`.
+#'
+#' @inheritParams x_tree_sitter_query
+#'
+#' @param i `[double(1)]`
+#'
+#'   The `i`th pattern to extract the start byte for.
+#'
+#' @returns
+#' - `query_pattern_count()`, `query_capture_count()`, and
+#'   `query_string_count()` return a single double count value.
+#'
+#' - `query_start_byte_for_pattern()` returns a single double for the start byte
+#'   if there was an `i`th pattern, otherwise it returns `NA`.
+#'
+#' @name query-accessors
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' source <- '(binary_operator
+#'   lhs: (identifier) @lhs
+#'   operator: _ @operator
+#'   rhs: (function_definition) @rhs
+#'   (#eq? @lhs "fn")
+#' )'
+#' language <- treesitter.r::language()
+#'
+#' query <- query(language, source)
+#'
+#' query_pattern_count(query)
+#' query_capture_count(query)
+#' query_string_count(query)
+#'
+#' text <- "
+#'   fn <- function() {}
+#'   fn2 <- function() {}
+#'   fn <- 5
+#'   fn <- function(a, b, c) { a + b + c }
+#' "
+#' parser <- parser(language)
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' query_matches(query, node)
+NULL
+
+#' @rdname query-accessors
 #' @export
 query_pattern_count <- function(x) {
   check_query(x)
@@ -224,6 +329,7 @@ query_pattern_count <- function(x) {
   .Call(ffi_query_pattern_count, x)
 }
 
+#' @rdname query-accessors
 #' @export
 query_capture_count <- function(x) {
   check_query(x)
@@ -231,6 +337,7 @@ query_capture_count <- function(x) {
   .Call(ffi_query_capture_count, x)
 }
 
+#' @rdname query-accessors
 #' @export
 query_string_count <- function(x) {
   check_query(x)
@@ -238,6 +345,7 @@ query_string_count <- function(x) {
   .Call(ffi_query_string_count, x)
 }
 
+#' @rdname query-accessors
 #' @export
 query_start_byte_for_pattern <- function(x, i) {
   check_query(x)
@@ -249,7 +357,28 @@ query_start_byte_for_pattern <- function(x, i) {
   .Call(ffi_query_start_byte_for_pattern, x, i)
 }
 
+#' Is `x` a query?
+#'
+#' @description
+#' Checks if `x` is a `tree_sitter_query` or not.
+#'
+#' @param x `[object]`
+#'
+#'   An object.
+#'
+#' @returns
+#' `TRUE` if `x` is a `tree_sitter_query`, otherwise `FALSE`.
+#'
 #' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' source <- "(identifier) @id"
+#' language <- treesitter.r::language()
+#'
+#' query <- query(language, source)
+#'
+#' is_query(query)
+#'
+#' is_query(1)
 is_query <- function(x) {
   inherits(x, "tree_sitter_query")
 }

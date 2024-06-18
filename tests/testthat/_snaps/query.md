@@ -57,3 +57,11 @@
       (identifier [(2, 4), (2, 5)])
       
 
+# has OOB handling built in
+
+    Code
+      query_start_byte_for_pattern(query, 0)
+    Condition
+      Error in `query_start_byte_for_pattern()`:
+      ! `i` must be a number larger than 1, not the number 0.
+

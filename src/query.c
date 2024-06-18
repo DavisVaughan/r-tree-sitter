@@ -71,9 +71,13 @@ r_obj* ffi_query_start_byte_for_pattern(r_obj* ffi_query, r_obj* ffi_i) {
   // Validated on R side to be positive whole double of length 1, 1-indexed
   uint32_t i = r_dbl_as_uint32(r_dbl_get(ffi_i, 0) - 1, "i");
 
-  uint32_t out = ts_query_start_byte_for_pattern(query, i);
-
-  return r_dbl(r_uint32_as_dbl(out));
+  // There is no safety about OOB `i` values, so we add our own
+  if (i >= ts_query_pattern_count(query)) {
+    return r_dbl(r_globals.na_dbl);
+  } else {
+    uint32_t out = ts_query_start_byte_for_pattern(query, i);
+    return r_dbl(r_uint32_as_dbl(out));
+  }
 }
 
 static r_obj* query_error(uint32_t error_offset, TSQueryError error_type) {
