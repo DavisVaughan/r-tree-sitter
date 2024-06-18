@@ -1,3 +1,56 @@
+#' Ranges
+#'
+#' @description
+#' - `range()` creates a new tree-sitter range.
+#'
+#' - `range_start_byte()` and `range_end_byte()` access a range's start and
+#'   end bytes, respectively.
+#'
+#' - `range_start_point()` and `range_end_point()` access a range's start and
+#'   end points, respectively.
+#'
+#' - `is_range()` determines whether or not an object is a range.
+#'
+#' Note that the bytes and points used in ranges are 0-indexed.
+#'
+#' @param start_byte,end_byte `[double(1)]`
+#'
+#'   0-indexed bytes for the start and end of the range, respectively.
+#'
+#' @param start_point,end_point `[tree_sitter_point]`
+#'
+#'   0-indexed points for the start and end of the range, respectively.
+#'
+#' @param x `[tree_sitter_range]`
+#'
+#'   A range.
+#'
+#' @returns
+#' - `range()` returns a new range.
+#'
+#' - `range_start_byte()` and `range_end_byte()` return a single double.
+#'
+#' - `range_start_point()` and `range_end_point()` return a [point()].
+#'
+#' - `is_range()` returns `TRUE` or `FALSE`.
+#'
+#' @seealso [node_range()]
+#'
+#' @name tree-sitter-range
+#' @examples
+#' x <- range(5, point(1, 3), 7, point(1, 5))
+#' x
+#'
+#' range_start_byte(x)
+#' range_end_byte(x)
+#'
+#' range_start_point(x)
+#' range_end_point(x)
+#'
+#' is_range(x)
+NULL
+
+#' @rdname tree-sitter-range
 #' @export
 range <- function(
   start_byte,
@@ -14,30 +67,35 @@ range <- function(
   new_range(start_byte, start_point, end_byte, end_point)
 }
 
+#' @rdname tree-sitter-range
 #' @export
 range_start_byte <- function(x) {
   check_range(x)
   range_start_byte0(x)
 }
 
+#' @rdname tree-sitter-range
 #' @export
 range_start_point <- function(x) {
   check_range(x)
   range_start_point0(x)
 }
 
+#' @rdname tree-sitter-range
 #' @export
 range_end_byte <- function(x) {
   check_range(x)
   range_end_byte0(x)
 }
 
+#' @rdname tree-sitter-range
 #' @export
 range_end_point <- function(x) {
   check_range(x)
   range_end_point0(x)
 }
 
+#' @rdname tree-sitter-range
 #' @export
 is_range <- function(x) {
   inherits(x, "tree_sitter_range")
