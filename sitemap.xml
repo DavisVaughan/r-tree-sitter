@@ -136,6 +136,9 @@
     <loc>/reference/parser.html</loc>
   </url>
   <url>
+    <loc>/reference/points.html</loc>
+  </url>
+  <url>
     <loc>/reference/query-accessors.html</loc>
   </url>
   <url>
@@ -145,16 +148,13 @@
     <loc>/reference/query.html</loc>
   </url>
   <url>
+    <loc>/reference/ranges.html</loc>
+  </url>
+  <url>
     <loc>/reference/text_parse.html</loc>
   </url>
   <url>
     <loc>/reference/tree-accessors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tree-sitter-point.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tree-sitter-range.html</loc>
   </url>
   <url>
     <loc>/reference/tree_root_node.html</loc>
