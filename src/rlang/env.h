@@ -42,9 +42,21 @@ bool r_is_namespace(r_obj* x) {
   return R_IsNamespaceEnv(x);
 }
 
+// TODO: Could consider using new `R_getVarEx()` with `inherits = false`
+// and `ifnotfound = r_syms.unbound`. However, that evaluates promises,
+// so we need to evaluate each usage of `r_env_find()` because the behavior
+// is different.
 static inline
 r_obj* r_env_find(r_obj* env, r_obj* sym) {
+#if R_BEFORE_NON_API_CLEANUP
   return Rf_findVarInFrame3(env, sym, FALSE);
+#else
+  if (R_existsVarInFrame(env, sym)) {
+    return Rf_findVarInFrame(env, sym);
+  } else {
+    return r_syms.unbound;
+  }
+#endif
 }
 static inline
 r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
