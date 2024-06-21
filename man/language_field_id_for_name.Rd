@@ -27,6 +27,12 @@ Get the integer field identifier for a field name. If you are going to be
 using a field name repeatedly, it is often a little faster to use the
 corresponding field identifier instead.
 }
+\examples{
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+language <- treesitter.r::language()
+language_field_id_for_name(language, "lhs")
+\dontshow{\}) # examplesIf}
+}
 \seealso{
 \code{\link[=language_field_name_for_id]{language_field_name_for_id()}}
 }

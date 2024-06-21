@@ -33,6 +33,12 @@ An integer vector the same size as \code{name} containing either:
 Get the integer symbol ID for a particular node name. Can be useful
 for exploring the grammar.
 }
+\examples{
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+language <- treesitter.r::language()
+language_symbol_for_name(language, "identifier")
+\dontshow{\}) # examplesIf}
+}
 \seealso{
 \code{\link[=language_symbol_name]{language_symbol_name()}}
 }

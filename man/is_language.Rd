@@ -21,3 +21,9 @@ An object.}
 Use \code{is_language()} to determine if an object has a class of
 \code{"tree_sitter_language"}.
 }
+\examples{
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+language <- treesitter.r::language()
+is_language(language)
+\dontshow{\}) # examplesIf}
+}

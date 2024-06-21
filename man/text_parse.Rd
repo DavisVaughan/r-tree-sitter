@@ -15,6 +15,9 @@ The text to parse.}
 
 The language to parse with.}
 }
+\value{
+A root node.
+}
 \description{
 \code{text_parse()} is a convenience utility for quickly parsing a small snippet
 of text using a particular language and getting access to its root node. It

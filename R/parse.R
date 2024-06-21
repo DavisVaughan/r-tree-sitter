@@ -15,6 +15,9 @@
 #'
 #'   The language to parse with.
 #'
+#' @returns
+#' A root node.
+#'
 #' @export
 #' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()

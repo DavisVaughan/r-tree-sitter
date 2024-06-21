@@ -6,7 +6,13 @@
 #'
 #'   A tree-sitter language object.
 #'
+#' @returns
+#' A string.
+#'
 #' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_name(language)
 language_name <- function(x) {
   check_language(x)
   x$name
@@ -22,6 +28,8 @@ language_name <- function(x) {
 #'
 #' @returns
 #' A scalar double value.
+#'
+#' @noRd
 language_version <- function(x) {
   check_language(x)
   .Call(ffi_language_version, language_pointer(x))
@@ -52,8 +60,12 @@ language_version <- function(x) {
 #' - The integer symbol ID of the node name, if known.
 #' - `NA` if the node name was not known.
 #'
-#' @export
 #' @seealso [language_symbol_name()]
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_symbol_for_name(language, "identifier")
 language_symbol_for_name <- function(x, name, ..., named = TRUE) {
   check_dots_empty0(...)
   check_language(x)
@@ -80,12 +92,17 @@ language_symbol_for_name <- function(x, name, ..., named = TRUE) {
 #'
 #'   The language symbols to look up names for.
 #'
-#' @export
-#' @seealso [language_symbol_for_name()]
 #' @returns
 #' A character vector the same length as `symbol` containing:
 #' - The name of the symbol, if known.
 #' - `NA`, if the symbol was not known.
+#'
+#' @seealso [language_symbol_for_name()]
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_symbol_name(language, 1)
 language_symbol_name <- function(x, symbol) {
   check_language(x)
   symbol <- vec_cast(symbol, integer())
@@ -106,12 +123,17 @@ language_symbol_name <- function(x, symbol) {
 #'
 #'   The language field names to look up field identifiers for.
 #'
-#' @export
-#' @seealso [language_field_name_for_id()]
 #' @returns
 #' An integer vector the same length as `name` containing:
 #' - The field identifier for the field name, if known.
 #' - `NA`, if the field name was not known.
+#'
+#' @seealso [language_field_name_for_id()]
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_field_id_for_name(language, "lhs")
 language_field_id_for_name <- function(x, name) {
   check_language(x)
 
@@ -133,12 +155,17 @@ language_field_id_for_name <- function(x, name) {
 #'
 #'   The language field identifiers to look up field names for.
 #'
-#' @export
-#' @seealso [language_field_id_for_name()]
 #' @returns
 #' A character vector the same length as `id` containing:
 #' - The field name for the field identifier, if known.
 #' - `NA`, if the field identifier was not known.
+#'
+#' @seealso [language_field_id_for_name()]
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_field_name_for_id(language, 1)
 language_field_name_for_id <- function(x, id) {
   check_language(x)
 
@@ -156,9 +183,13 @@ language_field_name_for_id <- function(x, id) {
 #'
 #'   A tree-sitter language object.
 #'
-#' @export
 #' @returns
 #' A single double value.
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_symbol_count(language)
 language_symbol_count <- function(x) {
   check_language(x)
   .Call(ffi_language_symbol_count, language_pointer(x))
@@ -172,9 +203,13 @@ language_symbol_count <- function(x) {
 #'
 #'   A tree-sitter language object.
 #'
-#' @export
 #' @returns
 #' A single double value.
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_state_count(language)
 language_state_count <- function(x) {
   check_language(x)
   .Call(ffi_language_state_count, language_pointer(x))
@@ -188,9 +223,13 @@ language_state_count <- function(x) {
 #'
 #'   A tree-sitter language object.
 #'
-#' @export
 #' @returns
 #' A single double value.
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' language_field_count(language)
 language_field_count <- function(x) {
   check_language(x)
   .Call(ffi_language_field_count, language_pointer(x))
@@ -259,10 +298,14 @@ language_next_state <- function(x, state, symbol) {
 #'
 #'   An object.
 #'
-#' @export
 #' @returns
 #' - `TRUE` if `x` is a `"tree_sitter_language"`.
 #' - `FALSE` otherwise.
+#'
+#' @export
+#' @examplesIf rlang::is_installed("treesitter.r")
+#' language <- treesitter.r::language()
+#' is_language(language)
 is_language <- function(x) {
   inherits(x, "tree_sitter_language")
 }

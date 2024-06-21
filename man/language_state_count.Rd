@@ -17,3 +17,9 @@ A single double value.
 \description{
 Get the number of states traversable within a language.
 }
+\examples{
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+language <- treesitter.r::language()
+language_state_count(language)
+\dontshow{\}) # examplesIf}
+}

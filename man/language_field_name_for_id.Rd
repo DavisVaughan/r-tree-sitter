@@ -25,6 +25,12 @@ A character vector the same length as \code{id} containing:
 \description{
 Get the field name for a field identifier.
 }
+\examples{
+\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+language <- treesitter.r::language()
+language_field_name_for_id(language, 1)
+\dontshow{\}) # examplesIf}
+}
 \seealso{
 \code{\link[=language_field_id_for_name]{language_field_id_for_name()}}
 }
