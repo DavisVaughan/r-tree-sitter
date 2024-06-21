@@ -33,7 +33,7 @@
 #'
 #' - `is_point()` returns `TRUE` or `FALSE`.
 #'
-#' @name tree-sitter-point
+#' @name points
 #' @examples
 #' x <- point(1, 2)
 #'
@@ -43,7 +43,7 @@
 #' is_point(x)
 NULL
 
-#' @rdname tree-sitter-point
+#' @rdname points
 #' @export
 point <- function(row, column) {
   row <- vec_cast(row, double())
@@ -55,21 +55,21 @@ point <- function(row, column) {
   new_point(row, column)
 }
 
-#' @rdname tree-sitter-point
+#' @rdname points
 #' @export
 point_row <- function(x) {
   check_point(x)
   point_row0(x)
 }
 
-#' @rdname tree-sitter-point
+#' @rdname points
 #' @export
 point_column <- function(x) {
   check_point(x)
   point_column0(x)
 }
 
-#' @rdname tree-sitter-point
+#' @rdname points
 #' @export
 is_point <- function(x) {
   inherits(x, "tree_sitter_point")

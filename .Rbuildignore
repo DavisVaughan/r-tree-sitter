@@ -8,3 +8,6 @@ compile_commands.json
 ^\.github$
 ^codecov\.yml$
 ^tools$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

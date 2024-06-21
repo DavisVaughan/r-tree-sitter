@@ -5,3 +5,4 @@
 .quarto
 .cache
 compile_commands.json
+docs

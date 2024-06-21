@@ -36,7 +36,7 @@
 #'
 #' @seealso [node_range()]
 #'
-#' @name tree-sitter-range
+#' @name ranges
 #' @examples
 #' x <- range(5, point(1, 3), 7, point(1, 5))
 #' x
@@ -50,7 +50,7 @@
 #' is_range(x)
 NULL
 
-#' @rdname tree-sitter-range
+#' @rdname ranges
 #' @export
 range <- function(
   start_byte,
@@ -67,35 +67,35 @@ range <- function(
   new_range(start_byte, start_point, end_byte, end_point)
 }
 
-#' @rdname tree-sitter-range
+#' @rdname ranges
 #' @export
 range_start_byte <- function(x) {
   check_range(x)
   range_start_byte0(x)
 }
 
-#' @rdname tree-sitter-range
+#' @rdname ranges
 #' @export
 range_start_point <- function(x) {
   check_range(x)
   range_start_point0(x)
 }
 
-#' @rdname tree-sitter-range
+#' @rdname ranges
 #' @export
 range_end_byte <- function(x) {
   check_range(x)
   range_end_byte0(x)
 }
 
-#' @rdname tree-sitter-range
+#' @rdname ranges
 #' @export
 range_end_point <- function(x) {
   check_range(x)
   range_end_point0(x)
 }
 
-#' @rdname tree-sitter-range
+#' @rdname ranges
 #' @export
 is_range <- function(x) {
   inherits(x, "tree_sitter_range")

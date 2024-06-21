@@ -1,0 +1,40 @@
+url: ~
+
+development:
+  mode: auto
+
+template:
+  package: tidytemplate
+  bootstrap: 5
+
+reference:
+- title: Parser
+  contents:
+  - starts_with("parser")
+  - is_parser
+  - text_parse
+- title: Tree
+  contents:
+  - starts_with("tree")
+  - is_tree
+- title: Node
+  contents:
+  - starts_with("node")
+  - is_node
+- title: Query
+  contents:
+  - starts_with("query")
+  - is_query
+- title: Language
+  contents:
+  - starts_with("language")
+  - is_language
+- title: Point
+  contents:
+  - starts_with("point")
+- title: Range
+  contents:
+  - starts_with("range")
+- title: Tree cursor
+  contents:
+  - TreeCursor
