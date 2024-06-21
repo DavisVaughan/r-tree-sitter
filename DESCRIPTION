@@ -24,8 +24,6 @@ Imports:
 Suggests:
     testthat (>= 3.0.0),
     treesitter.r
-Remotes:
-    treesitter.r=r-lib/tree-sitter-r/bindings/r
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
