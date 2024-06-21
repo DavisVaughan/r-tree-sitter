@@ -358,7 +358,11 @@ r_obj* sexp_node_tag(enum r_type type,
 #else
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_hashtab; r_stop_unreachable();
 #endif
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_env; return PRENV(x);
+#else
+  case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_env; r_stop_unreachable();
+#endif
   case R_TYPE_pointer:     *p_rel = R_SEXP_IT_RELATION_pointer_tag; return EXTPTR_TAG(x);
   case R_TYPE_pairlist:
   case R_TYPE_call:
