@@ -4,9 +4,9 @@
 \name{treesitter-package}
 \alias{treesitter}
 \alias{treesitter-package}
-\title{treesitter: R Bindings to tree-sitter}
+\title{treesitter: Bindings to 'Tree-Sitter'}
 \description{
-Provides bindings to tree-sitter, an incremental parsing system for programming tools. Tree-sitter builds concrete syntax trees for source files of any language, and can efficiently update those syntax trees as the source file is edited. It also includes a robust error recovery system that provides useful parse results even in the presence of syntax errors.
+Provides bindings to 'Tree-sitter', an incremental parsing system for programming tools. 'Tree-sitter' builds concrete syntax trees for source files of any language, and can efficiently update those syntax trees as the source file is edited. It also includes a robust error recovery system that provides useful parse results even in the presence of syntax errors.
 }
 \author{
 \strong{Maintainer}: Davis Vaughan \email{davis@posit.co}
@@ -14,7 +14,7 @@ Provides bindings to tree-sitter, an incremental parsing system for programming 
 Other contributors:
 \itemize{
   \item Posit Software, PBC [copyright holder, funder]
-  \item tree-sitter authors (tree-sitter C library) [copyright holder]
+  \item Tree-sitter authors (Tree-sitter C library) [copyright holder]
 }
 
 }
