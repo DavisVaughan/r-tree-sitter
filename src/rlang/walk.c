@@ -320,7 +320,11 @@ r_obj* sexp_node_car(enum r_type type,
 #else
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_frame; r_stop_unreachable();
 #endif
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_value; return PRVALUE(x);
+#else
+  case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_value; r_stop_unreachable();
+#endif
   case R_TYPE_pairlist:
   case R_TYPE_call:
   case R_TYPE_dots:        *p_rel = R_SEXP_IT_RELATION_node_car; return CAR(x);
