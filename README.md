@@ -19,21 +19,27 @@ highlighting, go-to definition, code reshaping, and more.
 
 ## Installation
 
+Install treesitter from CRAN with:
+
+``` r
+install.packages("treesitter")
+```
+
+This package does *not* provide bindings to a language specific
+tree-sitter *grammar*. To fully utilize the treesitter package, you will
+also need to install a grammar specific R package. Currently there is
+just one, for R:
+
+``` r
+install.packages("treesitter.r")
+```
+
 You can install the development version of treesitter from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
 pak::pak("DavisVaughan/r-tree-sitter")
-```
-
-This package does *not* provide bindings to a language specific
-tree-sitter *grammar*. To fully utilize the treesitter package, you will
-also need to install a secondary grammar specific R package. Currently,
-there is just one, for R, at:
-
-``` r
-pak::pak("treesitter.r=r-lib/tree-sitter-r/bindings/r")
 ```
 
 ## Example
@@ -57,6 +63,10 @@ text <- "
 parser_parse(parser, text)
 #> <tree_sitter_tree>
 #> 
+#> ── Text ────────────────────────────────────────────────────────────────────────
+#> 1 + 2
+#> 
+#> 
 #> ── S-Expression ────────────────────────────────────────────────────────────────
 #> (program [(1, 0), (2, 0)]
 #>   (binary_operator [(1, 0), (1, 5)]
@@ -65,9 +75,6 @@ parser_parse(parser, text)
 #>     rhs: (float [(1, 4), (1, 5)])
 #>   )
 #> )
-#> 
-#> ── Text ────────────────────────────────────────────────────────────────────────
-#> 1 + 2
 ```
 
 Syntax trees can get pretty complex, here’s a larger example:
