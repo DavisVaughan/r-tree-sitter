@@ -8,12 +8,14 @@ Authors@R: c(
            comment = "Tree-sitter C library")
   )
 Description: Provides bindings to 'Tree-sitter', an incremental parsing
-    system for programming tools. 'Tree-sitter' builds concrete syntax trees
-    for source files of any language, and can efficiently update those
-    syntax trees as the source file is edited. It also includes a robust
-    error recovery system that provides useful parse results even in the
-    presence of syntax errors.
+    system for programming tools. 'Tree-sitter' builds concrete syntax
+    trees for source files of any language, and can efficiently update
+    those syntax trees as the source file is edited. It also includes a
+    robust error recovery system that provides useful parse results even
+    in the presence of syntax errors.
 License: MIT + file LICENSE
+URL: https://github.com/DavisVaughan/r-tree-sitter
+BugReports: https://github.com/DavisVaughan/r-tree-sitter/issues
 Depends:
     R (>= 4.3.0)
 Imports:

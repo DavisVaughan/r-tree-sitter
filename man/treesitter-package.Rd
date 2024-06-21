@@ -8,6 +8,14 @@
 \description{
 Provides bindings to 'Tree-sitter', an incremental parsing system for programming tools. 'Tree-sitter' builds concrete syntax trees for source files of any language, and can efficiently update those syntax trees as the source file is edited. It also includes a robust error recovery system that provides useful parse results even in the presence of syntax errors.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/DavisVaughan/r-tree-sitter}
+  \item Report bugs at \url{https://github.com/DavisVaughan/r-tree-sitter/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Davis Vaughan \email{davis@posit.co}
 
