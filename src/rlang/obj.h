@@ -85,11 +85,13 @@ r_obj* r_clone_shared(r_obj* x) {
 r_obj* r_vec_clone(r_obj* x);
 r_obj* r_vec_clone_shared(r_obj* x);
 
+#if R_BEFORE_NON_API_CLEANUP
 static inline
 r_obj* r_poke_type(r_obj* x, enum r_type type) {
   SET_TYPEOF(x, type);
   return x;
 }
+#endif
 
 static inline
 r_obj* r_type_as_string(enum r_type type) {
