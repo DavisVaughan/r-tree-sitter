@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include "rlang-types.h"
 
+#define R_BEFORE_NON_API_CLEANUP (R_VERSION < R_Version(4, 5, 0))
 
 r_obj* r_init_library(r_obj* ns);
 
