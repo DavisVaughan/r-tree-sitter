@@ -349,7 +349,11 @@ r_obj* sexp_node_tag(enum r_type type,
                      enum r_sexp_it_relation* p_rel) {
   switch (type) {
   case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_env; return CLOENV(x);
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_hashtab; return HASHTAB(x);
+#else
+  case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_hashtab; r_stop_unreachable();
+#endif
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_env; return PRENV(x);
   case R_TYPE_pointer:     *p_rel = R_SEXP_IT_RELATION_pointer_tag; return EXTPTR_TAG(x);
   case R_TYPE_pairlist:
