@@ -315,8 +315,16 @@ r_obj* sexp_node_car(enum r_type type,
                      enum r_sexp_it_relation* p_rel) {
   switch (type) {
   case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_fmls; return FORMALS(x);
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_frame; return FRAME(x);
+#else
+  case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_frame; r_stop_unreachable();
+#endif
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_value; return PRVALUE(x);
+#else
+  case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_value; r_stop_unreachable();
+#endif
   case R_TYPE_pairlist:
   case R_TYPE_call:
   case R_TYPE_dots:        *p_rel = R_SEXP_IT_RELATION_node_car; return CAR(x);
@@ -331,7 +339,11 @@ r_obj* sexp_node_cdr(enum r_type type,
   switch (type) {
   case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_body; return BODY(x);
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_enclos; return ENCLOS(x);
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_expr; return PREXPR(x);
+#else
+  case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_expr; r_stop_unreachable();
+#endif
   case R_TYPE_pointer:     *p_rel = R_SEXP_IT_RELATION_pointer_prot; return EXTPTR_PROT(x);
   case R_TYPE_pairlist:
   case R_TYPE_call:
@@ -345,8 +357,16 @@ r_obj* sexp_node_tag(enum r_type type,
                      enum r_sexp_it_relation* p_rel) {
   switch (type) {
   case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_env; return CLOENV(x);
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_hashtab; return HASHTAB(x);
+#else
+  case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_hashtab; r_stop_unreachable();
+#endif
+#if R_BEFORE_NON_API_CLEANUP
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_env; return PRENV(x);
+#else
+  case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_env; r_stop_unreachable();
+#endif
   case R_TYPE_pointer:     *p_rel = R_SEXP_IT_RELATION_pointer_tag; return EXTPTR_TAG(x);
   case R_TYPE_pairlist:
   case R_TYPE_call:

@@ -14,7 +14,7 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
   return out;
 }
 
-#if R_VERSION >= R_Version(3, 4, 0)
+#if (R_VERSION >= R_Version(3, 4, 0)) && R_BEFORE_NON_API_CLEANUP
 #define HAS_VIRTUAL_SIZE 1
 #else
 #define HAS_VIRTUAL_SIZE 0

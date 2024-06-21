@@ -3,8 +3,12 @@
 
 
 bool r_env_binding_is_promise(r_obj* env, r_obj* sym) {
+#if R_BEFORE_NON_API_CLEANUP
   r_obj* obj = r_env_find(env, sym);
   return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms.unbound;
+#else
+  r_stop_internal("Need to analyze `PRVALUE()` usage.");
+#endif
 }
 bool r_env_binding_is_active(r_obj* env, r_obj* sym) {
   return R_BindingIsActive(sym, env);

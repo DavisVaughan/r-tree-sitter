@@ -47,7 +47,7 @@ const void* r_raw_cbegin(r_obj* x) {
 }
 static inline
 r_obj* const * r_chr_cbegin(r_obj* x) {
-  return (r_obj* const *) STRING_PTR(x);
+  return (r_obj* const *) STRING_PTR_RO(x);
 }
 static inline
 r_obj* const * r_list_cbegin(r_obj* x) {
