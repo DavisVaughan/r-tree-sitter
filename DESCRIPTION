@@ -1,6 +1,6 @@
 Package: treesitter
 Title: Bindings to 'Tree-Sitter'
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Davis", "Vaughan", , "davis@posit.co", role = c("aut", "cre")),
     person("Posit Software, PBC", role = c("cph", "fnd")),
@@ -8,12 +8,14 @@ Authors@R: c(
            comment = "Tree-sitter C library")
   )
 Description: Provides bindings to 'Tree-sitter', an incremental parsing
-    system for programming tools. 'Tree-sitter' builds concrete syntax trees
-    for source files of any language, and can efficiently update those
-    syntax trees as the source file is edited. It also includes a robust
-    error recovery system that provides useful parse results even in the
-    presence of syntax errors.
+    system for programming tools. 'Tree-sitter' builds concrete syntax
+    trees for source files of any language, and can efficiently update
+    those syntax trees as the source file is edited. It also includes a
+    robust error recovery system that provides useful parse results even
+    in the presence of syntax errors.
 License: MIT + file LICENSE
+URL: https://github.com/DavisVaughan/r-tree-sitter
+BugReports: https://github.com/DavisVaughan/r-tree-sitter/issues
 Depends:
     R (>= 4.3.0)
 Imports:
@@ -24,8 +26,6 @@ Imports:
 Suggests:
     testthat (>= 3.0.0),
     treesitter.r
-Remotes:
-    treesitter.r=r-lib/tree-sitter-r/bindings/r
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
 Encoding: UTF-8

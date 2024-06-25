@@ -11,3 +11,5 @@ compile_commands.json
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^cran-comments\.md$
+^CRAN-SUBMISSION$

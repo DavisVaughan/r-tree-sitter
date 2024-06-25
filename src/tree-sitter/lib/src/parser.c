@@ -33,7 +33,14 @@
   if (self->lexer.logger.log || self->dot_graph_file) {       \
     char *buf = self->lexer.debug_buffer;                     \
     const char *symbol = symbol_name;                         \
-    int off = sprintf(buf, "lexed_lookahead sym:");           \
+    /* // --- r-tree-sitter begin --- */                      \
+    int off = snprintf(                                       \
+      buf,                                                    \
+      TREE_SITTER_SERIALIZATION_BUFFER_SIZE,                  \
+      "lexed_lookahead sym:"                                  \
+    );                                                        \
+    /* int off = sprintf(buf, "lexed_lookahead sym:"); */     \
+    /* // --- r-tree-sitter end --- */                        \
     for (                                                     \
       int i = 0;                                              \
       symbol[i] != '\0'                                       \
