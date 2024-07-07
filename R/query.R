@@ -101,6 +101,12 @@ query <- function(language, source) {
 #' Each of these predicates can also be inverted with a `not-` prefix, i.e.
 #' `#not-eq?` and `#not-match?`.
 #'
+#' The equal-string and match predicate can be
+#' prefixed with `any-` which will check if any of the nodes in a capture group
+#' match the string. This is typically used with `(node)+` which selects
+#' multiple nodes and then test if *any* of the node satisfies the predicate
+#' (like [any()]).
+#'
 #' ### String double quotes
 #'
 #' The underlying tree-sitter predicate parser requires that strings supplied
@@ -480,4 +486,12 @@ is_predicate_eq_string <- function(x) {
 
 is_predicate_match_string <- function(x) {
   inherits(x, "tree_sitter_predicate_match_string")
+}
+
+is_predicate_any_match_string <- function(x) {
+  inherits(x, "tree_sitter_predicate_any_match_string")
+}
+
+is_predicate_any_eq_string <- function(x) {
+  inherits(x, "tree_sitter_predicate_any_eq_string")
 }
