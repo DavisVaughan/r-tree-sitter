@@ -15,27 +15,29 @@ test_that("can create basic query with correct structure", {
   )
   ]'
 
-  query <- query(r(), source)
+  q <- query(r(), source)
 
-  expect_identical(query$capture_names, c("id", "id2", "id3"))
+  expect_identical(q$capture_names, c("id", "id2", "id3"))
 
   # First pattern
-  predicates <- query$pattern_predicates[[1]]
+  predicates <- q$pattern_predicates[[1]]
 
   eq_string <- predicates[[1]]
   expect_true(is_predicate_eq_string(eq_string))
   expect_identical(eq_string$capture_name_value_id, 0)
   expect_identical(eq_string$capture_value, "blah")
   expect_identical(eq_string$capture_invert, FALSE)
+  expect_identical(eq_string$capture_any, FALSE)
 
   eq_capture <- predicates[[2]]
   expect_true(is_predicate_eq_capture(eq_capture))
   expect_identical(eq_capture$capture_name_value_id, 0)
   expect_identical(eq_capture$capture_value_id, 1)
   expect_identical(eq_capture$capture_invert, FALSE)
+  expect_identical(eq_string$capture_any, FALSE)
 
   # Second pattern
-  predicates <- query$pattern_predicates[[2]]
+  predicates <- q$pattern_predicates[[2]]
 
   # Note - tree sitter does the escaping, so the `capture_value` now only
   # has 1 backtick
@@ -44,18 +46,47 @@ test_that("can create basic query with correct structure", {
   expect_identical(match_string$capture_name_value_id, 2)
   expect_identical(match_string$capture_value, r"[^\s$]")
   expect_identical(match_string$capture_invert, FALSE)
+  expect_identical(match_string$capture_any, FALSE)
 })
 
 test_that("can detect `not-` cases", {
   source <- '[((identifier) @id (#not-eq? @id "blah"))]'
-  query <- query(r(), source)
-  predicate <- query$pattern_predicates[[1]][[1]]
+  q <- query(r(), source)
+  predicate <- q$pattern_predicates[[1]][[1]]
   expect_identical(predicate$capture_invert, TRUE)
+  expect_identical(predicate$capture_any, FALSE)
 
   source <- '[((identifier) @id (#not-match? @id "blah"))]'
-  query <- query(r(), source)
-  predicate <- query$pattern_predicates[[1]][[1]]
+  q <- query(r(), source)
+  predicate <- q$pattern_predicates[[1]][[1]]
   expect_identical(predicate$capture_invert, TRUE)
+  expect_identical(predicate$capture_any, FALSE)
+})
+
+test_that("can detect `any-` cases", {
+  source <- '[((identifier)* @id (#any-eq? @id "blah"))]'
+  q <- query(r(), source)
+  predicate <- q$pattern_predicates[[1]][[1]]
+  expect_identical(predicate$capture_invert, FALSE)
+  expect_identical(predicate$capture_any, TRUE)
+
+  source <- '[((identifier)* @id (#any-match? @id "blah"))]'
+  q <- query(r(), source)
+  predicate <- q$pattern_predicates[[1]][[1]]
+  expect_identical(predicate$capture_invert, FALSE)
+  expect_identical(predicate$capture_any, TRUE)
+
+  source <- '[((identifier)* @id (#any-not-eq? @id "blah"))]'
+  q <- query(r(), source)
+  predicate <- q$pattern_predicates[[1]][[1]]
+  expect_identical(predicate$capture_invert, TRUE)
+  expect_identical(predicate$capture_any, TRUE)
+
+  source <- '[((identifier)* @id (#any-not-match? @id "blah"))]'
+  q <- query(r(), source)
+  predicate <- q$pattern_predicates[[1]][[1]]
+  expect_identical(predicate$capture_invert, TRUE)
+  expect_identical(predicate$capture_any, TRUE)
 })
 
 test_that("single quoted strings throw an error", {
@@ -367,6 +398,167 @@ fn(x) + y
   expect_identical(node_text(match$node[[1]]), "fn(x)")
 })
 
+test_that("can use alternations with `#match?`", {
+  text <- "
+x + y
+1 + y
+z + y
+fn(x) + y
+  "
+
+  source <- '
+  (
+    (binary_operator
+      lhs: [
+        (identifier) @id
+        (call) @call
+      ]
+      operator: "+"
+    )
+    (#match? @id "[xz]")
+  )
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  matches <- query_matches(query, node)
+
+  # Only 1 pattern
+  matches <- matches[[1]]
+
+  # 3 matches
+  expect_length(matches, 3)
+
+  match <- matches[[1]]
+  expect_identical(match$name, "id")
+  expect_identical(node_text(match$node[[1]]), "x")
+
+  match <- matches[[2]]
+  expect_identical(match$name, "id")
+  expect_identical(node_text(match$node[[1]]), "z")
+
+  match <- matches[[3]]
+  expect_identical(match$name, "call")
+  expect_identical(node_text(match$node[[1]]), "fn(x)")
+})
+
+test_that("can test multiple alternations with `#eq?`", {
+  text <- "
+x + y
+1 + y
+z + y
+fn(x) + y
+  "
+
+  source_fail <- '
+  (
+    (binary_operator
+      lhs: [
+        (identifier) @id
+        (call
+          function: (identifier) @fn
+        ) @call
+      ]
+      operator: "+"
+    )
+    (#eq? @id "x")
+    (#eq? @fn "notfn")
+  )
+  '
+  source_pass <- '
+  (
+    (binary_operator
+      lhs: [
+        (identifier) @id
+        (call
+          function: (identifier) @fn
+        ) @call
+      ]
+      operator: "+"
+    )
+    (#eq? @id "x")
+    (#eq? @fn "fn")
+  )
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+
+  query_fail <- query(language, source_fail)
+  matches_fail <- query_matches(query_fail, node)[[1]]
+
+  query_pass <- query(language, source_pass)
+  matches_pass <- query_matches(query_pass, node)[[1]]
+
+  expect_length(matches_fail, 1)
+  expect_length(matches_pass, 2)
+
+  match <- matches_fail[[1]]
+  expect_identical(match$name, "id")
+  expect_identical(node_text(match$node[[1]]), "x")
+
+  match <- matches_pass[[1]]
+  expect_identical(match$name, "id")
+  expect_identical(node_text(match$node[[1]]), "x")
+
+  match <- matches_pass[[2]]
+  expect_identical(match$name[1], "call")
+  expect_identical(node_text(match$node[[1]]), "fn(x)")
+  expect_identical(match$name[2], "fn")
+  expect_identical(node_text(match$node[[2]]), "fn")
+})
+
+test_that("can use alternations with multiple predicates", {
+  text <- "
+x + y
+1 + y
+z + y
+fn(x) + y
+  "
+
+  source <- '
+  (
+    (binary_operator
+      lhs: [
+        (identifier) @id
+        (call) @call
+      ]
+      operator: "+"
+    )
+    (#match? @id "[xz]")
+    (#eq? @id "x")
+  )
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  matches <- query_matches(query, node)
+
+  # Only 1 pattern
+  matches <- matches[[1]]
+
+  # 2 matches
+  expect_length(matches, 2)
+
+  match <- matches[[1]]
+  expect_identical(match$name, "id")
+  expect_identical(node_text(match$node[[1]]), "x")
+
+  match <- matches[[2]]
+  expect_identical(match$name, "call")
+  expect_identical(node_text(match$node[[1]]), "fn(x)")
+})
+
+
+
 # ------------------------------------------------------------------------------
 # `#eq?` and `#not-eq?` - captures
 
@@ -543,6 +735,71 @@ test_that("can use `#match?` and `#not-match?` with capture", {
       vapply(captures$node, node_text, character(1)),
       c("# comment", "# comment2")
     )
+})
+
+# ------------------------------------------------------------------------------
+# `#any-` predicates
+test_that("can use `#any-`", {
+  text <- r'[
+# a
+# b
+2 + 2
+
+# a
+# a
+2 + 2
+
+# a
+1 + 1
+  ]'
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+
+  source <- '(
+    (comment)+ @comment
+  )'
+  source_any_eq <- '(
+    (comment)+ @comment
+    (#any-eq? @comment "# a")
+  )'
+  source_any_not_eq <- '(
+    (comment)+ @comment
+    (#any-not-eq? @comment "# a")
+  )'
+  source_any_match <- '(
+    (comment)+ @comment
+    (#any-match? @comment "# a")
+  )'
+  source_any_not_match <- '(
+    (comment)+ @comment
+    (#any-not-match? @comment "# a")
+  )'
+
+  matches <- query_matches(query(language, source), node)[[1]]
+  matches_any_eq <- query_matches(query(language, source_any_eq), node)[[1]]
+  matches_any_not_eq <- query_matches(query(language, source_any_not_eq), node)[[1]]
+  matches_any_match <- query_matches(query(language, source_any_match), node)[[1]]
+  matches_any_not_match <- query_matches(query(language, source_any_not_match), node)[[1]]
+
+  expect_length(matches, 3)
+  expect_length(matches_any_eq, 3)
+  expect_length(matches_any_not_eq, 1)
+  expect_length(matches_any_match, 3)
+  expect_length(matches_any_not_match, 1)
+
+  expect_true(any(
+    unlist(lapply(matches_any_not_eq[[1]]$node, function(node) {
+      !grepl("# a", node_text(node))
+    }))
+  ))
+  expect_true(any(
+    unlist(lapply(matches_any_not_match[[1]]$node, function(node) {
+      !grepl("# a", node_text(node))
+    }))
+  ))
 })
 
 # ------------------------------------------------------------------------------

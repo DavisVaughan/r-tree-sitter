@@ -25,7 +25,8 @@ static r_obj* predicate_match(
 static r_obj* predicate_eq_capture(
     uint32_t capture_name_value_id,
     uint32_t capture_value_id,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 );
 
 static bool is_predicate_eq_capture(r_obj* x);
@@ -41,7 +42,8 @@ static r_obj* predicate_eq_string(
     uint32_t capture_name_value_id,
     const char* capture_value,
     uint32_t capture_value_length,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 );
 
 static bool is_predicate_eq_string(r_obj* x);
@@ -57,7 +59,8 @@ static r_obj* predicate_match_string(
     uint32_t capture_name_value_id,
     const char* capture_value,
     uint32_t capture_value_length,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 );
 
 static bool is_predicate_match_string(r_obj* x);

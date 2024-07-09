@@ -54,6 +54,12 @@ There are 3 core types of predicates supported:
 
 Each of these predicates can also be inverted with a \verb{not-} prefix, i.e.
 \verb{#not-eq?} and \verb{#not-match?}.
+
+The equal-string and match predicate can be
+prefixed with \verb{any-} which will check if any of the nodes in a capture group
+match the string. This is typically used with \verb{(node)+} which selects
+multiple nodes and then test if \emph{any} of the node satisfies the predicate
+(like \code{\link[=any]{any()}}).
 \subsection{String double quotes}{
 
 The underlying tree-sitter predicate parser requires that strings supplied
