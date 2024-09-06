@@ -13,3 +13,5 @@ compile_commands.json
 ^pkgdown$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^compile_commands\.json$
+^\.cache$
