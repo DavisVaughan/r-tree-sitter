@@ -146,7 +146,7 @@ run <- function(tag, sha) {
 
   usethis::ui_info("Updating `abi.R`")
   write_abi_file()
-  usethis::ui_info("Updating `abi.R` - done")
+  usethis::ui_done("Updating `abi.R` - done")
 
   usethis::ui_todo("Update `Makevars` with new `OBJECTS`.")
 
