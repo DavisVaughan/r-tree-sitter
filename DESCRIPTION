@@ -25,7 +25,7 @@ Imports:
     vctrs (>= 0.6.5)
 Suggests:
     testthat (>= 3.0.0),
-    treesitter.r
+    treesitter.r (>= 1.1.0)
 Config/build/compilation-database: true
 Config/Needs/website: tidyverse/tidytemplate
 Config/testthat/edition: 3
