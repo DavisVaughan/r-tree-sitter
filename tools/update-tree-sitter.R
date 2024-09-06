@@ -1,6 +1,6 @@
 # To update, supply either a tag to a stable release, or a specific sha.
 # One of these two must be `NULL`, but not both.
-tag <- "v0.22.6"
+tag <- "v0.23.0"
 sha <- NULL
 
 # Returns a `path` to the top level of the downloaded tree-sitter sources

@@ -33,14 +33,11 @@
   if (self->lexer.logger.log || self->dot_graph_file) {       \
     char *buf = self->lexer.debug_buffer;                     \
     const char *symbol = symbol_name;                         \
-    /* // --- r-tree-sitter begin --- */                      \
     int off = snprintf(                                       \
       buf,                                                    \
       TREE_SITTER_SERIALIZATION_BUFFER_SIZE,                  \
       "lexed_lookahead sym:"                                  \
     );                                                        \
-    /* int off = sprintf(buf, "lexed_lookahead sym:"); */     \
-    /* // --- r-tree-sitter end --- */                        \
     for (                                                     \
       int i = 0;                                              \
       symbol[i] != '\0'                                       \
@@ -2147,11 +2144,22 @@ TSTree *ts_parser_parse_string_encoding(
 }
 
 void ts_parser_set_wasm_store(TSParser *self, TSWasmStore *store) {
+  if (self->language && ts_language_is_wasm(self->language)) {
+    // Copy the assigned language into the new store.
+    const TSLanguage *copy = ts_language_copy(self->language);
+    ts_parser_set_language(self, copy);
+    ts_language_delete(copy);
+  }
+
   ts_wasm_store_delete(self->wasm_store);
   self->wasm_store = store;
 }
 
 TSWasmStore *ts_parser_take_wasm_store(TSParser *self) {
+  if (self->language && ts_language_is_wasm(self->language)) {
+    ts_parser_set_language(self, NULL);
+  }
+
   TSWasmStore *result = self->wasm_store;
   self->wasm_store = NULL;
   return result;
