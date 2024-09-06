@@ -6,6 +6,7 @@
 \alias{query_capture_count}
 \alias{query_string_count}
 \alias{query_start_byte_for_pattern}
+\alias{query_end_byte_for_pattern}
 \title{Query accessors}
 \usage{
 query_pattern_count(x)
@@ -15,6 +16,8 @@ query_capture_count(x)
 query_string_count(x)
 
 query_start_byte_for_pattern(x, i)
+
+query_end_byte_for_pattern(x, i)
 }
 \arguments{
 \item{x}{\verb{[tree_sitter_query]}
@@ -23,14 +26,15 @@ A query.}
 
 \item{i}{\verb{[double(1)]}
 
-The \code{i}th pattern to extract the start byte for.}
+The \code{i}th pattern to extract the byte for.}
 }
 \value{
 \itemize{
 \item \code{query_pattern_count()}, \code{query_capture_count()}, and
 \code{query_string_count()} return a single double count value.
-\item \code{query_start_byte_for_pattern()} returns a single double for the start byte
-if there was an \code{i}th pattern, otherwise it returns \code{NA}.
+\item \code{query_start_byte_for_pattern()} and \code{query_end_byte_for_pattern()} return
+a single double for their respective byte if there was an \code{i}th pattern,
+otherwise they return \code{NA}.
 }
 }
 \description{
@@ -38,8 +42,8 @@ if there was an \code{i}th pattern, otherwise it returns \code{NA}.
 \item \code{query_pattern_count()} returns the number of patterns in a query.
 \item \code{query_capture_count()} returns the number of captures in a query.
 \item \code{query_string_count()} returns the number of string literals in a query.
-\item \code{query_start_byte_for_pattern()} returns the byte where the \code{i}th pattern
-starts in the query \code{source}.
+\item \code{query_start_byte_for_pattern()} and \code{query_end_byte_for_pattern()} return
+the byte where the \code{i}th pattern starts/ends in the query \code{source}.
 }
 }
 \examples{
@@ -57,6 +61,9 @@ query <- query(language, source)
 query_pattern_count(query)
 query_capture_count(query)
 query_string_count(query)
+
+query_start_byte_for_pattern(query, 1)
+query_end_byte_for_pattern(query, 1)
 
 text <- "
   fn <- function() {}

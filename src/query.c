@@ -66,6 +66,15 @@ r_obj* ffi_query_capture_names(r_obj* ffi_query) {
 }
 
 r_obj* ffi_query_start_byte_for_pattern(r_obj* ffi_query, r_obj* ffi_i) {
+  return query_byte_for_pattern(ffi_query, ffi_i, true);
+}
+
+r_obj* ffi_query_end_byte_for_pattern(r_obj* ffi_query, r_obj* ffi_i) {
+  return query_byte_for_pattern(ffi_query, ffi_i, false);
+}
+
+static r_obj*
+query_byte_for_pattern(r_obj* ffi_query, r_obj* ffi_i, bool start) {
   const TSQuery* query = ts_query_from_external_pointer(ffi_query);
 
   // Validated on R side to be positive whole double of length 1, 1-indexed
@@ -75,7 +84,8 @@ r_obj* ffi_query_start_byte_for_pattern(r_obj* ffi_query, r_obj* ffi_i) {
   if (i >= ts_query_pattern_count(query)) {
     return r_dbl(r_globals.na_dbl);
   } else {
-    uint32_t out = ts_query_start_byte_for_pattern(query, i);
+    uint32_t out = start ? ts_query_start_byte_for_pattern(query, i)
+                         : ts_query_end_byte_for_pattern(query, i);
     return r_dbl(r_uint32_as_dbl(out));
   }
 }
