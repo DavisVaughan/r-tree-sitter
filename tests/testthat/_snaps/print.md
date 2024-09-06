@@ -3,7 +3,7 @@
     Code
       node_show_s_expression(node)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
         (binary_operator [(1, 2), (6, 3)]
           lhs: (identifier [(1, 2), (1, 4)])
           operator: "<-" [(1, 5), (1, 7)]
@@ -55,7 +55,7 @@
     Code
       node_show_s_expression(node, show_anonymous = FALSE)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
         (binary_operator [(1, 2), (6, 3)]
           lhs: (identifier [(1, 2), (1, 4)])
           rhs: (function_definition [(1, 8), (6, 3)]
@@ -91,7 +91,7 @@
     Code
       node_show_s_expression(node, show_parentheses = FALSE)
     Output
-      program [(1, 0), (9, 2)]
+      program [(0, 0), (9, 2)]
         binary_operator [(1, 2), (6, 3)]
           lhs: identifier [(1, 2), (1, 4)]
           operator: "<-" [(1, 5), (1, 7)]
@@ -159,7 +159,7 @@
     Code
       node_show_s_expression(node, dangling_parenthesis = FALSE)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
         (binary_operator [(1, 2), (6, 3)]
           lhs: (identifier [(1, 2), (1, 4)])
           operator: "<-" [(1, 5), (1, 7)]
@@ -252,7 +252,7 @@
     Code
       node_show_s_expression(node, dangling_parenthesis = TRUE, show_anonymous = FALSE)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
         (binary_operator [(1, 2), (6, 3)]
           lhs: (identifier [(1, 2), (1, 4)])
           rhs: (function_definition [(1, 8), (6, 3)]
@@ -376,7 +376,7 @@
     Code
       node_show_s_expression(node, max_lines = 1)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
       <truncated>
 
 ---
@@ -384,7 +384,7 @@
     Code
       node_show_s_expression(node, max_lines = 10)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
         (binary_operator [(1, 2), (6, 3)]
           lhs: (identifier [(1, 2), (1, 4)])
           operator: "<-" [(1, 5), (1, 7)]
@@ -401,7 +401,7 @@
     Code
       node_show_s_expression(node, max_lines = 10, dangling_parenthesis = FALSE)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
         (binary_operator [(1, 2), (6, 3)]
           lhs: (identifier [(1, 2), (1, 4)])
           operator: "<-" [(1, 5), (1, 7)]
@@ -419,7 +419,7 @@
       node_show_s_expression(node, max_lines = 10, dangling_parenthesis = FALSE,
         show_anonymous = FALSE)
     Output
-      (program [(1, 0), (9, 2)]
+      (program [(0, 0), (9, 2)]
         (binary_operator [(1, 2), (6, 3)]
           lhs: (identifier [(1, 2), (1, 4)])
           rhs: (function_definition [(1, 8), (6, 3)]
