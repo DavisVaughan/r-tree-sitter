@@ -444,11 +444,17 @@
     Code
       node_show_s_expression(node)
     Output
-      (program [(0, 0), (2, 3)]
-        (binary_operator [(0, 0), (2, 0)]
-          lhs: (float [(0, 0), (0, 1)])
-          operator: "+" [(0, 2), (0, 3)]
-          rhs: (identifier MISSING [(2, 0), (2, 0)])
+      (program [(0, 0), (0, 13)]
+        (while_statement [(0, 0), (0, 13)]
+          "while" [(0, 0), (0, 5)]
+          open: "(" [(0, 6), (0, 7)]
+          condition: (binary_operator [(0, 7), (0, 12)]
+            lhs: (identifier [(0, 7), (0, 8)])
+            operator: ">" [(0, 9), (0, 10)]
+            rhs: (identifier [(0, 11), (0, 12)])
+          )
+          close: ")" [(0, 12), (0, 13)]
+          body: (identifier MISSING [(0, 13), (0, 13)])
         )
       )
 
@@ -457,14 +463,15 @@
     Code
       node_show_s_expression(node)
     Output
-      (program [(0, 0), (0, 13)]
-        (for_statement [(0, 0), (0, 13)]
-          "for" [(0, 0), (0, 3)]
-          open: "(" [(0, 4), (0, 5)]
-          variable: (identifier [(0, 5), (0, 6)])
-          "in" [(0, 7), (0, 9)]
-          sequence: (identifier [(0, 10), (0, 13)])
-          close: ")" MISSING [(0, 13), (0, 13)]
+      (program [(0, 0), (3, 3)]
+        (braced_expression [(1, 2), (3, 3)]
+          open: "{" [(1, 2), (1, 3)]
+          body: (braced_expression [(1, 3), (3, 3)]
+            open: "{" [(1, 3), (1, 4)]
+            body: (float [(2, 4), (2, 5)])
+            close: "}" [(3, 2), (3, 3)]
+          )
+          close: "}" MISSING [(3, 3), (3, 3)]
         )
       )
 

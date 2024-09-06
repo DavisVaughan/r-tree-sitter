@@ -70,10 +70,8 @@ test_that("truncation doesn't show if you are exactly at `max_lines`", {
 })
 
 test_that("Named `MISSING` nodes are shown", {
-  # Missing RHS - The newline seems to matter
-  text <- "1 +
-
-  ;"
+  # Missing body, error recovered a named `identifier`
+  text <- "while (a > b)"
 
   parser <- parser(r())
   tree <- parser_parse(parser, text)
@@ -85,8 +83,11 @@ test_that("Named `MISSING` nodes are shown", {
 })
 
 test_that("Anonymous `MISSING` nodes are shown", {
-  # Missing `)`
-  text <- "for (i in seq"
+  # Missing anonymous `}`
+  text <- "
+  {{
+    1
+  }"
 
   parser <- parser(r())
   tree <- parser_parse(parser, text)
