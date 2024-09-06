@@ -276,21 +276,22 @@ query_captures <- function(x, node, ..., range = NULL) {
 #'
 #' - `query_string_count()` returns the number of string literals in a query.
 #'
-#' - `query_start_byte_for_pattern()` returns the byte where the `i`th pattern
-#'   starts in the query `source`.
+#' - `query_start_byte_for_pattern()` and `query_end_byte_for_pattern()` return
+#'   the byte where the `i`th pattern starts/ends in the query `source`.
 #'
 #' @inheritParams x_tree_sitter_query
 #'
 #' @param i `[double(1)]`
 #'
-#'   The `i`th pattern to extract the start byte for.
+#'   The `i`th pattern to extract the byte for.
 #'
 #' @returns
 #' - `query_pattern_count()`, `query_capture_count()`, and
 #'   `query_string_count()` return a single double count value.
 #'
-#' - `query_start_byte_for_pattern()` returns a single double for the start byte
-#'   if there was an `i`th pattern, otherwise it returns `NA`.
+#' - `query_start_byte_for_pattern()` and `query_end_byte_for_pattern()` return
+#'   a single double for their respective byte if there was an `i`th pattern,
+#'   otherwise they return `NA`.
 #'
 #' @name query-accessors
 #' @examplesIf rlang::is_installed("treesitter.r")
@@ -307,6 +308,9 @@ query_captures <- function(x, node, ..., range = NULL) {
 #' query_pattern_count(query)
 #' query_capture_count(query)
 #' query_string_count(query)
+#'
+#' query_start_byte_for_pattern(query, 1)
+#' query_end_byte_for_pattern(query, 1)
 #'
 #' text <- "
 #'   fn <- function() {}
@@ -355,6 +359,18 @@ query_start_byte_for_pattern <- function(x, i) {
   check_number_whole(i, min = 1)
 
   .Call(ffi_query_start_byte_for_pattern, x, i)
+}
+
+#' @rdname query-accessors
+#' @export
+query_end_byte_for_pattern <- function(x, i) {
+  check_query(x)
+  x <- query_pointer(x)
+
+  i <- vec_cast(i, double())
+  check_number_whole(i, min = 1)
+
+  .Call(ffi_query_end_byte_for_pattern, x, i)
 }
 
 #' Is `x` a query?

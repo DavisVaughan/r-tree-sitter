@@ -87,6 +87,7 @@ extern r_obj* ffi_query_string_count(r_obj*);
 extern r_obj* ffi_query_capture_names(r_obj*);
 extern r_obj* ffi_query_pattern_predicates(r_obj*);
 extern r_obj* ffi_query_start_byte_for_pattern(r_obj*, r_obj*);
+extern r_obj* ffi_query_end_byte_for_pattern(r_obj*, r_obj*);
 extern r_obj*
 ffi_query_matches(r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*, r_obj*);
 extern r_obj*
@@ -216,6 +217,9 @@ static const R_CallMethodDef CallEntries[] = {
      1},
     {"ffi_query_start_byte_for_pattern",
      (DL_FUNC) &ffi_query_start_byte_for_pattern,
+     2},
+    {"ffi_query_end_byte_for_pattern",
+     (DL_FUNC) &ffi_query_end_byte_for_pattern,
      2},
     {"ffi_query_matches", (DL_FUNC) &ffi_query_matches, 12},
     {"ffi_query_captures", (DL_FUNC) &ffi_query_captures, 12},

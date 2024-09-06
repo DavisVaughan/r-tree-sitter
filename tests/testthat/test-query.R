@@ -546,7 +546,7 @@ test_that("can use `#match?` and `#not-match?` with capture", {
 })
 
 # ------------------------------------------------------------------------------
-# query_start_byte_for_pattern()
+# query_start_byte_for_pattern() / query_end_byte_for_pattern()
 
 test_that("has OOB handling built in", {
   source <- "(identifier) @id"
@@ -556,8 +556,15 @@ test_that("has OOB handling built in", {
   expect_snapshot(error = TRUE, {
     query_start_byte_for_pattern(query, 0)
   })
+  expect_snapshot(error = TRUE, {
+    query_end_byte_for_pattern(query, 0)
+  })
 
   expect_identical(query_start_byte_for_pattern(query, 1), 0)
   expect_identical(query_start_byte_for_pattern(query, 2), NA_real_)
   expect_identical(query_start_byte_for_pattern(query, 3), NA_real_)
+
+  expect_identical(query_end_byte_for_pattern(query, 1), 16)
+  expect_identical(query_end_byte_for_pattern(query, 2), NA_real_)
+  expect_identical(query_end_byte_for_pattern(query, 3), NA_real_)
 })
