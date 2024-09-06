@@ -7,13 +7,13 @@
 #endif
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /****************************/
 /* Section - ABI Versioning */
@@ -682,7 +682,8 @@ TSTreeCursor ts_tree_cursor_new(TSNode node);
 void ts_tree_cursor_delete(TSTreeCursor *self);
 
 /**
- * Re-initialize a tree cursor to start at a different node.
+ * Re-initialize a tree cursor to start at the original node that the cursor was
+ * constructed with.
  */
 void ts_tree_cursor_reset(TSTreeCursor *self, TSNode node);
 
@@ -837,6 +838,14 @@ uint32_t ts_query_string_count(const TSQuery *self);
  * code strings.
  */
 uint32_t ts_query_start_byte_for_pattern(const TSQuery *self, uint32_t pattern_index);
+
+/**
+ * Get the byte offset where the given pattern ends in the query's source.
+ *
+ * This can be useful when combining queries by concatenating their source
+ * code strings.
+ */
+uint32_t ts_query_end_byte_for_pattern(const TSQuery *self, uint32_t pattern_index);
 
 /**
  * Get all of the predicates for the given pattern in the query.

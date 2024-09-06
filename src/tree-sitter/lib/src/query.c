@@ -146,6 +146,7 @@ typedef struct {
   Slice steps;
   Slice predicate_steps;
   uint32_t start_byte;
+  uint32_t end_byte;
   bool is_non_local;
 } QueryPattern;
 
@@ -2715,6 +2716,7 @@ TSQuery *ts_query_new(
     QueryPattern *pattern = array_back(&self->patterns);
     pattern->steps.length = self->steps.size - start_step_index;
     pattern->predicate_steps.length = self->predicate_steps.size - start_predicate_step_index;
+    pattern->end_byte = stream_offset(&stream);
 
     // If any pattern could not be parsed, then report the error information
     // and terminate.
@@ -2740,7 +2742,7 @@ TSQuery *ts_query_new(
       // there is a parent node, and capture it if necessary.
       if (step->symbol == WILDCARD_SYMBOL && step->depth == 0 && !step->field) {
         QueryStep *second_step = &self->steps.contents[start_step_index + 1];
-        if (second_step->symbol != WILDCARD_SYMBOL && second_step->depth == 1) {
+        if (second_step->symbol != WILDCARD_SYMBOL && second_step->depth == 1 && !second_step->is_immediate) {
           wildcard_root_alternative_index = step->alternative_index;
           start_step_index += 1;
           step = second_step;
@@ -2871,6 +2873,13 @@ uint32_t ts_query_start_byte_for_pattern(
   uint32_t pattern_index
 ) {
   return self->patterns.contents[pattern_index].start_byte;
+}
+
+uint32_t ts_query_end_byte_for_pattern(
+  const TSQuery *self,
+  uint32_t pattern_index
+) {
+  return self->patterns.contents[pattern_index].end_byte;
 }
 
 bool ts_query_is_pattern_rooted(
@@ -3532,6 +3541,13 @@ static inline bool ts_query_cursor__advance(
       // Get the properties of the current node.
       TSNode node = ts_tree_cursor_current_node(&self->cursor);
       TSNode parent_node = ts_tree_cursor_parent_node(&self->cursor);
+
+      uint32_t start_byte = ts_node_start_byte(node);
+      uint32_t end_byte = ts_node_end_byte(node);
+      TSPoint start_point = ts_node_start_point(node);
+      TSPoint end_point = ts_node_end_point(node);
+      bool is_empty = start_byte == end_byte;
+
       bool parent_precedes_range = !ts_node_is_null(parent_node) && (
         ts_node_end_byte(parent_node) <= self->start_byte ||
         point_lte(ts_node_end_point(parent_node), self->start_point)
@@ -3540,13 +3556,16 @@ static inline bool ts_query_cursor__advance(
         ts_node_start_byte(parent_node) >= self->end_byte ||
         point_gte(ts_node_start_point(parent_node), self->end_point)
       );
-      bool node_precedes_range = parent_precedes_range || (
-        ts_node_end_byte(node) <= self->start_byte ||
-        point_lte(ts_node_end_point(node), self->start_point)
-      );
+      bool node_precedes_range =
+        parent_precedes_range ||
+        end_byte < self->start_byte ||
+        point_lt(end_point, self->start_point) ||
+        (!is_empty && end_byte == self->start_byte) ||
+        (!is_empty && point_eq(end_point, self->start_point));
+
       bool node_follows_range = parent_follows_range || (
-        ts_node_start_byte(node) >= self->end_byte ||
-        point_gte(ts_node_start_point(node), self->end_point)
+        start_byte >= self->end_byte ||
+        point_gte(start_point, self->end_point)
       );
       bool parent_intersects_range = !parent_precedes_range && !parent_follows_range;
       bool node_intersects_range = !node_precedes_range && !node_follows_range;

@@ -1,6 +1,6 @@
 # To update, supply either a tag to a stable release, or a specific sha.
 # One of these two must be `NULL`, but not both.
-tag <- "v0.22.6"
+tag <- "v0.23.0"
 sha <- NULL
 
 # Returns a `path` to the top level of the downloaded tree-sitter sources
@@ -146,7 +146,7 @@ run <- function(tag, sha) {
 
   usethis::ui_info("Updating `abi.R`")
   write_abi_file()
-  usethis::ui_info("Updating `abi.R` - done")
+  usethis::ui_done("Updating `abi.R` - done")
 
   usethis::ui_todo("Update `Makevars` with new `OBJECTS`.")
 
