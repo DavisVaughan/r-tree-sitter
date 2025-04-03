@@ -503,6 +503,9 @@ static bool check_predicate_eq_capture(
     return false;
   }
 
+  // Go through each `capture_name` and `capture` pair and check that the
+  // captured text exactly matches (or doesn't match, if using
+  // `capture_invert`).
   for (r_ssize i = 0; i < size; ++i) {
     const int capture_name_index = v_capture_name_indices[i];
     const int capture_index = v_capture_indices[i];
@@ -510,6 +513,8 @@ static bool check_predicate_eq_capture(
     const TSQueryCapture capture_name = match->captures[capture_name_index];
     const TSQueryCapture capture = match->captures[capture_index];
 
+    // Note that `capture_name_text` and `capture_text` don't have a nul
+    // terminator, so we use `str_equal_sized()`
     uint32_t capture_name_size = 0;
     const char* capture_name_text =
         node_text(capture_name.node, text, text_size, &capture_name_size);
@@ -518,10 +523,13 @@ static bool check_predicate_eq_capture(
     const char* capture_text =
         node_text(capture.node, text, text_size, &capture_size);
 
-    const uint32_t n = r_uint32_max(capture_name_size, capture_size);
-
-    const bool eq =
-        str_equal_up_to(capture_name_text, capture_text, (size_t) n);
+    // Exact match
+    const bool eq = str_equal_sized(
+        capture_name_text,
+        capture_text,
+        (size_t) capture_name_size,
+        (size_t) capture_size
+    );
 
     if (eq == capture_invert) {
       FREE(2);
@@ -608,7 +616,11 @@ static bool check_predicate_eq_string(
       r_dbl_get(r_list_get(predicate, 0), 0), "capture_name_value_id"
   );
 
-  const char* capture_value = r_chr_get_c_string(r_list_get(predicate, 1), 0);
+  // Note `capture_value_size` is size without nul terminator
+  r_obj* capture_value_sexp = r_list_get(predicate, 1);
+  const char* capture_value = r_chr_get_c_string(capture_value_sexp, 0);
+  const uint32_t capture_value_size =
+      r_ssize_as_uint32(r_length(r_chr_get(capture_value_sexp, 0)));
 
   const bool capture_invert =
       r_arg_as_bool(r_list_get(predicate, 2), "capture_invert");
@@ -627,11 +639,15 @@ static bool check_predicate_eq_string(
     }
 
     // Extract out location of this `node`s text
+    // Note that `elt` does not have a nul terminator, so we use
+    // `str_equal_sized()`
     uint32_t elt_size = 0;
     const char* elt = node_text(capture.node, text, text_size, &elt_size);
 
     // Exact match
-    bool eq = str_equal_up_to(elt, capture_value, (size_t) elt_size);
+    bool eq = str_equal_sized(
+        elt, capture_value, (size_t) elt_size, (size_t) capture_value_size
+    );
 
     if (eq == capture_invert) {
       return false;

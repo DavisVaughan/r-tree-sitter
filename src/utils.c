@@ -163,17 +163,38 @@ bool r_chr_any_missing(r_obj* x) {
   return false;
 }
 
+// Check if two strings are equal, both must be nul terminated
 bool str_equal(const char* x, const char* y) {
   return strcmp(x, y) == 0;
 }
 
-// Compares up to `n` characters of `x` and `y` for equality
+// Check if two strings are equal, which aren't necessarily nul terminated
 //
-// Checks pairs of `x` and `y` characters for equality until:
+// Early exits if the sizes are different.
+//
+// Stops comparison when one of the following is true:
 // - A character differs
 // - A nul terminating character is reached
-// - `n` characters have been processed
-// (whichever happens first)
-bool str_equal_up_to(const char* x, const char* y, size_t n) {
-  return strncmp(x, y, n) == 0;
+// - All characters have been processed
+//
+// This function is required when comparing `foo` and `foobar` for equality
+// if one or both of the two strings are not nul terminated (i.e. they could
+// represent a view into a larger string that is only nul terminated at the very
+// end, like what treesitter's `node_text()` returns). If you just use
+// `strncmp()` and compared "up to 3" characters (the min of the two sizes),
+// then you'd say they are equal when they aren't. If you compared "up to 6"
+// characters (the max of the two sizes), then you'd compare past `foo` since it
+// isn't nul terminated and `strncmp()` doesn't otherwise know how to stop.
+bool str_equal_sized(
+    const char* x,
+    const char* y,
+    size_t x_size,
+    size_t y_size
+) {
+  if (x_size != y_size) {
+    // Immediately disqualifies them as being equal
+    return false;
+  }
+
+  return strncmp(x, y, x_size) == 0;
 }

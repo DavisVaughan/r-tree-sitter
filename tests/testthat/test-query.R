@@ -367,6 +367,32 @@ fn(x) + y
   expect_identical(node_text(match$node[[1]]), "fn(x)")
 })
 
+test_that("`#eq?` with string performs exact equality check (#28)", {
+  text <- "
+a + b + a + ab
+and(a)
+  "
+
+  # Should match only `ab`, not also `a`
+  source <- '
+  (
+    (identifier) @id
+    (#eq? @id "ab")
+  )
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  captures <- query_captures(query, node)
+
+  expect_length(captures$name, 1)
+
+  expect_identical(node_range(captures$node[[1]]), range(13, point(1, 12), 15, point(1, 14)))
+})
+
 # ------------------------------------------------------------------------------
 # `#eq?` and `#not-eq?` - captures
 
@@ -491,6 +517,36 @@ x = x + match(a, b) # and this
 
   capture <- captures$node[[6]]
   expect_identical(node_text(capture), "match(a, b)")
+})
+
+test_that("`#eq?` with capture performs exact equality check (#28)", {
+  text <- "
+a + a
+a + ab
+  "
+
+  # Should match only `a + a`, not also `a + ab`
+  source <- '
+  (
+    (binary_operator
+      lhs: (identifier) @id
+      rhs: (identifier) @id2
+    )
+    (#eq? @id @id2)
+  )
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  captures <- query_captures(query, node)
+
+  expect_identical(captures$name, c("id", "id2"))
+
+  expect_identical(node_range(captures$node[[1]]), range(1, point(1, 0), 2, point(1, 1)))
+  expect_identical(node_range(captures$node[[2]]), range(5, point(1, 4), 6, point(1, 5)))
 })
 
 # ------------------------------------------------------------------------------
