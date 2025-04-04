@@ -302,12 +302,17 @@ r_obj* ffi_query_pattern_predicates(r_obj* ffi_query) {
 
       // Dispatch to helpers based on known predicate types
       if (str_equal(predicate_type, "eq?") ||
-          str_equal(predicate_type, "not-eq?")) {
+          str_equal(predicate_type, "not-eq?") ||
+          str_equal(predicate_type, "any-eq?") ||
+          str_equal(predicate_type, "any-not-eq?")) {
         r_dyn_list_push_back(
             p_predicates,
             predicate_eq(predicate_type, n_predicate_steps, steps, query)
         );
-      } else if (str_equal(predicate_type, "match?") || str_equal(predicate_type, "not-match?")) {
+      } else if (str_equal(predicate_type, "match?") ||
+                 str_equal(predicate_type, "not-match?") ||
+                 str_equal(predicate_type, "any-match?") ||
+                 str_equal(predicate_type, "any-not-match?")) {
         r_dyn_list_push_back(
             p_predicates,
             predicate_match(predicate_type, n_predicate_steps, steps, query)
@@ -350,7 +355,10 @@ static r_obj* predicate_eq(
     );
   }
 
-  const bool capture_invert = str_equal(predicate_type, "not-eq?");
+  const bool capture_invert = str_equal(predicate_type, "not-eq?") ||
+                              str_equal(predicate_type, "any-not-eq?");
+  const bool capture_any = str_equal(predicate_type, "any-eq?") ||
+                           str_equal(predicate_type, "any-not-eq?");
   const TSQueryPredicateStepType capture_name_type = steps[1].type;
   const uint32_t capture_name_value_id = steps[1].value_id;
   const TSQueryPredicateStepType capture_type = steps[2].type;
@@ -366,7 +374,7 @@ static r_obj* predicate_eq(
   switch (capture_type) {
     case TSQueryPredicateStepTypeCapture: {
       return predicate_eq_capture(
-          capture_name_value_id, capture_value_id, capture_invert
+          capture_name_value_id, capture_value_id, capture_invert, capture_any
       );
     }
     case TSQueryPredicateStepTypeString: {
@@ -378,7 +386,8 @@ static r_obj* predicate_eq(
           capture_name_value_id,
           capture_value,
           capture_value_length,
-          capture_invert
+          capture_invert,
+          capture_any
       );
     }
     case TSQueryPredicateStepTypeDone: {
@@ -409,7 +418,10 @@ static r_obj* predicate_match(
     );
   }
 
-  const bool capture_invert = str_equal(predicate_type, "not-match?");
+  const bool capture_invert = str_equal(predicate_type, "not-match?") ||
+                              str_equal(predicate_type, "any-not-match?");
+  const bool capture_any = str_equal(predicate_type, "any-match?") ||
+                           str_equal(predicate_type, "any-not-match?");
   const TSQueryPredicateStepType capture_name_type = steps[1].type;
   const uint32_t capture_name_value_id = steps[1].value_id;
   const TSQueryPredicateStepType capture_type = steps[2].type;
@@ -435,7 +447,11 @@ static r_obj* predicate_match(
   );
 
   return predicate_match_string(
-      capture_name_value_id, capture_value, capture_value_length, capture_invert
+      capture_name_value_id,
+      capture_value,
+      capture_value_length,
+      capture_invert,
+      capture_any
   );
 }
 
@@ -445,18 +461,21 @@ static r_obj* predicate_match(
 static r_obj* predicate_eq_capture(
     uint32_t capture_name_value_id,
     uint32_t capture_value_id,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 ) {
-  r_obj* out = KEEP(r_alloc_list(3));
+  r_obj* out = KEEP(r_alloc_list(4));
   r_list_poke(out, 0, r_dbl(r_uint32_as_dbl(capture_name_value_id)));
   r_list_poke(out, 1, r_dbl(r_uint32_as_dbl(capture_value_id)));
   r_list_poke(out, 2, r_lgl(capture_invert));
+  r_list_poke(out, 3, r_lgl(capture_any));
 
-  r_obj* names = r_alloc_character(3);
+  r_obj* names = r_alloc_character(4);
   r_attrib_poke_names(out, names);
   r_chr_poke(names, 0, r_str("capture_name_value_id"));
   r_chr_poke(names, 1, r_str("capture_value_id"));
   r_chr_poke(names, 2, r_str("capture_invert"));
+  r_chr_poke(names, 3, r_str("capture_any"));
 
   r_attrib_poke_class(out, r_chr("tree_sitter_predicate_eq_capture"));
 
@@ -574,7 +593,8 @@ static r_obj* predicate_eq_string(
     uint32_t capture_name_value_id,
     const char* capture_value,
     uint32_t capture_value_length,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 ) {
   r_obj* capture_value_sexp = KEEP(r_alloc_character(1));
   r_chr_poke(
@@ -585,16 +605,18 @@ static r_obj* predicate_eq_string(
       )
   );
 
-  r_obj* out = KEEP(r_alloc_list(3));
+  r_obj* out = KEEP(r_alloc_list(4));
   r_list_poke(out, 0, r_dbl(r_uint32_as_dbl(capture_name_value_id)));
   r_list_poke(out, 1, capture_value_sexp);
   r_list_poke(out, 2, r_lgl(capture_invert));
+  r_list_poke(out, 3, r_lgl(capture_any));
 
-  r_obj* names = r_alloc_character(3);
+  r_obj* names = r_alloc_character(4);
   r_attrib_poke_names(out, names);
   r_chr_poke(names, 0, r_str("capture_name_value_id"));
   r_chr_poke(names, 1, r_str("capture_value"));
   r_chr_poke(names, 2, r_str("capture_invert"));
+  r_chr_poke(names, 3, r_str("capture_any"));
 
   r_attrib_poke_class(out, r_chr("tree_sitter_predicate_eq_string"));
 
@@ -664,7 +686,8 @@ static r_obj* predicate_match_string(
     uint32_t capture_name_value_id,
     const char* capture_value,
     uint32_t capture_value_length,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 ) {
   r_obj* capture_value_sexp = KEEP(r_alloc_character(1));
   r_chr_poke(
@@ -675,16 +698,18 @@ static r_obj* predicate_match_string(
       )
   );
 
-  r_obj* out = KEEP(r_alloc_list(3));
+  r_obj* out = KEEP(r_alloc_list(4));
   r_list_poke(out, 0, r_dbl(r_uint32_as_dbl(capture_name_value_id)));
   r_list_poke(out, 1, capture_value_sexp);
   r_list_poke(out, 2, r_lgl(capture_invert));
+  r_list_poke(out, 3, r_lgl(capture_any));
 
-  r_obj* names = r_alloc_character(3);
+  r_obj* names = r_alloc_character(4);
   r_attrib_poke_names(out, names);
   r_chr_poke(names, 0, r_str("capture_name_value_id"));
   r_chr_poke(names, 1, r_str("capture_value"));
   r_chr_poke(names, 2, r_str("capture_invert"));
+  r_chr_poke(names, 3, r_str("capture_any"));
 
   r_attrib_poke_class(out, r_chr("tree_sitter_predicate_match_string"));
 
