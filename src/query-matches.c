@@ -503,6 +503,8 @@ static bool check_predicate_eq_capture(
 
   const bool capture_invert =
       r_arg_as_bool(r_list_get(predicate, 2), "capture_invert");
+  const bool capture_any =
+      r_arg_as_bool(r_list_get(predicate, 3), "capture_any");
 
   // First yank out all `node` indices that match the capture `value_id`s.
   // Relevant when there are "zero or more" or "one or more" predicate types.
@@ -521,6 +523,9 @@ static bool check_predicate_eq_capture(
     FREE(2);
     return false;
   }
+
+  bool any_passed = false;
+  bool all_passed = true;
 
   // Go through each `capture_name` and `capture` pair and check that the
   // captured text exactly matches (or doesn't match, if using
@@ -543,21 +548,24 @@ static bool check_predicate_eq_capture(
         node_text(capture.node, text, text_size, &capture_size);
 
     // Exact match
-    const bool eq = str_equal_sized(
+    const bool passed = str_equal_sized(
         capture_name_text,
         capture_text,
         (size_t) capture_name_size,
         (size_t) capture_size
     );
 
-    if (eq == capture_invert) {
-      FREE(2);
-      return false;
+    const bool done = apply_predicate_result(
+        passed, capture_invert, capture_any, &any_passed, &all_passed
+    );
+
+    if (done) {
+      break;
     }
   }
 
   FREE(2);
-  return true;
+  return capture_any ? any_passed : all_passed;
 }
 
 static r_obj*
@@ -646,8 +654,13 @@ static bool check_predicate_eq_string(
 
   const bool capture_invert =
       r_arg_as_bool(r_list_get(predicate, 2), "capture_invert");
+  const bool capture_any =
+      r_arg_as_bool(r_list_get(predicate, 3), "capture_any");
 
   const uint16_t capture_count = match->capture_count;
+
+  bool any_passed = false;
+  bool all_passed = true;
 
   // Go through each `capture` that matches this predicate
   // `capture_name_value_id` and check that the captured `node`'s text exactly
@@ -667,16 +680,20 @@ static bool check_predicate_eq_string(
     const char* elt = node_text(capture.node, text, text_size, &elt_size);
 
     // Exact match
-    bool eq = str_equal_sized(
+    const bool passed = str_equal_sized(
         elt, capture_value, (size_t) elt_size, (size_t) capture_value_size
     );
 
-    if (eq == capture_invert) {
-      return false;
+    const bool done = apply_predicate_result(
+        passed, capture_invert, capture_any, &any_passed, &all_passed
+    );
+
+    if (done) {
+      break;
     }
   }
 
-  return true;
+  return capture_any ? any_passed : all_passed;
 }
 
 // -----------------------------------------------------------------------------
@@ -735,12 +752,15 @@ static bool check_predicate_match_string(
 
   const bool capture_invert =
       r_arg_as_bool(r_list_get(predicate, 2), "capture_invert");
+  const bool capture_any =
+      r_arg_as_bool(r_list_get(predicate, 3), "capture_any");
 
   const uint16_t capture_count = match->capture_count;
 
   r_obj* x = KEEP(r_alloc_character(1));
 
-  bool ok = true;
+  bool any_passed = false;
+  bool all_passed = true;
 
   // Go through each `capture` that matches this predicate
   // `capture_name_value_id` and check that the captured `node`'s text regex
@@ -764,16 +784,19 @@ static bool check_predicate_match_string(
         Rf_mkCharLenCE(elt, r_uint32_as_int(elt_size, "elt_size"), CE_UTF8)
     );
 
-    bool matches = r_grepl(x, pattern);
+    const bool passed = r_grepl(x, pattern);
 
-    if (matches == capture_invert) {
-      ok = false;
+    const bool done = apply_predicate_result(
+        passed, capture_invert, capture_any, &any_passed, &all_passed
+    );
+
+    if (done) {
       break;
     }
   }
 
   FREE(1);
-  return ok;
+  return capture_any ? any_passed : all_passed;
 }
 
 static bool r_grepl(r_obj* x, r_obj* pattern) {
@@ -807,4 +830,30 @@ static bool r_grepl(r_obj* x, r_obj* pattern) {
 
   FREE(1);
   return r_as_bool(out);
+}
+
+// -----------------------------------------------------------------------------
+// Predicate helpers
+
+// Finalizes the result of applying a single predicate to a single capture.
+// Returns a boolean indicating whether or not we can finish predicate checks
+// early.
+static bool apply_predicate_result(
+    bool passed,
+    bool capture_invert,
+    bool capture_any,
+    bool* any_passed,
+    bool* all_passed
+) {
+  if (capture_invert) {
+    passed = !passed;
+  }
+
+  // Apply this result
+  *any_passed |= passed;
+  *all_passed &= passed;
+
+  // Figure out if we can finish early or not.
+  // If we are doing `capture_all` and someone doesn't pass, we are done.
+  return !capture_any && !passed;
 }

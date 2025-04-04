@@ -76,3 +76,11 @@ static r_obj*
 capture_indices_for_value_id(TSQueryMatch* match, uint32_t value_id);
 
 static bool r_grepl(r_obj* x, r_obj* pattern);
+
+static bool apply_predicate_result(
+    bool passed,
+    bool capture_invert,
+    bool capture_any,
+    bool* any_passed,
+    bool* all_passed
+);
