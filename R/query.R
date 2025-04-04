@@ -13,6 +13,37 @@
 #' Read the [tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax)
 #' to learn more about the query syntax.
 #'
+#' @section Storing queries:
+#' Query objects contain _external pointers_, so they cannot be saved to disk
+#' and reloaded. One consequence of this is you cannot create them at build
+#' time inside your package. For example, to precompile a query you may assume
+#' you can create a global variable in your package with top level code like
+#' this:
+#'
+#' ```r
+#' QUERY <- treesitter::query(treesitter.r::language(), "query_source_text")
+#' ```
+#'
+#' This won't work for two reasons:
+#'
+#' - The external query in `QUERY` is created at package build time, and is no
+#'   longer valid at package load time.
+#'
+#' - The version of treesitter and treesitter.r are locked to the version used
+#'   at build time, rather than at package load time.
+#'
+#' The correct way to do this is to create the query on package load, like this:
+#'
+#' ```r
+#' QUERY <- NULL
+#'
+#' .onLoad <- function(libname, pkgname) {
+#'   QUERY <<- treesitter::query(treesitter.r::language(), "query_source_text")
+#' }
+#' ```
+#'
+#' This is one place where usage of `<<-` is acceptable.
+#'
 #' @param language `[tree_sitter_language]`
 #'
 #'   A language.

@@ -31,6 +31,37 @@ query. Those are described in the \code{\link[=query_matches]{query_matches()}} 
 Read the \href{https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax}{tree-sitter documentation}
 to learn more about the query syntax.
 }
+\section{Storing queries}{
+
+Query objects contain \emph{external pointers}, so they cannot be saved to disk
+and reloaded. One consequence of this is you cannot create them at build
+time inside your package. For example, to precompile a query you may assume
+you can create a global variable in your package with top level code like
+this:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{QUERY <- treesitter::query(treesitter.r::language(), "query_source_text")
+}\if{html}{\out{</div>}}
+
+This won't work for two reasons:
+\itemize{
+\item The external query in \code{QUERY} is created at package build time, and is no
+longer valid at package load time.
+\item The version of treesitter and treesitter.r are locked to the version used
+at build time, rather than at package load time.
+}
+
+The correct way to do this is to create the query on package load, like this:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{QUERY <- NULL
+
+.onLoad <- function(libname, pkgname) \{
+  QUERY <<- treesitter::query(treesitter.r::language(), "query_source_text")
+\}
+}\if{html}{\out{</div>}}
+
+This is one place where usage of \verb{<<-} is acceptable.
+}
+
 \examples{
 \dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # This query looks for binary operators where the left hand side is an
