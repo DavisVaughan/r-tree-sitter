@@ -28,7 +28,12 @@ bool r_int_any_missing(r_obj* x);
 bool r_chr_any_missing(r_obj* x);
 
 bool str_equal(const char* x, const char* y);
-bool str_equal_up_to(const char* x, const char* y, size_t n);
+bool str_equal_sized(
+    const char* x,
+    const char* y,
+    size_t x_size,
+    size_t y_size
+);
 
 static inline uint32_t r_uint32_max(uint32_t x, uint32_t y) {
     return (x > y) ? x : y;
