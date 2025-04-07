@@ -1,4 +1,4 @@
-# treesitter (development version)
+# treesitter 0.2.0
 
 * New `query_end_byte_for_pattern()` (#22).
 
