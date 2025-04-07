@@ -2,13 +2,13 @@
 #'
 #' @description
 #' `query()` lets you specify a query `source` string for use with
-#' [query_captures()] and [query_matches()]. The `source` string is written
-#' in a way that is somewhat similar to the idea of capture groups in regular
-#' expressions. You write out a pattern that matches a node in a tree, and then
-#' you "capture" parts of that pattern with `@name` tags. The captures are
-#' the values returned by [query_captures()] and [query_matches()]. There are
-#' also a series of _predicates_ that can be used to further refine the
-#' query. Those are described in the [query_matches()] help page.
+#' [query_captures()] and [query_matches()]. The `source` string is written in a
+#' way that is somewhat similar to the idea of capture groups in regular
+#' expressions. You write out one or more query patterns that match nodes in a
+#' tree, and then you "capture" parts of those patterns with `@name` tags. The
+#' captures are the values returned by [query_captures()] and [query_matches()].
+#' There are also a series of _predicates_ that can be used to further refine
+#' the query. Those are described in the [query_matches()] help page.
 #'
 #' Read the [tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax)
 #' to learn more about the query syntax.
@@ -129,8 +129,69 @@ query <- function(language, source) {
 #' - `#eq? @capture1 @capture2`
 #' - `#match? @capture "regex"`
 #'
-#' Each of these predicates can also be inverted with a `not-` prefix, i.e.
-#' `#not-eq?` and `#not-match?`.
+#' Here are a few examples:
+#'
+#' ```
+#' # Match an identifier named `"name-of-interest"`
+#' (
+#'   (identifier) @id
+#'   (#eq? @id "name-of-interest")
+#' )
+#'
+#' # Match a binary operator where the left and right sides are the same name
+#' (
+#'   (binary_operator
+#'     lhs: (identifier) @id1
+#'     rhs: (identifier) @id2
+#'   )
+#'   (#eq? @id1 @id2)
+#' )
+#'
+#' # Match a name with a `_` in it
+#' (
+#'   (identifier) @id
+#'   (#match? @id "_")
+#' )
+#' ```
+#'
+#' Each of these predicates can be inverted with a `not-` prefix.
+#'
+#' ```
+#' (
+#'   (identifier) @id
+#'   (#not-eq? @id "name-of-interest")
+#' )
+#' ```
+#'
+#' Each of these predicates can be converted from an _all_ style predicate to an
+#' _any_ style predicate with an `any-` prefix. This is only useful with
+#' _quantified_ captures, i.e. `(comment)+`, where the `+` specifies "one or
+#' more comment".
+#'
+#' ```
+#' # Finds a block of comments where ALL comments are empty comments
+#' (
+#'   (comment)+ @comment
+#'   (#eq? @comment "#")
+#' )
+#'
+#' # Finds a block of comments where ANY comments are empty comments
+#' (
+#'   (comment)+ @comment
+#'   (#any-eq? @comment "#")
+#' )
+#' ```
+#'
+#' This is the full list of possible predicate permutations:
+#'
+#' - `#eq?`
+#' - `#not-eq?`
+#' - `#any-eq?`
+#' - `#any-not-eq?`
+#' - `#match?`
+#' - `#not-match?`
+#' - `#any-match?`
+#' - `#any-not-match?`
 #'
 #' ### String double quotes
 #'
@@ -168,12 +229,17 @@ query <- function(language, source) {
 #' @name query-matches-and-captures
 #'
 #' @examplesIf rlang::is_installed("treesitter.r")
+#' # ---------------------------------------------------------------------------
+#' # Simple query
+#'
 #' text <- "
 #' foo + b + a + ab
 #' and(a)
 #' "
 #'
-#' source <- "(identifier) @id"
+#' source <- "
+#' (identifier) @id
+#' "
 #'
 #' language <- treesitter.r::language()
 #'
@@ -186,6 +252,205 @@ query <- function(language, source) {
 #' # we only have 1 pattern!
 #' captures <- query_captures(query, node)
 #' captures$node
+#'
+#' # ---------------------------------------------------------------------------
+#' # Quantified query
+#'
+#' text <- "
+#' # this
+#' # that
+#' NULL
+#'
+#' # and
+#' # here
+#' 1 + 1
+#'
+#' # there
+#' 2
+#' "
+#'
+#' # Find blocks of one or more comments
+#' # The `+` is a regex `+` meaning "one or more" comments in a row
+#' source <- "
+#' (comment)+ @comment
+#' "
+#'
+#' language <- treesitter.r::language()
+#'
+#' query <- query(language, source)
+#' parser <- parser(language)
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # The extra structure provided by `query_matches()` is useful here so
+#' # we can see the 3 distinct blocks of comments
+#' matches <- query_matches(query, node)
+#'
+#' # We provided one query pattern, so lets extract that
+#' matches <- matches[[1]]
+#'
+#' # 3 blocks of comments
+#' matches[[1]]
+#' matches[[2]]
+#' matches[[3]]
+#'
+#' # ---------------------------------------------------------------------------
+#' # Multiple query patterns
+#'
+#' # If you know you need to run multiple queries, you can run them all at once
+#' # in one pass over the tree by providing multiple query patterns.
+#'
+#' text <- "
+#' a <- 1
+#' b <- function() {}
+#' c <- b
+#' "
+#'
+#' # Use an extra set of `()` to separate multiple query patterns
+#' source <- "
+#' (
+#'   (identifier) @id
+#' )
+#' (
+#'   (binary_operator) @binary
+#' )
+#' "
+#'
+#' language <- treesitter.r::language()
+#'
+#' query <- query(language, source)
+#' parser <- parser(language)
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # The extra structure provided by `query_matches()` is useful here so
+#' # we can separate the two queries
+#' matches <- query_matches(query, node)
+#'
+#' # First query - all identifiers
+#' matches[[1]]
+#'
+#' # Second query - all binary operators
+#' matches[[2]]
+#'
+#' # ---------------------------------------------------------------------------
+#' # The `#eq?` and `#match?` predicates
+#'
+#' text <- '
+#' fn(a, b)
+#'
+#' test_that("this", {
+#'   test
+#' })
+#'
+#' fn_name(args)
+#'
+#' test_that("that", {
+#'   test
+#' })
+#'
+#' fn2_(args)
+#' '
+#'
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # Use an extra set of outer `()` when you are applying a predicate to ensure
+#' # the query pattern is grouped with the query predicate.
+#' # This one finds all function calls where the function name is `test_that`.
+#' source <- '
+#' (
+#'   (call
+#'     function: (identifier) @name
+#'   ) @call
+#'   (#eq? @name "test_that")
+#' )
+#' '
+#'
+#' query <- query(language, source)
+#'
+#' # It's fine to have a flat list of captures here, but we probably want to
+#' # remove the `@name` captures and just retain the full `@call` captures.
+#' captures <- query_captures(query, node)
+#' captures$node[captures$name == "call"]
+#'
+#' # This one finds all functions with a `_` in their name. It uses the R
+#' # level `grepl()` for the regex processing.
+#' source <- '
+#' (
+#'   (call
+#'     function: (identifier) @name
+#'   ) @call
+#'   (#match? @name "_")
+#' )
+#' '
+#'
+#' query <- query(language, source)
+#'
+#' captures <- query_captures(query, node)
+#' captures$node[captures$name == "call"]
+#'
+#' # ---------------------------------------------------------------------------
+#' # The `any-` and `not-` predicate modifiers
+#'
+#' text <- '
+#' # 1
+#' #
+#' # 2
+#' NULL
+#'
+#' # 3
+#' # 4
+#' NULL
+#'
+#' #
+#' #
+#' NULL
+#'
+#' #
+#' # 5
+#' #
+#' # 6
+#' #
+#' NULL
+#' '
+#'
+#' language <- treesitter.r::language()
+#' parser <- parser(language)
+#' tree <- parser_parse(parser, text)
+#' node <- tree_root_node(tree)
+#'
+#' # Two queries:
+#' # - Find comment blocks where there is at least one empty comment
+#' # - Find comment blocks where there is at least one non-empty comment
+#' source <- '
+#' (
+#'   (comment)+ @comment
+#'   (#any-eq? @comment "#")
+#' )
+#' (
+#'   (comment)+ @comment
+#'   (#any-not-eq? @comment "#")
+#' )
+#' '
+#'
+#' query <- query(language, source)
+#'
+#' matches <- query_matches(query, node)
+#'
+#' # Query 1 has 3 comment blocks that match
+#' query1 <- matches[[1]]
+#' query1[[1]]
+#' query1[[2]]
+#' query1[[3]]
+#'
+#' # Query 2 has 3 comment blocks that match (a different set than query 1!)
+#' query2 <- matches[[2]]
+#' query2[[1]]
+#' query2[[2]]
+#' query2[[3]]
 NULL
 
 #' @rdname query-matches-and-captures

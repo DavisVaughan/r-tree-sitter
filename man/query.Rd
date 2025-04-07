@@ -20,13 +20,13 @@ A query.
 }
 \description{
 \code{query()} lets you specify a query \code{source} string for use with
-\code{\link[=query_captures]{query_captures()}} and \code{\link[=query_matches]{query_matches()}}. The \code{source} string is written
-in a way that is somewhat similar to the idea of capture groups in regular
-expressions. You write out a pattern that matches a node in a tree, and then
-you "capture" parts of that pattern with \verb{@name} tags. The captures are
-the values returned by \code{\link[=query_captures]{query_captures()}} and \code{\link[=query_matches]{query_matches()}}. There are
-also a series of \emph{predicates} that can be used to further refine the
-query. Those are described in the \code{\link[=query_matches]{query_matches()}} help page.
+\code{\link[=query_captures]{query_captures()}} and \code{\link[=query_matches]{query_matches()}}. The \code{source} string is written in a
+way that is somewhat similar to the idea of capture groups in regular
+expressions. You write out one or more query patterns that match nodes in a
+tree, and then you "capture" parts of those patterns with \verb{@name} tags. The
+captures are the values returned by \code{\link[=query_captures]{query_captures()}} and \code{\link[=query_matches]{query_matches()}}.
+There are also a series of \emph{predicates} that can be used to further refine
+the query. Those are described in the \code{\link[=query_matches]{query_matches()}} help page.
 
 Read the \href{https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax}{tree-sitter documentation}
 to learn more about the query syntax.
