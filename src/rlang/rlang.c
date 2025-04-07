@@ -29,7 +29,9 @@
 #include "vec-chr.c"
 #include "vec-lgl.c"
 #include "vendor.c"
+#if R_BEFORE_NON_API_CLEANUP
 #include "walk.c"
+#endif
 
 
 // Allows long vectors to be indexed with doubles

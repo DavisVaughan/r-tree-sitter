@@ -26,7 +26,11 @@ r_obj* r_env_parent(r_obj* env) {
   if (env == r_envs.empty) {
     r_stop_internal("Can't take the parent of the empty environment.");
   }
+  #if R_BEFORE_NON_API_CLEANUP
   return ENCLOS(env);
+  #else
+  return R_ParentEnv(env);
+  #endif
 }
 static inline
 void r_env_poke_parent(r_obj* env, r_obj* new_parent) {

@@ -1,23 +1,22 @@
 #ifndef RLANG_FN_H
 #define RLANG_FN_H
 
-
+#if R_BEFORE_NON_API_CLEANUP
 static inline
 r_obj* r_fn_body(r_obj* fn) {
   return BODY_EXPR(fn);
 }
-#if R_BEFORE_NON_API_CLEANUP
 static inline
 void r_fn_poke_body(r_obj* fn, r_obj* body) {
   SET_BODY(fn, body);
 }
 #endif
 
+#if R_BEFORE_NON_API_CLEANUP
 static inline
 r_obj* r_fn_env(r_obj* fn) {
   return CLOENV(fn);
 }
-#if R_BEFORE_NON_API_CLEANUP
 static inline
 void r_fn_poke_env(r_obj* fn, r_obj* env) {
   SET_CLOENV(fn, env);
