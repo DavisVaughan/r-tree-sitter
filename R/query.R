@@ -10,7 +10,7 @@
 #' There are also a series of _predicates_ that can be used to further refine
 #' the query. Those are described in the [query_matches()] help page.
 #'
-#' Read the [tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax)
+#' Read the [tree-sitter documentation](https://tree-sitter.github.io/tree-sitter/using-parsers/queries/index.html)
 #' to learn more about the query syntax.
 #'
 #' @section Storing queries:

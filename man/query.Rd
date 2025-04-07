@@ -28,7 +28,7 @@ captures are the values returned by \code{\link[=query_captures]{query_captures(
 There are also a series of \emph{predicates} that can be used to further refine
 the query. Those are described in the \code{\link[=query_matches]{query_matches()}} help page.
 
-Read the \href{https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax}{tree-sitter documentation}
+Read the \href{https://tree-sitter.github.io/tree-sitter/using-parsers/queries/index.html}{tree-sitter documentation}
 to learn more about the query syntax.
 }
 \section{Storing queries}{
