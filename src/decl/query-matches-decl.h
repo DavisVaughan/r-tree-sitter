@@ -25,7 +25,8 @@ static r_obj* predicate_match(
 static r_obj* predicate_eq_capture(
     uint32_t capture_name_value_id,
     uint32_t capture_value_id,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 );
 
 static bool is_predicate_eq_capture(r_obj* x);
@@ -41,7 +42,8 @@ static r_obj* predicate_eq_string(
     uint32_t capture_name_value_id,
     const char* capture_value,
     uint32_t capture_value_length,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 );
 
 static bool is_predicate_eq_string(r_obj* x);
@@ -57,7 +59,8 @@ static r_obj* predicate_match_string(
     uint32_t capture_name_value_id,
     const char* capture_value,
     uint32_t capture_value_length,
-    bool capture_invert
+    bool capture_invert,
+    bool capture_any
 );
 
 static bool is_predicate_match_string(r_obj* x);
@@ -73,3 +76,11 @@ static r_obj*
 capture_indices_for_value_id(TSQueryMatch* match, uint32_t value_id);
 
 static bool r_grepl(r_obj* x, r_obj* pattern);
+
+static bool apply_predicate_result(
+    bool passed,
+    bool capture_invert,
+    bool capture_any,
+    bool* any_passed,
+    bool* all_passed
+);

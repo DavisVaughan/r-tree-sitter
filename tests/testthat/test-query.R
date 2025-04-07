@@ -230,7 +230,7 @@ test_that("can restrict `range`", {
 })
 
 # ------------------------------------------------------------------------------
-# `#eq?` and `#not-eq?` - strings
+# `#eq?`, `#not-eq?`, `#any-eq?`, `#any-not-eq?` - strings
 
 test_that("can use `#eq?` with string", {
   text <- "
@@ -284,6 +284,105 @@ and(a)
     vapply(captures$node, node_text, character(1)),
     c("b", "ab", "and")
   )
+})
+
+test_that("can use `#any-eq?` with string", {
+  text <- "
+# this
+#
+# one
+NULL
+
+# dont match
+# this one
+NULL
+
+#
+# this
+#
+# one
+#
+NULL
+  "
+
+  # Find comment blocks where at least one line is an empty comment
+  source <- '
+(
+  (comment)+ @comment
+  (#any-eq? @comment "#")
+)
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  matches <- query_matches(query, node)
+
+  # One query
+  matches <- matches[[1]]
+
+  # Two sets of comment blocks that match
+  expect_length(matches, 2)
+
+  expect_length(matches[[1]]$node, 3)
+  expect_identical(node_range(matches[[1]]$node[[1]]), range(1, point(1, 0), 7, point(1, 6)))
+  expect_identical(node_range(matches[[1]]$node[[2]]), range(8, point(2, 0), 9, point(2, 1)))
+  expect_identical(node_range(matches[[1]]$node[[3]]), range(10, point(3, 0), 15, point(3, 5)))
+
+  expect_length(matches[[2]]$node, 5)
+  expect_identical(node_range(matches[[2]]$node[[1]]), range(52, point(10, 0), 53, point(10, 1)))
+  expect_identical(node_range(matches[[2]]$node[[5]]), range(69, point(14, 0), 70, point(14, 1)))
+})
+
+test_that("can use `#any-not-eq?` with string", {
+  text <- "
+#
+#
+#
+NULL
+
+# match
+# this one
+NULL
+
+#
+# match this
+#
+# one
+#
+NULL
+  "
+
+  # Find comment blocks where at least one line is not an empty comment
+  source <- '
+(
+  (comment)+ @comment
+  (#any-not-eq? @comment "#")
+)
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  matches <- query_matches(query, node)
+
+  # One query
+  matches <- matches[[1]]
+
+  # Two sets of comment blocks that match
+  expect_length(matches, 2)
+
+  # First set has 2 comments, second has 5 comments
+  expect_length(matches[[1]]$node, 2)
+  expect_length(matches[[2]]$node, 5)
+
+  # Just test a few
+  expect_identical(node_range(matches[[1]]$node[[1]]), range(13, point(6, 0), 20, point(6, 7)))
+  expect_identical(node_range(matches[[1]]$node[[2]]), range(21, point(7, 0), 31, point(7, 10)))
 })
 
 test_that("can repeat capture name across patterns", {
@@ -394,7 +493,7 @@ and(a)
 })
 
 # ------------------------------------------------------------------------------
-# `#eq?` and `#not-eq?` - captures
+# `#eq?`, `#not-eq?`, `#any-eq?`, `#any-not-eq?` - captures
 
 test_that("can use `#eq?` and `#not-eq?` with capture", {
   text <- "
@@ -462,6 +561,102 @@ xy + xy
   match <- matches[[2]]
   expect_identical(match$name, c("id1", "id2"))
   expect_identical(vapply(match$node, node_text, character(1)), c("a", "b"))
+})
+
+test_that("can use `#any-eq?` and `#any-not-eq?` with capture", {
+  text <- "
+# This matches any-eq
+# This matches any-not-eq
+a <- a
+b <- c
+
+NULL
+
+# This matches any-not-eq
+a <- b
+b <- c
+
+NULL
+
+# This matches any-eq
+a <- a
+b <- b
+
+NULL
+
+# This matches any-eq
+# This matches any-not-eq
+b <- c
+c <- c
+  "
+
+  # Two queries:
+  # - Find chunks of assignments where at least one assigns a name to itself
+  # - Find chunks of assignments where at least one doesn't assign a name to itself
+  source <- '
+(
+  (binary_operator
+    lhs: (identifier) @lhs
+    operator: "<-"
+    rhs: (identifier) @rhs
+  )+
+  (#any-eq? @lhs @rhs)
+)
+(
+  (binary_operator
+    lhs: (identifier) @lhs
+    operator: "<-"
+    rhs: (identifier) @rhs
+  )+
+  (#any-not-eq? @lhs @rhs)
+)
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  matches <- query_matches(query, node)
+
+  # Two queries
+  expect_length(matches, 2)
+
+  # Both sets of query matches have 3 distinct matches
+  expect_length(matches[[1]], 3)
+  expect_length(matches[[2]], 3)
+
+  # Query 1 - #any-eq?
+  match <- matches[[1]]
+
+  expect_identical(
+    vapply(match[[1]]$node, node_text, FUN.VALUE = character(1)),
+    c("a", "a", "b", "c")
+  )
+  expect_identical(
+    vapply(match[[2]]$node, node_text, FUN.VALUE = character(1)),
+    c("a", "a", "b", "b")
+  )
+  expect_identical(
+    vapply(match[[3]]$node, node_text, FUN.VALUE = character(1)),
+    c("b", "c", "c", "c")
+  )
+
+  # Query 2 - #any-not-eq?
+  match <- matches[[2]]
+
+  expect_identical(
+    vapply(match[[1]]$node, node_text, FUN.VALUE = character(1)),
+    c("a", "a", "b", "c")
+  )
+  expect_identical(
+    vapply(match[[2]]$node, node_text, FUN.VALUE = character(1)),
+    c("a", "b", "b", "c")
+  )
+  expect_identical(
+    vapply(match[[3]]$node, node_text, FUN.VALUE = character(1)),
+    c("b", "c", "c", "c")
+  )
 })
 
 test_that("can use `#eq?` capture predicate on fairly complicated case", {
@@ -550,9 +745,9 @@ a + ab
 })
 
 # ------------------------------------------------------------------------------
-# `#match?` and `#not-match?`
+# `#match?`, `#not-match?`, `#any-match?`, `#any-not-match?`
 
-test_that("can use `#match?` and `#not-match?` with capture", {
+test_that("can use `#match?` and `#not-match?` with pattern", {
   text <- "
 # comment
 #' roxygen
@@ -599,6 +794,102 @@ test_that("can use `#match?` and `#not-match?` with capture", {
       vapply(captures$node, node_text, character(1)),
       c("# comment", "# comment2")
     )
+})
+
+test_that("can use `#any-match?` and `#any-not-match?` with pattern", {
+  text <- "
+# This matches any-match
+# This matches any-not-match
+a_ish <- a
+b <- c
+
+NULL
+
+# This matches any-not-match
+a <- b
+b <- c
+
+NULL
+
+# This matches any-match
+a_ish <- a_ish
+b_ish <- b_ish
+
+NULL
+
+# This matches any-match
+# This matches any-not-match
+b <- c
+c <- c_ish
+  "
+
+  # Two queries:
+  # - Find chunks of assignments where at least one name contains `_`
+  # - Find chunks of assignments where at least one name doesn't contain `_`
+  source <- '
+(
+  (binary_operator
+    lhs: (identifier) @name
+    operator: "<-"
+    rhs: (identifier) @name
+  )+
+  (#any-match? @name "_")
+)
+(
+  (binary_operator
+    lhs: (identifier) @name
+    operator: "<-"
+    rhs: (identifier) @name
+  )+
+  (#any-not-match? @name "_")
+)
+  '
+
+  language <- r()
+  parser <- parser(language)
+  tree <- parser_parse(parser, text)
+  node <- tree_root_node(tree)
+  query <- query(language, source)
+  matches <- query_matches(query, node)
+
+  # Two queries
+  expect_length(matches, 2)
+
+  # Both sets of query matches have 3 distinct matches
+  expect_length(matches[[1]], 3)
+  expect_length(matches[[2]], 3)
+
+  # Query 1 - #any-match?
+  match <- matches[[1]]
+
+  expect_identical(
+    vapply(match[[1]]$node, node_text, FUN.VALUE = character(1)),
+    c("a_ish", "a", "b", "c")
+  )
+  expect_identical(
+    vapply(match[[2]]$node, node_text, FUN.VALUE = character(1)),
+    c("a_ish", "a_ish", "b_ish", "b_ish")
+  )
+  expect_identical(
+    vapply(match[[3]]$node, node_text, FUN.VALUE = character(1)),
+    c("b", "c", "c", "c_ish")
+  )
+
+  # Query 2 - #any-not-match?
+  match <- matches[[2]]
+
+  expect_identical(
+    vapply(match[[1]]$node, node_text, FUN.VALUE = character(1)),
+    c("a_ish", "a", "b", "c")
+  )
+  expect_identical(
+    vapply(match[[2]]$node, node_text, FUN.VALUE = character(1)),
+    c("a", "b", "b", "c")
+  )
+  expect_identical(
+    vapply(match[[3]]$node, node_text, FUN.VALUE = character(1)),
+    c("b", "c", "c", "c_ish")
+  )
 })
 
 # ------------------------------------------------------------------------------
