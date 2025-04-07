@@ -10,6 +10,8 @@
 
 * Updated to [tree-sitter v0.23.0](https://github.com/tree-sitter/tree-sitter/releases/tag/v0.23.0) (#23).
 
+* Removed usage of non-API C calls (#33).
+
 # treesitter 0.1.0
 
 * Initial CRAN submission.
