@@ -1,5 +1,9 @@
 # treesitter (development version)
 
+* `query_captures()` and `query_matches()` now have an expansive examples section (#30).
+
+* `query_captures()` and `query_matches()` gain support for `any-` style predicates (initial PR by @kylebutts, #30).
+
 * Fixed an issue with `#eq?` predicates where extra partial matches could be returned (#28).
 
 * New `query_end_byte_for_pattern()` (#22).
