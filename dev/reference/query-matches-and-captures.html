@@ -111,8 +111,56 @@ query.</p>
 <p>There are 3 core types of predicates supported:</p><ul><li><p><code>#eq? @capture "string"</code></p></li>
 <li><p><code>#eq? @capture1 @capture2</code></p></li>
 <li><p><code>#match? @capture "regex"</code></p></li>
-</ul><p>Each of these predicates can also be inverted with a <code>not-</code> prefix, i.e.
-<code>#not-eq?</code> and <code>#not-match?</code>.</p><div class="section">
+</ul><p>Here are a few examples:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Match an identifier named `"name-of-interest"`</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  (identifier) <span class="sc">@</span>id</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  (<span class="co">#eq? @id "name-of-interest")</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Match a binary operator where the left and right sides are the same name</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>(</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  (binary_operator</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    lhs<span class="sc">:</span> (identifier) <span class="sc">@</span>id1</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    rhs<span class="sc">:</span> (identifier) <span class="sc">@</span>id2</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  )</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  (<span class="co">#eq? @id1 @id2)</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co"># Match a name with a `_` in it</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>(</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  (identifier) <span class="sc">@</span>id</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>  (<span class="co">#match? @id "_")</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>)</span></code></pre><p></p></div>
+<p>Each of these predicates can be inverted with a <code>not-</code> prefix.</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>(</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  (identifier) <span class="sc">@</span>id</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  (<span class="co">#not-eq? @id "name-of-interest")</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span></code></pre><p></p></div>
+<p>Each of these predicates can be converted from an <em>all</em> style predicate to an
+<em>any</em> style predicate with an <code>any-</code> prefix. This is only useful with
+<em>quantified</em> captures, i.e. <code>(comment)+</code>, where the <code>+</code> specifies "one or
+more comment".</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Finds a block of comments where ALL comments are empty comments</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  (comment)<span class="sc">+</span> <span class="er">@</span>comment</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  (<span class="co">#eq? @comment "#")</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Finds a block of comments where ANY comments are empty comments</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>(</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  (comment)<span class="sc">+</span> <span class="er">@</span>comment</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  (<span class="co">#any-eq? @comment "#")</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>)</span></code></pre><p></p></div>
+<p>This is the full list of possible predicate permutations:</p><ul><li><p><code>#eq?</code></p></li>
+<li><p><code>#not-eq?</code></p></li>
+<li><p><code>#any-eq?</code></p></li>
+<li><p><code>#any-not-eq?</code></p></li>
+<li><p><code>#match?</code></p></li>
+<li><p><code>#not-match?</code></p></li>
+<li><p><code>#any-match?</code></p></li>
+<li><p><code>#any-not-match?</code></p></li>
+</ul><div class="section">
 <h3 id="string-double-quotes">String double quotes<a class="anchor" aria-label="anchor" href="#string-double-quotes"></a></h3>
 
 
@@ -143,12 +191,17 @@ correctly.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># Simple query</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
 <span class="r-in"><span><span class="st">foo + b + a + ab</span></span></span>
 <span class="r-in"><span><span class="st">and(a)</span></span></span>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">source</span> <span class="op">&lt;-</span> <span class="st">"(identifier) @id"</span></span></span>
+<span class="r-in"><span><span class="va">source</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">(identifier) @id</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">language</span> <span class="op">&lt;-</span> <span class="fu">treesitter.r</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/treesitter.r/man/language.html" class="external-link">language</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -214,6 +267,773 @@ correctly.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(2, 4), (2, 5)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># Quantified query</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st"># this</span></span></span>
+<span class="r-in"><span><span class="st"># that</span></span></span>
+<span class="r-in"><span><span class="st">NULL</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st"># and</span></span></span>
+<span class="r-in"><span><span class="st"># here</span></span></span>
+<span class="r-in"><span><span class="st">1 + 1</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st"># there</span></span></span>
+<span class="r-in"><span><span class="st">2</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Find blocks of one or more comments</span></span></span>
+<span class="r-in"><span><span class="co"># The `+` is a regex `+` meaning "one or more" comments in a row</span></span></span>
+<span class="r-in"><span><span class="va">source</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">(comment)+ @comment</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">language</span> <span class="op">&lt;-</span> <span class="fu">treesitter.r</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/treesitter.r/man/language.html" class="external-link">language</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="query.html">query</a></span><span class="op">(</span><span class="va">language</span>, <span class="va">source</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">parser</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser.html">parser</a></span><span class="op">(</span><span class="va">language</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser-parse.html">parser_parse</a></span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">node</span> <span class="op">&lt;-</span> <span class="fu"><a href="tree_root_node.html">tree_root_node</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The extra structure provided by `query_matches()` is useful here so</span></span></span>
+<span class="r-in"><span><span class="co"># we can see the 3 distinct blocks of comments</span></span></span>
+<span class="r-in"><span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu">query_matches</span><span class="op">(</span><span class="va">query</span>, <span class="va">node</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># We provided one query pattern, so lets extract that</span></span></span>
+<span class="r-in"><span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">matches</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 3 blocks of comments</span></span></span>
+<span class="r-in"><span><span class="va">matches</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # this</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(1, 0), (1, 6)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # that</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(2, 0), (2, 6)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">matches</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # and</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(5, 0), (5, 5)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # here</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(6, 0), (6, 6)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">matches</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # there</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(9, 0), (9, 7)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># Multiple query patterns</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If you know you need to run multiple queries, you can run them all at once</span></span></span>
+<span class="r-in"><span><span class="co"># in one pass over the tree by providing multiple query patterns.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">a &lt;- 1</span></span></span>
+<span class="r-in"><span><span class="st">b &lt;- function() {}</span></span></span>
+<span class="r-in"><span><span class="st">c &lt;- b</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use an extra set of `()` to separate multiple query patterns</span></span></span>
+<span class="r-in"><span><span class="va">source</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">(</span></span></span>
+<span class="r-in"><span><span class="st">  (identifier) @id</span></span></span>
+<span class="r-in"><span><span class="st">)</span></span></span>
+<span class="r-in"><span><span class="st">(</span></span></span>
+<span class="r-in"><span><span class="st">  (binary_operator) @binary</span></span></span>
+<span class="r-in"><span><span class="st">)</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">language</span> <span class="op">&lt;-</span> <span class="fu">treesitter.r</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/treesitter.r/man/language.html" class="external-link">language</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="query.html">query</a></span><span class="op">(</span><span class="va">language</span>, <span class="va">source</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">parser</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser.html">parser</a></span><span class="op">(</span><span class="va">language</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser-parse.html">parser_parse</a></span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">node</span> <span class="op">&lt;-</span> <span class="fu"><a href="tree_root_node.html">tree_root_node</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The extra structure provided by `query_matches()` is useful here so</span></span></span>
+<span class="r-in"><span><span class="co"># we can separate the two queries</span></span></span>
+<span class="r-in"><span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu">query_matches</span><span class="op">(</span><span class="va">query</span>, <span class="va">node</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># First query - all identifiers</span></span></span>
+<span class="r-in"><span><span class="va">matches</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "id"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(1, 0), (1, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "id"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(2, 0), (2, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "id"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(3, 0), (3, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]$name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "id"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]$node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]$node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>identifier <span style="color: #555555;">[(3, 5), (3, 6)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Second query - all binary operators</span></span></span>
+<span class="r-in"><span><span class="va">matches</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "binary"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a &lt;- 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>binary_operator <span style="color: #555555;">[(1, 0), (1, 6)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lhs: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(1, 0), (1, 1)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   operator: "&lt;-" <span style="color: #555555;">[(1, 2), (1, 4)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   rhs: <span style="color: #00BB00;">(</span>float <span style="color: #555555;">[(1, 5), (1, 6)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "binary"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b &lt;- function() {}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>binary_operator <span style="color: #555555;">[(2, 0), (2, 18)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lhs: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(2, 0), (2, 1)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   operator: "&lt;-" <span style="color: #555555;">[(2, 2), (2, 4)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   rhs: <span style="color: #00BB00;">(</span>function_definition <span style="color: #555555;">[(2, 5), (2, 18)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     name: "function" <span style="color: #555555;">[(2, 5), (2, 13)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     parameters: <span style="color: #BB0000;">(</span>parameters <span style="color: #555555;">[(2, 13), (2, 15)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       open: "(" <span style="color: #555555;">[(2, 13), (2, 14)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       close: ")" <span style="color: #555555;">[(2, 14), (2, 15)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     body: <span style="color: #BB0000;">(</span>braced_expression <span style="color: #555555;">[(2, 16), (2, 18)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       open: "{" <span style="color: #555555;">[(2, 16), (2, 17)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       close: "}" <span style="color: #555555;">[(2, 17), (2, 18)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "binary"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> c &lt;- b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>binary_operator <span style="color: #555555;">[(3, 0), (3, 6)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lhs: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(3, 0), (3, 1)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   operator: "&lt;-" <span style="color: #555555;">[(3, 2), (3, 4)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   rhs: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(3, 5), (3, 6)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># The `#eq?` and `#match?` predicates</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">'</span></span></span>
+<span class="r-in"><span><span class="st">fn(a, b)</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">test_that("this", {</span></span></span>
+<span class="r-in"><span><span class="st">  test</span></span></span>
+<span class="r-in"><span><span class="st">})</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">fn_name(args)</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">test_that("that", {</span></span></span>
+<span class="r-in"><span><span class="st">  test</span></span></span>
+<span class="r-in"><span><span class="st">})</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">fn2_(args)</span></span></span>
+<span class="r-in"><span><span class="st">'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">language</span> <span class="op">&lt;-</span> <span class="fu">treesitter.r</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/treesitter.r/man/language.html" class="external-link">language</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">parser</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser.html">parser</a></span><span class="op">(</span><span class="va">language</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser-parse.html">parser_parse</a></span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">node</span> <span class="op">&lt;-</span> <span class="fu"><a href="tree_root_node.html">tree_root_node</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use an extra set of outer `()` when you are applying a predicate to ensure</span></span></span>
+<span class="r-in"><span><span class="co"># the query pattern is grouped with the query predicate.</span></span></span>
+<span class="r-in"><span><span class="co"># This one finds all function calls where the function name is `test_that`.</span></span></span>
+<span class="r-in"><span><span class="va">source</span> <span class="op">&lt;-</span> <span class="st">'</span></span></span>
+<span class="r-in"><span><span class="st">(</span></span></span>
+<span class="r-in"><span><span class="st">  (call</span></span></span>
+<span class="r-in"><span><span class="st">    function: (identifier) @name</span></span></span>
+<span class="r-in"><span><span class="st">  ) @call</span></span></span>
+<span class="r-in"><span><span class="st">  (#eq? @name "test_that")</span></span></span>
+<span class="r-in"><span><span class="st">)</span></span></span>
+<span class="r-in"><span><span class="st">'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="query.html">query</a></span><span class="op">(</span><span class="va">language</span>, <span class="va">source</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It's fine to have a flat list of captures here, but we probably want to</span></span></span>
+<span class="r-in"><span><span class="co"># remove the `@name` captures and just retain the full `@call` captures.</span></span></span>
+<span class="r-in"><span><span class="va">captures</span> <span class="op">&lt;-</span> <span class="fu">query_captures</span><span class="op">(</span><span class="va">query</span>, <span class="va">node</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">captures</span><span class="op">$</span><span class="va">node</span><span class="op">[</span><span class="va">captures</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"call"</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> test_that("this", {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>call <span style="color: #555555;">[(3, 0), (5, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   function: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(3, 0), (3, 9)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arguments: <span style="color: #00BB00;">(</span>arguments <span style="color: #555555;">[(3, 9), (5, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     open: "(" <span style="color: #555555;">[(3, 9), (3, 10)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(3, 10), (3, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>string <span style="color: #555555;">[(3, 10), (3, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(3, 10), (3, 11)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         content: <span style="color: #BBBB00;">(</span>string_content <span style="color: #555555;">[(3, 11), (3, 15)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(3, 15), (3, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">(</span>comma <span style="color: #555555;">[(3, 16), (3, 17)]</span><span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(3, 18), (5, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>braced_expression <span style="color: #555555;">[(3, 18), (5, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         open: "{" <span style="color: #555555;">[(3, 18), (3, 19)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         body: <span style="color: #BBBB00;">(</span>identifier <span style="color: #555555;">[(4, 2), (4, 6)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         close: "}" <span style="color: #555555;">[(5, 0), (5, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     close: ")" <span style="color: #555555;">[(5, 1), (5, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> test_that("that", {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>call <span style="color: #555555;">[(9, 0), (11, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   function: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(9, 0), (9, 9)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arguments: <span style="color: #00BB00;">(</span>arguments <span style="color: #555555;">[(9, 9), (11, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     open: "(" <span style="color: #555555;">[(9, 9), (9, 10)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(9, 10), (9, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>string <span style="color: #555555;">[(9, 10), (9, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(9, 10), (9, 11)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         content: <span style="color: #BBBB00;">(</span>string_content <span style="color: #555555;">[(9, 11), (9, 15)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(9, 15), (9, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">(</span>comma <span style="color: #555555;">[(9, 16), (9, 17)]</span><span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(9, 18), (11, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>braced_expression <span style="color: #555555;">[(9, 18), (11, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         open: "{" <span style="color: #555555;">[(9, 18), (9, 19)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         body: <span style="color: #BBBB00;">(</span>identifier <span style="color: #555555;">[(10, 2), (10, 6)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         close: "}" <span style="color: #555555;">[(11, 0), (11, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     close: ")" <span style="color: #555555;">[(11, 1), (11, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This one finds all functions with a `_` in their name. It uses the R</span></span></span>
+<span class="r-in"><span><span class="co"># level `grepl()` for the regex processing.</span></span></span>
+<span class="r-in"><span><span class="va">source</span> <span class="op">&lt;-</span> <span class="st">'</span></span></span>
+<span class="r-in"><span><span class="st">(</span></span></span>
+<span class="r-in"><span><span class="st">  (call</span></span></span>
+<span class="r-in"><span><span class="st">    function: (identifier) @name</span></span></span>
+<span class="r-in"><span><span class="st">  ) @call</span></span></span>
+<span class="r-in"><span><span class="st">  (#match? @name "_")</span></span></span>
+<span class="r-in"><span><span class="st">)</span></span></span>
+<span class="r-in"><span><span class="st">'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="query.html">query</a></span><span class="op">(</span><span class="va">language</span>, <span class="va">source</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">captures</span> <span class="op">&lt;-</span> <span class="fu">query_captures</span><span class="op">(</span><span class="va">query</span>, <span class="va">node</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">captures</span><span class="op">$</span><span class="va">node</span><span class="op">[</span><span class="va">captures</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"call"</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> test_that("this", {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>call <span style="color: #555555;">[(3, 0), (5, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   function: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(3, 0), (3, 9)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arguments: <span style="color: #00BB00;">(</span>arguments <span style="color: #555555;">[(3, 9), (5, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     open: "(" <span style="color: #555555;">[(3, 9), (3, 10)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(3, 10), (3, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>string <span style="color: #555555;">[(3, 10), (3, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(3, 10), (3, 11)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         content: <span style="color: #BBBB00;">(</span>string_content <span style="color: #555555;">[(3, 11), (3, 15)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(3, 15), (3, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">(</span>comma <span style="color: #555555;">[(3, 16), (3, 17)]</span><span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(3, 18), (5, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>braced_expression <span style="color: #555555;">[(3, 18), (5, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         open: "{" <span style="color: #555555;">[(3, 18), (3, 19)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         body: <span style="color: #BBBB00;">(</span>identifier <span style="color: #555555;">[(4, 2), (4, 6)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         close: "}" <span style="color: #555555;">[(5, 0), (5, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     close: ")" <span style="color: #555555;">[(5, 1), (5, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fn_name(args)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>call <span style="color: #555555;">[(7, 0), (7, 13)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   function: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(7, 0), (7, 7)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arguments: <span style="color: #00BB00;">(</span>arguments <span style="color: #555555;">[(7, 7), (7, 13)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     open: "(" <span style="color: #555555;">[(7, 7), (7, 8)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(7, 8), (7, 12)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>identifier <span style="color: #555555;">[(7, 8), (7, 12)]</span><span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     close: ")" <span style="color: #555555;">[(7, 12), (7, 13)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> test_that("that", {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>call <span style="color: #555555;">[(9, 0), (11, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   function: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(9, 0), (9, 9)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arguments: <span style="color: #00BB00;">(</span>arguments <span style="color: #555555;">[(9, 9), (11, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     open: "(" <span style="color: #555555;">[(9, 9), (9, 10)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(9, 10), (9, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>string <span style="color: #555555;">[(9, 10), (9, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(9, 10), (9, 11)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         content: <span style="color: #BBBB00;">(</span>string_content <span style="color: #555555;">[(9, 11), (9, 15)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "\"" <span style="color: #555555;">[(9, 15), (9, 16)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">(</span>comma <span style="color: #555555;">[(9, 16), (9, 17)]</span><span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(9, 18), (11, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>braced_expression <span style="color: #555555;">[(9, 18), (11, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         open: "{" <span style="color: #555555;">[(9, 18), (9, 19)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         body: <span style="color: #BBBB00;">(</span>identifier <span style="color: #555555;">[(10, 2), (10, 6)]</span><span style="color: #BBBB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         close: "}" <span style="color: #555555;">[(11, 0), (11, 1)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     close: ")" <span style="color: #555555;">[(11, 1), (11, 2)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fn2_(args)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>call <span style="color: #555555;">[(13, 0), (13, 10)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   function: <span style="color: #00BB00;">(</span>identifier <span style="color: #555555;">[(13, 0), (13, 4)]</span><span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arguments: <span style="color: #00BB00;">(</span>arguments <span style="color: #555555;">[(13, 4), (13, 10)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     open: "(" <span style="color: #555555;">[(13, 4), (13, 5)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     argument: <span style="color: #BB0000;">(</span>argument <span style="color: #555555;">[(13, 5), (13, 9)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value: <span style="color: #00BBBB;">(</span>identifier <span style="color: #555555;">[(13, 5), (13, 9)]</span><span style="color: #00BBBB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #BB0000;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     close: ")" <span style="color: #555555;">[(13, 9), (13, 10)]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co"># The `any-` and `not-` predicate modifiers</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="st">'</span></span></span>
+<span class="r-in"><span><span class="st"># 1</span></span></span>
+<span class="r-in"><span><span class="st">#</span></span></span>
+<span class="r-in"><span><span class="st"># 2</span></span></span>
+<span class="r-in"><span><span class="st">NULL</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st"># 3</span></span></span>
+<span class="r-in"><span><span class="st"># 4</span></span></span>
+<span class="r-in"><span><span class="st">NULL</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">#</span></span></span>
+<span class="r-in"><span><span class="st">#</span></span></span>
+<span class="r-in"><span><span class="st">NULL</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">#</span></span></span>
+<span class="r-in"><span><span class="st"># 5</span></span></span>
+<span class="r-in"><span><span class="st">#</span></span></span>
+<span class="r-in"><span><span class="st"># 6</span></span></span>
+<span class="r-in"><span><span class="st">#</span></span></span>
+<span class="r-in"><span><span class="st">NULL</span></span></span>
+<span class="r-in"><span><span class="st">'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">language</span> <span class="op">&lt;-</span> <span class="fu">treesitter.r</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/treesitter.r/man/language.html" class="external-link">language</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">parser</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser.html">parser</a></span><span class="op">(</span><span class="va">language</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="parser-parse.html">parser_parse</a></span><span class="op">(</span><span class="va">parser</span>, <span class="va">text</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">node</span> <span class="op">&lt;-</span> <span class="fu"><a href="tree_root_node.html">tree_root_node</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Two queries:</span></span></span>
+<span class="r-in"><span><span class="co"># - Find comment blocks where there is at least one empty comment</span></span></span>
+<span class="r-in"><span><span class="co"># - Find comment blocks where there is at least one non-empty comment</span></span></span>
+<span class="r-in"><span><span class="va">source</span> <span class="op">&lt;-</span> <span class="st">'</span></span></span>
+<span class="r-in"><span><span class="st">(</span></span></span>
+<span class="r-in"><span><span class="st">  (comment)+ @comment</span></span></span>
+<span class="r-in"><span><span class="st">  (#any-eq? @comment "#")</span></span></span>
+<span class="r-in"><span><span class="st">)</span></span></span>
+<span class="r-in"><span><span class="st">(</span></span></span>
+<span class="r-in"><span><span class="st">  (comment)+ @comment</span></span></span>
+<span class="r-in"><span><span class="st">  (#any-not-eq? @comment "#")</span></span></span>
+<span class="r-in"><span><span class="st">)</span></span></span>
+<span class="r-in"><span><span class="st">'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="query.html">query</a></span><span class="op">(</span><span class="va">language</span>, <span class="va">source</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu">query_matches</span><span class="op">(</span><span class="va">query</span>, <span class="va">node</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Query 1 has 3 comment blocks that match</span></span></span>
+<span class="r-in"><span><span class="va">query1</span> <span class="op">&lt;-</span> <span class="va">matches</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">query1</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(1, 0), (1, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(2, 0), (2, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(3, 0), (3, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">query1</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(10, 0), (10, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(11, 0), (11, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">query1</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment" "comment" "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(14, 0), (14, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(15, 0), (15, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(16, 0), (16, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(17, 0), (17, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(18, 0), (18, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Query 2 has 3 comment blocks that match (a different set than query 1!)</span></span></span>
+<span class="r-in"><span><span class="va">query2</span> <span class="op">&lt;-</span> <span class="va">matches</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">query2</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(1, 0), (1, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(2, 0), (2, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(3, 0), (3, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">query2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(6, 0), (6, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(7, 0), (7, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">query2</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "comment" "comment" "comment" "comment" "comment"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(14, 0), (14, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(15, 0), (15, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(16, 0), (16, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(17, 0), (17, 3)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $node[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;tree_sitter_node&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Text ───────────────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── S-Expression ───────────────────────────────────────────────────────</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">(</span>comment <span style="color: #555555;">[(18, 0), (18, 1)]</span><span style="color: #0000BB;">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
