@@ -129,11 +129,11 @@ void r_dyn_raw_poke(struct r_dyn_array* p_vec, r_ssize i, char value) {
 // Macro to inline `SET_STRING_ELT()` and `SET_VECTOR_ELT()` to avoid rchk false
 // positive.
 #define r_dyn_chr_poke(P_VEC, I, VALUE) do { \
-    r_chr_poke((P_VEC)->data, I, VALUE);     \
+  r_chr_poke((P_VEC)->data, I, VALUE);       \
 } while (0)
 
 #define r_dyn_list_poke(P_VEC, I, VALUE) do { \
-    r_list_poke((P_VEC)->data, I, VALUE);     \
+  r_list_poke((P_VEC)->data, I, VALUE);       \
 } while (0)
 
 static inline
