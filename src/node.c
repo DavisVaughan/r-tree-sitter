@@ -390,7 +390,8 @@ r_obj* r_exec_new_node(TSNode x, r_obj* tree) {
     raw_sym = r_sym("raw");
     tree_sym = r_sym("tree");
 
-    // rchk seems to think this can be a freshly allocated SEXP, but I disagree
+    // Technically can allocate (may get a fresh object with a user database or
+    // active binding) even though it won't here, but rchk will complain
     r_obj* ns = KEEP(r_env_find(R_NamespaceRegistry, r_sym("treesitter")));
 
     r_obj* fn = r_env_find(ns, r_sym("new_node"));
