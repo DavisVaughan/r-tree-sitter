@@ -390,7 +390,9 @@ r_obj* r_exec_new_node(TSNode x, r_obj* tree) {
     raw_sym = r_sym("raw");
     tree_sym = r_sym("tree");
 
-    r_obj* ns = r_env_find(R_NamespaceRegistry, r_sym("treesitter"));
+    // Technically can allocate (may get a fresh object with a user database or
+    // active binding) even though it won't here, but rchk will complain
+    r_obj* ns = KEEP(r_env_find(R_NamespaceRegistry, r_sym("treesitter")));
 
     r_obj* fn = r_env_find(ns, r_sym("new_node"));
     call = r_call3(fn, raw_sym, tree_sym);
@@ -398,6 +400,8 @@ r_obj* r_exec_new_node(TSNode x, r_obj* tree) {
 
     env = r_alloc_environment(2, ns);
     r_preserve(env);
+
+    FREE(1);
   }
 
   r_env_poke(env, raw_sym, ts_node_as_raw(x));
