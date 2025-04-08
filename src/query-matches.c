@@ -87,9 +87,7 @@ r_obj* ffi_query_matches(
 
     const r_ssize count = (r_ssize) match.capture_count;
 
-    // rchk seems to think we need to protect `elt`, even though
-    // `r_dyn_list_push_back()` definitely protects it, annoying!
-    r_obj* elt = KEEP(r_alloc_list(2));
+    r_obj* elt = r_alloc_list(2);
     r_dyn_list_push_back(p_pattern, elt);
     r_attrib_poke_names(elt, elt_names);
 
@@ -104,8 +102,6 @@ r_obj* ffi_query_matches(
       r_chr_poke(names, i, v_capture_names[capture.index]);
       r_list_poke(nodes, i, r_exec_new_node(capture.node, ffi_tree));
     }
-
-    FREE(1);
   }
 
   ts_query_cursor_delete(cursor);

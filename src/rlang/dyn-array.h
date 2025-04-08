@@ -125,14 +125,16 @@ static inline
 void r_dyn_raw_poke(struct r_dyn_array* p_vec, r_ssize i, char value) {
   ((char*) p_vec->v_data)[i] = value;
 }
-static inline
-void r_dyn_chr_poke(struct r_dyn_array* p_vec, r_ssize i, r_obj* value) {
-  r_chr_poke(p_vec->data, i, value);
-}
-static inline
-void r_dyn_list_poke(struct r_dyn_array* p_vec, r_ssize i, r_obj* value) {
-  r_list_poke(p_vec->data, i, value);
-}
+
+// Macro to inline `SET_STRING_ELT()` and `SET_VECTOR_ELT()` to avoid rchk false
+// positive.
+#define r_dyn_chr_poke(P_VEC, I, VALUE) do { \
+    r_chr_poke((P_VEC)->data, I, VALUE);     \
+} while (0)
+
+#define r_dyn_list_poke(P_VEC, I, VALUE) do { \
+    r_list_poke((P_VEC)->data, I, VALUE);     \
+} while (0)
 
 static inline
 void* const * r_dyn_pop_back(struct r_dyn_array* p_arr) {
@@ -173,19 +175,25 @@ void r_dyn_cpl_push_back(struct r_dyn_array* p_vec, r_complex elt) {
   r_ssize loc = r__dyn_increment(p_vec);
   r_dyn_cpl_poke(p_vec, loc, elt);
 }
-static inline
-void r_dyn_chr_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
-  KEEP(elt);
-  r_ssize loc = r__dyn_increment(p_vec);
-  r_dyn_chr_poke(p_vec, loc, elt);
-  FREE(1);
-}
-static inline
-void r_dyn_list_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
-  KEEP(elt);
-  r_ssize loc = r__dyn_increment(p_vec);
-  r_dyn_list_poke(p_vec, loc, elt);
-  FREE(1);
-}
+
+// Macro to inline `SET_STRING_ELT()` and `SET_VECTOR_ELT()` to avoid rchk false
+// positive. Careful to avoid double evaluation of arguments.
+#define r_dyn_chr_push_back(P_VEC, ELT) do { \
+  struct r_dyn_array* __p_vec = (P_VEC);     \
+  r_obj* __elt = (ELT);                      \
+  KEEP(__elt);                               \
+  r_ssize __loc = r__dyn_increment(__p_vec); \
+  r_dyn_chr_poke(__p_vec, __loc, __elt);     \
+  FREE(1);                                   \
+} while (0)
+
+#define r_dyn_list_push_back(P_VEC, ELT) do { \
+  struct r_dyn_array* __p_vec = (P_VEC);      \
+  r_obj* __elt = (ELT);                       \
+  KEEP(__elt);                                \
+  r_ssize __loc = r__dyn_increment(__p_vec);  \
+  r_dyn_list_poke(__p_vec, __loc, __elt);     \
+  FREE(1);                                    \
+} while (0)
 
 #endif
