@@ -64,11 +64,12 @@ parser_parse(parser, text)
 #> <tree_sitter_tree>
 #> 
 #> ── Text ────────────────────────────────────────────────────────────────────────
+#> 
 #> 1 + 2
 #> 
 #> 
 #> ── S-Expression ────────────────────────────────────────────────────────────────
-#> (program [(1, 0), (2, 0)]
+#> (program [(0, 0), (2, 0)]
 #>   (binary_operator [(1, 0), (1, 5)]
 #>     lhs: (float [(1, 0), (1, 1)])
 #>     operator: "+" [(1, 2), (1, 3)]
@@ -134,9 +135,6 @@ node_show_s_expression(node)
 #>     close: ")" [(2, 18), (2, 19)]
 #>   )
 #> )
-```
-
-``` r
 
 # Compact view, more like an AST
 node_show_s_expression(

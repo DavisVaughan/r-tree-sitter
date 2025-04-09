@@ -1,12 +1,12 @@
-# treesitter (development version)
+# treesitter 0.2.0
 
-* `query_captures()` and `query_matches()` now have an expansive examples section (#30).
+* New `query_end_byte_for_pattern()` (#22).
 
 * `query_captures()` and `query_matches()` gain support for `any-` style predicates (initial PR by @kylebutts, #30).
 
-* Fixed an issue with `#eq?` predicates where extra partial matches could be returned (#28).
+* `query_captures()` and `query_matches()` now have an expansive examples section (#30).
 
-* New `query_end_byte_for_pattern()` (#22).
+* Fixed an issue with `#eq?` predicates where extra partial matches could be returned (#28).
 
 * Updated to [tree-sitter v0.23.0](https://github.com/tree-sitter/tree-sitter/releases/tag/v0.23.0) (#23).
 
