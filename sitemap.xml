@@ -1,186 +1,64 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/TreeCursor.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_language.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_node.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_parser.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_query.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_tree.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_field_count.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_field_id_for_name.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_field_name_for_id.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_name.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_next_state.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_state_count.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_symbol_count.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_symbol_for_name.html</loc>
-  </url>
-  <url>
-    <loc>/reference/language_symbol_name.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-child-by-field.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-child-count.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-child.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-children.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-descendant.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-first-child-byte.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-grammar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-location.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-metadata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-parse-state.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node-sibling.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_descendant_count.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_field_name_for_child.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_language.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_parent.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_raw_s_expression.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_show_s_expression.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_symbol.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_text.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_type.html</loc>
-  </url>
-  <url>
-    <loc>/reference/node_walk.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parser-adjustments.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parser-parse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parser.html</loc>
-  </url>
-  <url>
-    <loc>/reference/points.html</loc>
-  </url>
-  <url>
-    <loc>/reference/query-accessors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/query-matches-and-captures.html</loc>
-  </url>
-  <url>
-    <loc>/reference/query.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ranges.html</loc>
-  </url>
-  <url>
-    <loc>/reference/text_parse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tree-accessors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tree_root_node.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tree_root_node_with_offset.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tree_walk.html</loc>
-  </url>
-  <url>
-    <loc>/reference/treesitter-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/x_tree_sitter_node.html</loc>
-  </url>
-  <url>
-    <loc>/reference/x_tree_sitter_parser.html</loc>
-  </url>
-  <url>
-    <loc>/reference/x_tree_sitter_query.html</loc>
-  </url>
-  <url>
-    <loc>/reference/x_tree_sitter_tree.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/TreeCursor.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/is_language.html</loc></url>
+<url><loc>/reference/is_node.html</loc></url>
+<url><loc>/reference/is_parser.html</loc></url>
+<url><loc>/reference/is_query.html</loc></url>
+<url><loc>/reference/is_tree.html</loc></url>
+<url><loc>/reference/language_field_count.html</loc></url>
+<url><loc>/reference/language_field_id_for_name.html</loc></url>
+<url><loc>/reference/language_field_name_for_id.html</loc></url>
+<url><loc>/reference/language_name.html</loc></url>
+<url><loc>/reference/language_next_state.html</loc></url>
+<url><loc>/reference/language_state_count.html</loc></url>
+<url><loc>/reference/language_symbol_count.html</loc></url>
+<url><loc>/reference/language_symbol_for_name.html</loc></url>
+<url><loc>/reference/language_symbol_name.html</loc></url>
+<url><loc>/reference/node-child-by-field.html</loc></url>
+<url><loc>/reference/node-child-count.html</loc></url>
+<url><loc>/reference/node-child.html</loc></url>
+<url><loc>/reference/node-children.html</loc></url>
+<url><loc>/reference/node-descendant.html</loc></url>
+<url><loc>/reference/node-first-child-byte.html</loc></url>
+<url><loc>/reference/node-grammar.html</loc></url>
+<url><loc>/reference/node-location.html</loc></url>
+<url><loc>/reference/node-metadata.html</loc></url>
+<url><loc>/reference/node-parse-state.html</loc></url>
+<url><loc>/reference/node-sibling.html</loc></url>
+<url><loc>/reference/node_descendant_count.html</loc></url>
+<url><loc>/reference/node_field_name_for_child.html</loc></url>
+<url><loc>/reference/node_language.html</loc></url>
+<url><loc>/reference/node_parent.html</loc></url>
+<url><loc>/reference/node_raw_s_expression.html</loc></url>
+<url><loc>/reference/node_show_s_expression.html</loc></url>
+<url><loc>/reference/node_symbol.html</loc></url>
+<url><loc>/reference/node_text.html</loc></url>
+<url><loc>/reference/node_type.html</loc></url>
+<url><loc>/reference/node_walk.html</loc></url>
+<url><loc>/reference/parser-adjustments.html</loc></url>
+<url><loc>/reference/parser-parse.html</loc></url>
+<url><loc>/reference/parser.html</loc></url>
+<url><loc>/reference/points.html</loc></url>
+<url><loc>/reference/query-accessors.html</loc></url>
+<url><loc>/reference/query-matches-and-captures.html</loc></url>
+<url><loc>/reference/query.html</loc></url>
+<url><loc>/reference/ranges.html</loc></url>
+<url><loc>/reference/text_parse.html</loc></url>
+<url><loc>/reference/tree-accessors.html</loc></url>
+<url><loc>/reference/tree_root_node.html</loc></url>
+<url><loc>/reference/tree_root_node_with_offset.html</loc></url>
+<url><loc>/reference/tree_walk.html</loc></url>
+<url><loc>/reference/treesitter-package.html</loc></url>
+<url><loc>/reference/x_tree_sitter_node.html</loc></url>
+<url><loc>/reference/x_tree_sitter_parser.html</loc></url>
+<url><loc>/reference/x_tree_sitter_query.html</loc></url>
+<url><loc>/reference/x_tree_sitter_tree.html</loc></url>
 </urlset>
+
