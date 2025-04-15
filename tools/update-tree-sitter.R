@@ -54,23 +54,47 @@ copy_tree_sitter_files <- function(from, to) {
   to_include <- file.path(to, "src", "tree-sitter", "lib")
 
   file.copy(from = from_src, to = to_src, overwrite = TRUE, recursive = TRUE)
-  file.copy(from = from_include, to = to_include, overwrite = TRUE, recursive = TRUE)
+  file.copy(
+    from = from_include,
+    to = to_include,
+    overwrite = TRUE,
+    recursive = TRUE
+  )
 }
 
 write_abi_file <- function() {
   # Get versions from `api.h`
-  api <- file.path("src", "tree-sitter", "lib", "include", "tree_sitter", "api.h")
+  api <- file.path(
+    "src",
+    "tree-sitter",
+    "lib",
+    "include",
+    "tree_sitter",
+    "api.h"
+  )
   api <- normalizePath(api, mustWork = TRUE)
   lines <- readLines(api)
   tree_sitter_abi <- get_tree_sitter_abi(lines)
-  tree_sitter_minimum_compatible_abi <- get_tree_sitter_minimum_compatible_abi(lines)
+  tree_sitter_minimum_compatible_abi <- get_tree_sitter_minimum_compatible_abi(
+    lines
+  )
 
   # Sub versions into template file lines
   template <- file.path("tools", "abi.R")
   template <- normalizePath(template, mustWork = TRUE)
   lines <- readLines(template)
-  lines <- sub("TREE_SITTER_LANGUAGE_VERSION", tree_sitter_abi, lines, fixed = TRUE)
-  lines <- sub("TREE_SITTER_MIN_COMPATIBLE_LANGUAGE_VERSION", tree_sitter_minimum_compatible_abi, lines, fixed = TRUE)
+  lines <- sub(
+    "TREE_SITTER_LANGUAGE_VERSION",
+    tree_sitter_abi,
+    lines,
+    fixed = TRUE
+  )
+  lines <- sub(
+    "TREE_SITTER_MIN_COMPATIBLE_LANGUAGE_VERSION",
+    tree_sitter_minimum_compatible_abi,
+    lines,
+    fixed = TRUE
+  )
 
   # Write finalized template file
   destination <- file.path("R", "abi.R")
@@ -101,14 +125,18 @@ get_tree_sitter_minimum_compatible_abi <- function(lines) {
   line <- grep(pattern, lines, value = TRUE)
 
   if (length(line) != 1L) {
-    stop("Can't find `TREE_SITTER_MIN_COMPATIBLE_LANGUAGE_VERSION` line in `api.h`.")
+    stop(
+      "Can't find `TREE_SITTER_MIN_COMPATIBLE_LANGUAGE_VERSION` line in `api.h`."
+    )
   }
 
   version <- get_one_capture(line, pattern)
   version <- as.integer(version)
 
   if (is.na(version)) {
-    stop("Can't parse `TREE_SITTER_MIN_COMPATIBLE_LANGUAGE_VERSION` from `api.h`.")
+    stop(
+      "Can't parse `TREE_SITTER_MIN_COMPATIBLE_LANGUAGE_VERSION` from `api.h`."
+    )
   }
 
   version

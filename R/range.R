@@ -115,8 +115,12 @@ print.tree_sitter_range <- function(x, ...) {
   end_column <- point_column0(end_point)
 
   cat_line("<tree_sitter_range>")
-  cat_line(cli::format_inline("Start <byte: {start_byte}, row: {start_row}, column: {start_column}>"))
-  cat_line(cli::format_inline("End <byte: {end_byte}, row: {end_row}, column: {end_column}>"))
+  cat_line(cli::format_inline(
+    "Start <byte: {start_byte}, row: {start_row}, column: {start_column}>"
+  ))
+  cat_line(cli::format_inline(
+    "End <byte: {end_byte}, row: {end_row}, column: {end_column}>"
+  ))
 
   invisible(x)
 }

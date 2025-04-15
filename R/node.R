@@ -1082,16 +1082,32 @@ NULL
 #' @rdname node-descendant
 #' @export
 node_descendant_for_byte_range <- function(x, start, end) {
-  node_descendant_for_byte_range_impl(x, start, end, ffi_node_descendant_for_byte_range)
+  node_descendant_for_byte_range_impl(
+    x,
+    start,
+    end,
+    ffi_node_descendant_for_byte_range
+  )
 }
 
 #' @rdname node-descendant
 #' @export
 node_named_descendant_for_byte_range <- function(x, start, end) {
-  node_descendant_for_byte_range_impl(x, start, end, ffi_node_named_descendant_for_byte_range)
+  node_descendant_for_byte_range_impl(
+    x,
+    start,
+    end,
+    ffi_node_named_descendant_for_byte_range
+  )
 }
 
-node_descendant_for_byte_range_impl <- function(x, start, end, fn, call = caller_env()) {
+node_descendant_for_byte_range_impl <- function(
+  x,
+  start,
+  end,
+  fn,
+  call = caller_env()
+) {
   check_node(x, call = call)
 
   tree <- node_tree(x)
@@ -1110,16 +1126,32 @@ node_descendant_for_byte_range_impl <- function(x, start, end, fn, call = caller
 #' @rdname node-descendant
 #' @export
 node_descendant_for_point_range <- function(x, start, end) {
-  node_descendant_for_point_range_impl(x, start, end, ffi_node_descendant_for_point_range)
+  node_descendant_for_point_range_impl(
+    x,
+    start,
+    end,
+    ffi_node_descendant_for_point_range
+  )
 }
 
 #' @rdname node-descendant
 #' @export
 node_named_descendant_for_point_range <- function(x, start, end) {
-  node_descendant_for_point_range_impl(x, start, end, ffi_node_named_descendant_for_point_range)
+  node_descendant_for_point_range_impl(
+    x,
+    start,
+    end,
+    ffi_node_named_descendant_for_point_range
+  )
 }
 
-node_descendant_for_point_range_impl <- function(x, start, end, fn, call = caller_env()) {
+node_descendant_for_point_range_impl <- function(
+  x,
+  start,
+  end,
+  fn,
+  call = caller_env()
+) {
   check_node(x, call = call)
 
   tree <- node_tree(x)

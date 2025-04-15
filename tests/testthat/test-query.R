@@ -255,9 +255,18 @@ and(a)
   # Returns ordered list of captures, regardless of pattern
   expect_length(captures$name, 3)
 
-  expect_identical(node_range(captures$node[[1]]), range(1, point(1, 0), 2, point(1, 1)))
-  expect_identical(node_range(captures$node[[2]]), range(9, point(1, 8), 10, point(1, 9)))
-  expect_identical(node_range(captures$node[[3]]), range(20, point(2, 4), 21, point(2, 5)))
+  expect_identical(
+    node_range(captures$node[[1]]),
+    range(1, point(1, 0), 2, point(1, 1))
+  )
+  expect_identical(
+    node_range(captures$node[[2]]),
+    range(9, point(1, 8), 10, point(1, 9))
+  )
+  expect_identical(
+    node_range(captures$node[[3]]),
+    range(20, point(2, 4), 21, point(2, 5))
+  )
 })
 
 test_that("can use `#not-eq?` with string", {
@@ -327,13 +336,28 @@ NULL
   expect_length(matches, 2)
 
   expect_length(matches[[1]]$node, 3)
-  expect_identical(node_range(matches[[1]]$node[[1]]), range(1, point(1, 0), 7, point(1, 6)))
-  expect_identical(node_range(matches[[1]]$node[[2]]), range(8, point(2, 0), 9, point(2, 1)))
-  expect_identical(node_range(matches[[1]]$node[[3]]), range(10, point(3, 0), 15, point(3, 5)))
+  expect_identical(
+    node_range(matches[[1]]$node[[1]]),
+    range(1, point(1, 0), 7, point(1, 6))
+  )
+  expect_identical(
+    node_range(matches[[1]]$node[[2]]),
+    range(8, point(2, 0), 9, point(2, 1))
+  )
+  expect_identical(
+    node_range(matches[[1]]$node[[3]]),
+    range(10, point(3, 0), 15, point(3, 5))
+  )
 
   expect_length(matches[[2]]$node, 5)
-  expect_identical(node_range(matches[[2]]$node[[1]]), range(52, point(10, 0), 53, point(10, 1)))
-  expect_identical(node_range(matches[[2]]$node[[5]]), range(69, point(14, 0), 70, point(14, 1)))
+  expect_identical(
+    node_range(matches[[2]]$node[[1]]),
+    range(52, point(10, 0), 53, point(10, 1))
+  )
+  expect_identical(
+    node_range(matches[[2]]$node[[5]]),
+    range(69, point(14, 0), 70, point(14, 1))
+  )
 })
 
 test_that("can use `#any-not-eq?` with string", {
@@ -381,8 +405,14 @@ NULL
   expect_length(matches[[2]]$node, 5)
 
   # Just test a few
-  expect_identical(node_range(matches[[1]]$node[[1]]), range(13, point(6, 0), 20, point(6, 7)))
-  expect_identical(node_range(matches[[1]]$node[[2]]), range(21, point(7, 0), 31, point(7, 10)))
+  expect_identical(
+    node_range(matches[[1]]$node[[1]]),
+    range(13, point(6, 0), 20, point(6, 7))
+  )
+  expect_identical(
+    node_range(matches[[1]]$node[[2]]),
+    range(21, point(7, 0), 31, point(7, 10))
+  )
 })
 
 test_that("can repeat capture name across patterns", {
@@ -489,7 +519,10 @@ and(a)
 
   expect_length(captures$name, 1)
 
-  expect_identical(node_range(captures$node[[1]]), range(13, point(1, 12), 15, point(1, 14)))
+  expect_identical(
+    node_range(captures$node[[1]]),
+    range(13, point(1, 12), 15, point(1, 14))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -740,8 +773,14 @@ a + ab
 
   expect_identical(captures$name, c("id", "id2"))
 
-  expect_identical(node_range(captures$node[[1]]), range(1, point(1, 0), 2, point(1, 1)))
-  expect_identical(node_range(captures$node[[2]]), range(5, point(1, 4), 6, point(1, 5)))
+  expect_identical(
+    node_range(captures$node[[1]]),
+    range(1, point(1, 0), 2, point(1, 1))
+  )
+  expect_identical(
+    node_range(captures$node[[2]]),
+    range(5, point(1, 4), 6, point(1, 5))
+  )
 })
 
 # ------------------------------------------------------------------------------
@@ -785,15 +824,15 @@ test_that("can use `#match?` and `#not-match?` with pattern", {
       (#not-match? @roxygen "^#'.*")
     )
     ]'
-    query <- query(language, source)
-    captures <- query_captures(query, node)
+  query <- query(language, source)
+  captures <- query_captures(query, node)
 
-    expect_length(captures$node, 2)
+  expect_length(captures$node, 2)
 
-    expect_identical(
-      vapply(captures$node, node_text, character(1)),
-      c("# comment", "# comment2")
-    )
+  expect_identical(
+    vapply(captures$node, node_text, character(1)),
+    c("# comment", "# comment2")
+  )
 })
 
 test_that("can use `#any-match?` and `#any-not-match?` with pattern", {

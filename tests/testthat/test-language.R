@@ -46,7 +46,11 @@ test_that("incorrect node name returns NA", {
 
 test_that("recycles `named` to size of `name`", {
   expect_snapshot(error = TRUE, {
-    language_symbol_for_name(r(), c("program", "else"), named = c(TRUE, FALSE, TRUE))
+    language_symbol_for_name(
+      r(),
+      c("program", "else"),
+      named = c(TRUE, FALSE, TRUE)
+    )
   })
 
   id <- language_symbol_for_name(r(), c("program", "else"), named = TRUE)
@@ -54,7 +58,11 @@ test_that("recycles `named` to size of `name`", {
   expect_true(!is.na(id)[[1L]])
   expect_true(is.na(id)[[2L]])
 
-  id <- language_symbol_for_name(r(), c("program", "else"), named = c(TRUE, FALSE))
+  id <- language_symbol_for_name(
+    r(),
+    c("program", "else"),
+    named = c(TRUE, FALSE)
+  )
   expect_vector(id, ptype = integer(), size = 2L)
   expect_true(all(!is.na(id)))
 })

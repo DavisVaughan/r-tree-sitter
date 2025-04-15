@@ -53,7 +53,6 @@ TreeCursor <- R6::R6Class(
     }
   ),
   public = list(
-
     #' @description
     #' Create a new tree cursor.
     initialize = function(node) {

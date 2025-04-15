@@ -24,7 +24,12 @@ test_that("can pretty print `node`s", {
     node_show_s_expression(node, show_parentheses = FALSE)
   })
   expect_snapshot({
-    node_show_s_expression(node, show_parentheses = FALSE, show_anonymous = FALSE, show_locations = FALSE)
+    node_show_s_expression(
+      node,
+      show_parentheses = FALSE,
+      show_anonymous = FALSE,
+      show_locations = FALSE
+    )
   })
   expect_snapshot({
     node_show_s_expression(node, dangling_parenthesis = FALSE)
@@ -35,7 +40,11 @@ test_that("can pretty print `node`s", {
   # With `dangling_parenthesis = TRUE` and `show_anonymous = FALSE`, `parameters`
   # node with only anonymous children should not move the closing `)` to the next line
   expect_snapshot({
-    node_show_s_expression(node, dangling_parenthesis = TRUE, show_anonymous = FALSE)
+    node_show_s_expression(
+      node,
+      dangling_parenthesis = TRUE,
+      show_anonymous = FALSE
+    )
   })
   expect_snapshot({
     node_show_s_expression(node, show_locations = FALSE)
@@ -53,7 +62,12 @@ test_that("can pretty print `node`s", {
     node_show_s_expression(node, max_lines = 10, dangling_parenthesis = FALSE)
   })
   expect_snapshot({
-    node_show_s_expression(node, max_lines = 10, dangling_parenthesis = FALSE, show_anonymous = FALSE)
+    node_show_s_expression(
+      node,
+      max_lines = 10,
+      dangling_parenthesis = FALSE,
+      show_anonymous = FALSE
+    )
   })
 })
 
