@@ -1,5 +1,9 @@
 # treesitter (development version)
 
+* New `node_field_name_for_named_child()` (#35).
+
+* Updated to [tree-sitter v0.24.7](https://github.com/tree-sitter/tree-sitter/releases/tag/v0.24.7) (#35).
+
 # treesitter 0.2.0
 
 * New `query_end_byte_for_pattern()` (#22).
