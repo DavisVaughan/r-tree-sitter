@@ -41,6 +41,7 @@ extern r_obj* ffi_node_named_children(r_obj*);
 extern r_obj* ffi_node_child_by_field_id(r_obj*, r_obj*);
 extern r_obj* ffi_node_child_by_field_name(r_obj*, r_obj*);
 extern r_obj* ffi_node_field_name_for_child(r_obj*, r_obj*);
+extern r_obj* ffi_node_field_name_for_named_child(r_obj*, r_obj*);
 extern r_obj* ffi_node_first_child_for_byte(r_obj*, r_obj*);
 extern r_obj* ffi_node_first_named_child_for_byte(r_obj*, r_obj*);
 extern r_obj* ffi_node_start_byte(r_obj*);
@@ -99,9 +100,8 @@ extern r_obj* ffi_dyn_unwrap(r_obj*);
 static const R_CallMethodDef CallEntries[] = {
     {"ffi_initialize", (DL_FUNC) &ffi_initialize, 1},
     {"ffi_language_version", (DL_FUNC) &ffi_language_version, 1},
-    {"ffi_language_symbol_for_name",
-     (DL_FUNC) &ffi_language_symbol_for_name,
-     3},
+    {"ffi_language_symbol_for_name", (DL_FUNC) &ffi_language_symbol_for_name, 3
+    },
     {"ffi_language_symbol_name", (DL_FUNC) &ffi_language_symbol_name, 2},
     {"ffi_language_field_id_for_name",
      (DL_FUNC) &ffi_language_field_id_for_name,
@@ -136,11 +136,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_node_children", (DL_FUNC) &ffi_node_children, 1},
     {"ffi_node_named_children", (DL_FUNC) &ffi_node_named_children, 1},
     {"ffi_node_child_by_field_id", (DL_FUNC) &ffi_node_child_by_field_id, 2},
-    {"ffi_node_child_by_field_name",
-     (DL_FUNC) &ffi_node_child_by_field_name,
-     2},
+    {"ffi_node_child_by_field_name", (DL_FUNC) &ffi_node_child_by_field_name, 2
+    },
     {"ffi_node_field_name_for_child",
      (DL_FUNC) &ffi_node_field_name_for_child,
+     2},
+    {"ffi_node_field_name_for_named_child",
+     (DL_FUNC) &ffi_node_field_name_for_named_child,
      2},
     {"ffi_node_first_child_for_byte",
      (DL_FUNC) &ffi_node_first_child_for_byte,
@@ -212,9 +214,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_query_capture_count", (DL_FUNC) &ffi_query_capture_count, 1},
     {"ffi_query_string_count", (DL_FUNC) &ffi_query_string_count, 1},
     {"ffi_query_capture_names", (DL_FUNC) &ffi_query_capture_names, 1},
-    {"ffi_query_pattern_predicates",
-     (DL_FUNC) &ffi_query_pattern_predicates,
-     1},
+    {"ffi_query_pattern_predicates", (DL_FUNC) &ffi_query_pattern_predicates, 1
+    },
     {"ffi_query_start_byte_for_pattern",
      (DL_FUNC) &ffi_query_start_byte_for_pattern,
      2},
@@ -225,7 +226,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"ffi_query_captures", (DL_FUNC) &ffi_query_captures, 12},
     {"ffi_dyn_chr_push_back", (DL_FUNC) &ffi_dyn_chr_push_back, 2},
     {"ffi_dyn_unwrap", (DL_FUNC) &ffi_dyn_unwrap, 1},
-    {NULL, NULL, 0}};
+    {NULL, NULL, 0}
+};
 
 void R_init_treesitter(DllInfo* dll) {
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
