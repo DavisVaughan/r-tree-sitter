@@ -25,6 +25,7 @@
 <url><loc>/dev/reference/node-child.html</loc></url>
 <url><loc>/dev/reference/node-children.html</loc></url>
 <url><loc>/dev/reference/node-descendant.html</loc></url>
+<url><loc>/dev/reference/node-field-name-for-child.html</loc></url>
 <url><loc>/dev/reference/node-first-child-byte.html</loc></url>
 <url><loc>/dev/reference/node-grammar.html</loc></url>
 <url><loc>/dev/reference/node-location.html</loc></url>
@@ -32,7 +33,6 @@
 <url><loc>/dev/reference/node-parse-state.html</loc></url>
 <url><loc>/dev/reference/node-sibling.html</loc></url>
 <url><loc>/dev/reference/node_descendant_count.html</loc></url>
-<url><loc>/dev/reference/node_field_name_for_child.html</loc></url>
 <url><loc>/dev/reference/node_language.html</loc></url>
 <url><loc>/dev/reference/node_parent.html</loc></url>
 <url><loc>/dev/reference/node_raw_s_expression.html</loc></url>
