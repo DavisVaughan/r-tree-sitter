@@ -423,8 +423,11 @@ node_child_by_field_name <- function(x, name) {
 #' Get a child's field name by index
 #'
 #' @description
-#' `node_field_name_for_child()` returns the field name for the `i`th child,
-#' considering both named and anonymous nodes.
+#' These functions return the field name for the `i`th child of `x`.
+#'
+#' - `node_field_name_for_child()` considers both named and anonymous children.
+#'
+#' - `node_field_name_for_named_child()` considers only named children.
 #'
 #' Nodes themselves don't know their own field names, because they don't know
 #' if they are fields or not. You must have access to their parents to query
@@ -440,7 +443,7 @@ node_child_by_field_name <- function(x, name) {
 #' The field name for the `i`th child of `x`, or `NA_character_` if that child
 #' doesn't exist.
 #'
-#' @export
+#' @name node-field-name-for-child
 #' @examplesIf rlang::is_installed("treesitter.r")
 #' language <- treesitter.r::language()
 #' parser <- parser(language)
@@ -458,16 +461,37 @@ node_child_by_field_name <- function(x, name) {
 #' node_field_name_for_child(node, 1)
 #' node_field_name_for_child(node, 2)
 #'
+#' # Get the field name of the first few named children (note that anonymous
+#' # children are not considered)
+#' node_field_name_for_named_child(node, 1)
+#' node_field_name_for_named_child(node, 2)
+#'
 #' # 10th child doesn't exist, this returns `NA_character_`
 #' node_field_name_for_child(node, 10)
+NULL
+
+#' @rdname node-field-name-for-child
+#' @export
 node_field_name_for_child <- function(x, i) {
-  check_node(x)
+  node_field_name_for_child_impl(x, i, ffi_node_field_name_for_child)
+}
+
+#' @rdname node-field-name-for-child
+#' @export
+node_field_name_for_named_child <- function(x, i) {
+  node_field_name_for_child_impl(x, i, ffi_node_field_name_for_named_child)
+}
+
+node_field_name_for_child_impl <- function(x, i, fn, call = caller_env()) {
+  check_node(x, call = call)
   x <- node_raw(x)
 
-  i <- vec_cast(i, double())
-  check_number_whole(i, min = 1)
+  i <- vec_cast(i, double(), call = call)
+  check_number_whole(i, min = 1, call = call)
 
-  .Call(ffi_node_field_name_for_child, x, i)
+  # Work around `.Call(fn)` check complaints
+  .call <- .Call
+  .call(fn, x, i)
 }
 
 #' Get the first child that extends beyond the given byte offset
