@@ -2,4 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-05-27T15:19Z
+last_built: 2025-06-06T14:19Z
+urls:
+  reference: https://davisvaughan.github.io/r-tree-sitter/reference
+  article: https://davisvaughan.github.io/r-tree-sitter/articles
