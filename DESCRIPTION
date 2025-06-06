@@ -14,7 +14,7 @@ Description: Provides bindings to 'Tree-sitter', an incremental parsing
     robust error recovery system that provides useful parse results even
     in the presence of syntax errors.
 License: MIT + file LICENSE
-URL: https://github.com/DavisVaughan/r-tree-sitter
+URL: https://github.com/DavisVaughan/r-tree-sitter, https://davisvaughan.github.io/r-tree-sitter/
 BugReports: https://github.com/DavisVaughan/r-tree-sitter/issues
 Depends:
     R (>= 4.3.0)

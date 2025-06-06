@@ -12,6 +12,7 @@ Provides bindings to 'Tree-sitter', an incremental parsing system for programmin
 Useful links:
 \itemize{
   \item \url{https://github.com/DavisVaughan/r-tree-sitter}
+  \item \url{https://davisvaughan.github.io/r-tree-sitter/}
   \item Report bugs at \url{https://github.com/DavisVaughan/r-tree-sitter/issues}
 }
 
