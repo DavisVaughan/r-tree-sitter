@@ -1,4 +1,4 @@
-# treesitter (development version)
+# treesitter 0.3.0
 
 * New `node_field_name_for_named_child()` (#35).
 
