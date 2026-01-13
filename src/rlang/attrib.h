@@ -10,12 +10,24 @@
 
 static inline
 r_obj* r_attrib(r_obj* x) {
-  return ATTRIB(x);
+  // return ATTRIB(x);
+#ifdef R_TREESITTER_BEFORE_NON_API_CLEANUP
+  // We just avoid this completely in treesitter
+  Rf_error("Need to analyze `r_attrib()` usage in rlang first.");
+#else
+  Rf_error("Need to analyze `r_attrib()` usage in rlang first.");
+#endif
 }
 static inline
 r_obj* r_poke_attrib(r_obj* x, r_obj* attrs) {
-  SET_ATTRIB(x, attrs);
-  return x;
+  // SET_ATTRIB(x, attrs);
+  // return x;
+#ifdef R_TREESITTER_BEFORE_NON_API_CLEANUP
+  // We just avoid this completely in treesitter
+  Rf_error("Need to analyze `r_poke_attrib()` usage in rlang first.");
+#else
+  Rf_error("Need to analyze `r_poke_attrib()` usage in rlang first.");
+#endif
 }
 
 // Unlike Rf_getAttrib(), this never allocates. This also doesn't bump

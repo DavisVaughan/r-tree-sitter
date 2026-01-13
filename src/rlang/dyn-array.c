@@ -10,8 +10,15 @@ r_obj* attribs_dyn_array = NULL;
 struct r_dyn_array* r_new_dyn_vector(enum r_type type,
                                      r_ssize capacity) {
   r_obj* shelter = KEEP(r_alloc_list(2));
-  r_poke_attrib(shelter, attribs_dyn_array);
-  r_mark_object(shelter);
+#ifdef R_TREESITTER_BEFORE_NON_API_CLEANUP
+  // No reason to not just use `r_attrib_poke_class()` everywhere.
+  // This is likely what we will just do in rlang too.
+  // r_poke_attrib(shelter, attribs_dyn_array);
+  // r_mark_object(shelter);
+  r_attrib_poke_class(shelter, r_chr("rlang_dyn_array"));
+#else
+  r_attrib_poke_class(shelter, r_chr("rlang_dyn_array"));
+#endif
 
   r_obj* vec_raw = r_alloc_raw(sizeof(struct r_dyn_array));
   r_list_poke(shelter, 0, vec_raw);
