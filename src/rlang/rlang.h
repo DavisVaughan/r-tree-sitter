@@ -18,16 +18,15 @@
 #ifndef _ISOC99_SOURCE
 #define _ISOC99_SOURCE
 #endif
-#include <stdio.h>
 
 #define R_NO_REMAP
-#include <Rinternals.h>
-#include <Rversion.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include "rlang-types.h"
 
-#define R_BEFORE_NON_API_CLEANUP (R_VERSION < R_Version(4, 5, 0))
+#include <stdbool.h> // IWYU pragma: export
+#include <Rinternals.h> // IWYU pragma: export
+#include <Rversion.h> // IWYU pragma: export
+#include "rlang-types.h" // IWYU pragma: export
+
+#define R_TREESITTER_BEFORE_NON_API_CLEANUP (R_VERSION < R_Version(4, 5, 0))
 
 r_obj* r_init_library(r_obj* ns);
 
@@ -42,10 +41,10 @@ extern
 bool _r_use_local_precious_list;
 
 
+// IWYU pragma: begin_exports
 #include "obj.h"
 #include "globals.h"
 
-#include "altrep.h"
 #include "arg.h"
 #include "attrib.h"
 #include "debug.h"
@@ -74,6 +73,7 @@ bool _r_use_local_precious_list;
 #include "vec-lgl.h"
 #include "vendor.h"
 #include "walk.h"
+// IWYU pragma: end_exports
 
 
 #define r_abort_lazy_call(LAZY, ...) \

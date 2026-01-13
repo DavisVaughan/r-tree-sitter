@@ -3,7 +3,7 @@
 
 
 bool r_env_binding_is_promise(r_obj* env, r_obj* sym) {
-#if R_BEFORE_NON_API_CLEANUP
+#if R_TREESITTER_BEFORE_NON_API_CLEANUP
   r_obj* obj = r_env_find(env, sym);
   return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms.unbound;
 #else
@@ -18,7 +18,7 @@ static r_obj* new_binding_types(r_ssize n) {
   r_obj* types = r_alloc_integer(n);
 
   int* types_ptr = r_int_begin(types);
-  memset(types_ptr, 0, n * sizeof *types_ptr);
+  r_memset(types_ptr, 0, n * sizeof *types_ptr);
 
   return types;
 }
