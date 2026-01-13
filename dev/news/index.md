@@ -2,6 +2,9 @@
 
 ## treesitter (development version)
 
+- Removed usage of non-API `ATTRIB()` and `SET_ATTRIB()`
+  ([\#41](https://github.com/DavisVaughan/r-tree-sitter/issues/41)).
+
 ## treesitter 0.3.0
 
 CRAN release: 2025-06-06
