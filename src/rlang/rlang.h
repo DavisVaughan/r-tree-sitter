@@ -26,6 +26,7 @@
 #include <Rversion.h> // IWYU pragma: export
 #include "rlang-types.h" // IWYU pragma: export
 
+#define R_TREESITTER_BEFORE_NON_API_CLEANUP (R_VERSION < R_Version(4, 5, 0))
 
 r_obj* r_init_library(r_obj* ns);
 
