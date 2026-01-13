@@ -10,7 +10,12 @@
 
 static inline
 r_obj* r_attrib(r_obj* x) {
-  return ATTRIB(x);
+  // return ATTRIB(x);
+#ifdef R_TREESITTER_BEFORE_NON_API_CLEANUP
+  Rf_error("Need to analyze `r_attrib()` usage in rlang first.");
+#else
+  Rf_error("Need to analyze `r_attrib()` usage in rlang first.");
+#endif
 }
 static inline
 r_obj* r_poke_attrib(r_obj* x, r_obj* attrs) {
