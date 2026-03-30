@@ -814,7 +814,7 @@ static bool r_grepl(r_obj* x, r_obj* pattern) {
     x_sym = r_sym("x");
     pattern_sym = r_sym("pattern");
 
-    SEXP fn = r_env_find(r_envs.base, r_sym("grepl"));
+    SEXP fn = r_env_get(r_envs.base, r_sym("grepl"));
     call = r_call3(fn, pattern_sym, x_sym);
     r_preserve(call);
 
@@ -822,8 +822,8 @@ static bool r_grepl(r_obj* x, r_obj* pattern) {
     r_preserve(env);
   }
 
-  r_env_poke(env, x_sym, x);
-  r_env_poke(env, pattern_sym, pattern);
+  r_env_bind(env, x_sym, x);
+  r_env_bind(env, pattern_sym, pattern);
 
   r_obj* out = KEEP(r_eval(call, env));
 

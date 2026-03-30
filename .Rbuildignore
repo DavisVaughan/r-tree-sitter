@@ -1,5 +1,6 @@
 ^LICENSE\.md$
 .clang-format
+.clangd
 .cache
 ^\.vscode$
 compile_commands.json
