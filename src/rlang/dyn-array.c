@@ -4,21 +4,13 @@
 #define R_DYN_ARRAY_GROWTH_FACTOR 2
 
 static
-r_obj* attribs_dyn_array = NULL;
+r_obj* dyn_array_class = NULL;
 
 
 struct r_dyn_array* r_new_dyn_vector(enum r_type type,
                                      r_ssize capacity) {
   r_obj* shelter = KEEP(r_alloc_list(2));
-#ifdef R_TREESITTER_BEFORE_NON_API_CLEANUP
-  // No reason to not just use `r_attrib_poke_class()` everywhere.
-  // This is likely what we will just do in rlang too.
-  // r_poke_attrib(shelter, attribs_dyn_array);
-  // r_mark_object(shelter);
-  r_attrib_poke_class(shelter, r_chr("rlang_dyn_array"));
-#else
-  r_attrib_poke_class(shelter, r_chr("rlang_dyn_array"));
-#endif
+  r_attrib_poke_class(shelter, dyn_array_class);
 
   r_obj* vec_raw = r_alloc_raw(sizeof(struct r_dyn_array));
   r_list_poke(shelter, 0, vec_raw);
@@ -119,6 +111,5 @@ void r_dyn_resize(struct r_dyn_array* p_arr,
 
 
 void r_init_library_dyn_array(void) {
-  r_preserve_global(attribs_dyn_array = r_pairlist(r_chr("rlang_dyn_array")));
-  r_node_poke_tag(attribs_dyn_array, r_syms.class_);
+  r_preserve_global(dyn_array_class = r_chr("rlang_dyn_array"));
 }
