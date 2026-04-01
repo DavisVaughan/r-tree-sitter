@@ -63,7 +63,7 @@ This is one place where usage of \verb{<<-} is acceptable.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 # This query looks for binary operators where the left hand side is an
 # identifier named `fn`, and the right hand side is a function definition.
 # The operator can be `<-` or `=` (technically it can also be things like

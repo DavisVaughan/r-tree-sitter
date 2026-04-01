@@ -18,7 +18,7 @@ A \code{tree_sitter_language} object.
 \code{node_language()} returns the document text underlying a node.
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

@@ -47,7 +47,7 @@ the byte where the \code{i}th pattern starts/ends in the query \code{source}.
 }
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 source <- '(binary_operator
   lhs: (identifier) @lhs
   operator: _ @operator

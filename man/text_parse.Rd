@@ -26,7 +26,7 @@ text after an edit has been made, you should create a full parser with
 \code{\link[=parser]{parser()}} and use \code{\link[=parser_parse]{parser_parse()}} instead.
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 language <- treesitter.r::language()
 text <- "map(xs, function(x) 1 + 1)"
 

@@ -27,7 +27,7 @@ Get the name for a particular language symbol ID. Can be useful for
 exploring a grammar.
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 language <- treesitter.r::language()
 language_symbol_name(language, 1)
 \dontshow{\}) # examplesIf}

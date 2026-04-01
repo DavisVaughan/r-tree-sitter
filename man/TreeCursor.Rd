@@ -15,7 +15,7 @@ You can also more elegantly create a cursor with \code{\link[=node_walk]{node_wa
 \code{\link[=tree_walk]{tree_walk()}}.
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

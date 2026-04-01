@@ -21,7 +21,7 @@ This is a very useful function for making decisions about how to handle
 the current node.
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 language <- treesitter.r::language()
 parser <- parser(language)
 

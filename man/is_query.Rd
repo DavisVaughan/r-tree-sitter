@@ -18,7 +18,7 @@ An object.}
 Checks if \code{x} is a \code{tree_sitter_query} or not.
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 source <- "(identifier) @id"
 language <- treesitter.r::language()
 

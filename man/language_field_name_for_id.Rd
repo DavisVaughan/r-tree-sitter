@@ -26,7 +26,7 @@ A character vector the same length as \code{id} containing:
 Get the field name for a field identifier.
 }
 \examples{
-\dontshow{if (rlang::is_installed("treesitter.r")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("treesitter.r")) withAutoprint(\{ # examplesIf}
 language <- treesitter.r::language()
 language_field_name_for_id(language, 1)
 \dontshow{\}) # examplesIf}
