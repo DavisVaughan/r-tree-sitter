@@ -1,6 +1,14 @@
 # Changelog
 
+## treesitter 0.3.2
+
+CRAN release: 2026-04-03
+
+- Removed usage of more non-API C functions.
+
 ## treesitter 0.3.1
+
+CRAN release: 2026-01-13
 
 - Removed usage of non-API `ATTRIB()` and `SET_ATTRIB()`
   ([\#41](https://github.com/DavisVaughan/r-tree-sitter/issues/41)).

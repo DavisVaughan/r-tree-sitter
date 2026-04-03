@@ -17,12 +17,12 @@ Source:
 [`DESCRIPTION`](https://github.com/DavisVaughan/r-tree-sitter/blob/main/DESCRIPTION)
 
 Vaughan D (2026). *treesitter: Bindings to 'Tree-Sitter'*. R package
-version 0.3.1, <https://github.com/DavisVaughan/r-tree-sitter>.
+version 0.3.2, <https://github.com/DavisVaughan/r-tree-sitter>.
 
     @Manual{,
       title = {treesitter: Bindings to 'Tree-Sitter'},
       author = {Davis Vaughan},
       year = {2026},
-      note = {R package version 0.3.1},
+      note = {R package version 0.3.2},
       url = {https://github.com/DavisVaughan/r-tree-sitter},
     }
