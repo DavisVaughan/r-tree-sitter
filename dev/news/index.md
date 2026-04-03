@@ -2,6 +2,10 @@
 
 ## treesitter (development version)
 
+## treesitter 0.3.2
+
+CRAN release: 2026-04-03
+
 - Removed usage of more non-API C functions.
 
 ## treesitter 0.3.1
