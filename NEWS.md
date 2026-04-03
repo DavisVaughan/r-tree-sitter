@@ -1,4 +1,4 @@
-# treesitter (development version)
+# treesitter 0.3.2
 
 * Removed usage of more non-API C functions.
 
